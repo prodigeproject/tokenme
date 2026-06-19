@@ -142,7 +142,7 @@ transcripts — stated openly.
 
 ```bash
 # Option 1 — run from the repo (no install, no dependencies)
-git clone https://github.com/your-handle/tokenme
+git clone https://github.com/prodigeproject/tokenme
 cd tokenme
 python -m tokenme selfcheck            # verify it works
 
