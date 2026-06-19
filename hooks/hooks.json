@@ -1,0 +1,56 @@
+{
+  "_comment": [
+    "Optional auto-tracking hooks for Claude Code (and agents with compatible hook systems).",
+    "Copy the entries you want into your agent's hook config, or point to this file.",
+    "Set TOKENME_DIR to the folder where you cloned/installed tokenme.",
+    "Defaults: TOKENME_DIR=~/.tokenme-repo (macOS/Linux) or %USERPROFILE%\\.tokenme-repo (Windows).",
+    "Tracking is 100% local. No network. Remove entries to stop tracking.",
+    "",
+    "WINDOWS NOTE: Claude Code on Windows (no Git Bash on PATH) — use the",
+    "  'command_win' value instead of 'command'. The PowerShell variant uses",
+    "  'python' instead of 'python3' and %USERPROFILE% instead of $HOME."
+  ],
+  "hooks": {
+    "PostToolUse": [
+      {
+        "_note": "Layer 3 — track tool output tokens (Read, Bash, Grep, Glob, MCP)",
+        "matcher": "Bash|Read|Grep|Glob|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${TOKENME_DIR:-$HOME/.tokenme-repo}/hooks/hook_record.py\"",
+            "command_win": "python \"%TOKENME_DIR:%USERPROFILE%\\.tokenme-repo%\\hooks\\hook_record.py\""
+          }
+        ]
+      },
+      {
+        "_note": "Layer 2 — track code written per turn (Write, Edit, MultiEdit)",
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${TOKENME_DIR:-$HOME/.tokenme-repo}/hooks/hook_response.py\"",
+            "command_win": "python \"%TOKENME_DIR:%USERPROFILE%\\.tokenme-repo%\\hooks\\hook_response.py\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "_note": "Layer 1 — track model response length at end of each turn",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${TOKENME_DIR:-$HOME/.tokenme-repo}/hooks/hook_response.py\"",
+            "command_win": "python \"%TOKENME_DIR:%USERPROFILE%\\.tokenme-repo%\\hooks\\hook_response.py\""
+          }
+        ]
+      }
+    ]
+  },
+  "setup": {
+    "macOS_linux": "export TOKENME_DIR=~/tokenme  # or wherever you cloned it",
+    "windows_powershell": "$env:TOKENME_DIR = \"$env:USERPROFILE\\tokenme\"",
+    "windows_cmd": "set TOKENME_DIR=%USERPROFILE%\\tokenme"
+  }
+}

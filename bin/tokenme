@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# tokenme launcher — macOS / Linux / WSL / Git Bash
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PYTHONPATH="$here" exec python3 -m tokenme "$@"

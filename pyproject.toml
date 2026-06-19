@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tokenme"
+version = "0.1.0"
+description = "Self-contained token tracking, savings measurement, and a coding-quality guard."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+dependencies = []  # stdlib only
+
+[project.optional-dependencies]
+exact = ["tiktoken>=0.5"]  # optional: exact token counts instead of the heuristic
+
+[project.scripts]
+tokenme = "tokenme.cli:main"
+
+[tool.setuptools]
+packages = ["tokenme"]
