@@ -1,0 +1,11 @@
+Connection pooling reuses established DB connections instead of creating one per request, avoiding TCP handshake overhead (20-200ms each).
+
+Pool lifecycle: on startup, open N connections. On query: checkout → run → return. On exhaustion: wait (timeout) or overflow.
+
+```python
+engine = create_engine(URL,
+    pool_size=10, max_overflow=20,
+    pool_timeout=30, pool_recycle=3600)
+```
+
+Skipped: detailed explanation of each parameter, alternatives like NullPool or StaticPool. Add when pool tuning becomes necessary.

@@ -1,0 +1,64 @@
+   Compiling my-api v0.1.0 (/workspace/my-api)
+   Compiling tokio v1.35.1
+   Compiling serde v1.0.195
+   Compiling serde_json v1.0.111
+   Compiling hyper v0.14.28
+   Compiling tower v0.4.13
+   Compiling axum v0.7.4
+   Compiling sqlx v0.7.3
+   Compiling uuid v1.6.1
+   Compiling chrono v0.4.31
+   Compiling tracing v0.1.40
+   Compiling tracing-subscriber v0.3.18
+    Finished test [unoptimized + debuginfo] target(s) in 47.23s
+     Running unittests src/lib.rs (target/debug/deps/my_api-a1b2c3d4e5f6)
+
+running 23 tests
+test auth::tests::test_token_generation ... ok
+test auth::tests::test_token_verification ... ok
+test auth::tests::test_token_expiry ... ok
+test auth::tests::test_invalid_signature ... ok
+test auth::tests::test_rate_limiting_basic ... ok
+test auth::tests::test_rate_limiting_lockout ... ok
+test auth::tests::test_rate_limiting_reset ... ok
+test db::tests::test_connection_pool ... ok
+test db::tests::test_query_builder ... ok
+test db::tests::test_transaction_rollback ... ok
+test db::tests::test_migration_idempotent ... ok
+test handlers::tests::test_register_success ... ok
+test handlers::tests::test_register_duplicate_email ... ok
+test handlers::tests::test_register_weak_password ... ok
+test handlers::tests::test_login_success ... ok
+test handlers::tests::test_login_wrong_password ... ok
+test handlers::tests::test_login_inactive_account ... ok
+test handlers::tests::test_logout_revokes_token ... ok
+test handlers::tests::test_me_endpoint_authorized ... ok
+test handlers::tests::test_me_endpoint_unauthorized ... ok
+test middleware::tests::test_auth_middleware_valid ... ok
+test middleware::tests::test_auth_middleware_expired ... ok
+test middleware::tests::test_auth_middleware_blacklisted ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.31s
+
+     Running tests/integration_tests.rs (target/debug/deps/integration_tests-f1e2d3c4b5a6)
+
+running 8 tests
+test test_full_auth_flow ... ok
+test test_register_login_logout ... ok
+test test_concurrent_requests ... ok
+test test_rate_limit_enforcement ... ok
+test test_token_refresh_flow ... ok
+test test_password_reset_flow ... ok
+test test_profile_update_validation ... ok
+test test_db_connection_pool_under_load ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.47s
+
+   Doc-tests my-api
+
+running 3 tests
+test src/auth/mod.rs - auth::generate_token (line 45) ... ok
+test src/auth/mod.rs - auth::verify_token (line 82) ... ok
+test src/db/mod.rs - db::get_pool (line 23) ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.12s

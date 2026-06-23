@@ -1,0 +1,145 @@
+Sure! I'll help you debug this database connection issue. Let me trace through the entire application
+stack to find the problem. First, let me explain what could be going wrong.
+
+When you see a "connection pool exhausted" error in SQLAlchemy, it typically means that your application
+is creating database connections faster than it's releasing them. This is a very common issue in web
+applications and there are several reasons why this might be happening:
+
+1. Missing session cleanup - If you're using SQLAlchemy sessions and not properly closing them after each
+   request, connections will pile up and eventually exhaust your connection pool.
+
+2. Long-running transactions - If some of your database operations are taking a very long time (for example
+   due to slow queries, table locks, or large data operations), connections stay checked out of the pool
+   for longer than expected.
+
+3. Exception handling gaps - If an exception occurs during a database operation and you don't have proper
+   cleanup code in your exception handler, the session (and therefore the connection) may never get returned
+   to the pool.
+
+4. Connection leaks in async code - In asynchronous applications, it's easy to accidentally forget to await
+   a coroutine that closes a session, causing connections to leak.
+
+5. Misconfigured pool size - If your application generates more concurrent requests than your pool can handle,
+   you'll see this error even with perfect connection management.
+
+Let me show you a comprehensive diagnostic approach:
+
+STEP 1: Check your current pool configuration and add monitoring
+
+First, you'll want to add some instrumentation to understand what's happening with your connection pool.
+Here's how to set up SQLAlchemy event listeners that will help you track connection checkout and checkin events:
+
+```python
+from sqlalchemy import event
+from sqlalchemy.pool import Pool
+
+@event.listens_for(Pool, "connect")
+def on_connect(dbapi_connection, connection_record):
+    print(f"New connection created: {id(dbapi_connection)}")
+    # In production: logger.debug(f"DB connect: {id(dbapi_connection)}")
+
+@event.listens_for(Pool, "checkout")
+def on_checkout(dbapi_connection, connection_record, connection_proxy):
+    print(f"Connection checked out: {id(dbapi_connection)}")
+    # Track checkout time for debugging:
+    connection_record.info['checkout_time'] = time.time()
+
+@event.listens_for(Pool, "checkin")
+def on_checkin(dbapi_connection, connection_record):
+    checkout_time = connection_record.info.get('checkout_time')
+    if checkout_time:
+        duration = time.time() - checkout_time
+        if duration > 5.0:  # Warn if held for more than 5 seconds
+            print(f"WARNING: Connection held for {duration:.2f}s")
+```
+
+STEP 2: Review your session management pattern
+
+The most common fix is to make sure you're using a proper session scope. Here's the pattern you should follow:
+
+```python
+# WRONG - session never closed on exception
+def bad_pattern():
+    session = Session()
+    try:
+        result = session.query(User).all()
+        session.close()
+        return result
+    except Exception as e:
+        # If we get here, session.close() is never called!
+        raise e
+
+# CORRECT - use context manager or try/finally
+def good_pattern():
+    session = Session()
+    try:
+        result = session.query(User).all()
+        return result
+    except Exception:
+        session.rollback()
+        raise
+    finally:
+        session.close()  # Always called, even on exception
+
+# BEST - use context manager
+from contextlib import contextmanager
+
+@contextmanager
+def get_session():
+    session = Session()
+    try:
+        yield session
+        session.commit()
+    except Exception:
+        session.rollback()
+        raise
+    finally:
+        session.close()
+
+def best_pattern():
+    with get_session() as session:
+        return session.query(User).all()
+```
+
+STEP 3: Configure your connection pool appropriately
+
+Here's how to configure SQLAlchemy with pool settings appropriate for your workload:
+
+```python
+from sqlalchemy import create_engine
+from sqlalchemy.pool import QueuePool
+
+engine = create_engine(
+    DATABASE_URL,
+    poolclass=QueuePool,
+    pool_size=10,           # Number of connections to maintain
+    max_overflow=20,        # Extra connections allowed above pool_size
+    pool_timeout=30,        # Seconds to wait for a connection before error
+    pool_recycle=3600,      # Recycle connections after 1 hour (prevents stale connections)
+    pool_pre_ping=True,     # Test connections before using them
+    echo_pool=True,         # Log pool events (disable in production!)
+)
+```
+
+STEP 4: Add connection pool status monitoring
+
+Add this endpoint to your Flask app to monitor pool health:
+
+```python
+@app.route('/health/db')
+def db_health():
+    pool = engine.pool
+    return jsonify({
+        'pool_size': pool.size(),
+        'checked_out': pool.checkedout(),
+        'overflow': pool.overflow(),
+        'invalid': pool.invalid_count() if hasattr(pool, 'invalid_count') else 'N/A'
+    })
+```
+
+The most likely fix for your specific case based on the error message is that you have a missing session
+close somewhere. Check all your database-accessing functions and make sure every code path that opens a
+session also closes it. The context manager pattern above is the most reliable way to ensure this.
+
+Would you like me to help you trace through your specific code to find the connection leak? If you can share
+the relevant parts of your codebase, I can pinpoint the exact location.

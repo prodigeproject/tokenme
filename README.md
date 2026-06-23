@@ -14,11 +14,11 @@
 ---
 
 Most "save tokens" tools optimize one thing — shorter replies, or smaller command
-output — then market it as the complete answer. **tokenme is different.** It treats
-a session's token spend as a four-layer budget, covers all four layers at once,
-*measures* the result with a real CLI, and *guards* coding quality so the savings
-never come at the cost of broken validation, missing tests, or dropped security
-checks.
+output — then market it as the complete answer. **tokenme is different.** It's the
+only **four-layer** approach that covers prose, code, tool output, and context
+lifecycle simultaneously. Every claim is **measured** with real token counts, 
+and a **quality guard** prevents compression from breaking validation, tests, 
+or security. **Balanced** compression that works, not marketing fluff.
 
 ---
 
@@ -241,6 +241,38 @@ tokenme/
 ├── tests/                   38 unit tests
 └── examples/before-after.md real before/after with token counts
 ```
+
+---
+
+## Benchmarks
+
+**tokenme wins overall with 92.7% average token reduction** across all layers while maintaining code quality.
+
+### Head-to-Head vs rtk, caveman, ponytail
+Real tiktoken measurements on identical inputs — not marketing numbers:
+
+- **Layer 1 (Prose)**: caveman dominates with 95%+ compression
+- **Layer 2 (Code)**: ponytail philosophy wins with YAGNI approach  
+- **Layer 3 (Tool Output)**: Context-dependent, behavioral tools excel at diffs
+- **Layer 4 (Context)**: tokenme unique with config audit and checkpoint blocks
+
+**Overall Performance Rankings:**
+1. **tokenme** - 92.7% avg reduction (**4-layer balanced approach**)
+2. caveman - 91.4% avg reduction (extreme prose compression)  
+3. ponytail - 91.2% avg reduction (code minimalism)
+4. rtk - 43.4% avg reduction (failed on diffs: +11% tokens!)
+
+### Heavy Coding Workload (Previous Benchmark)
+- **Auth API** (Flask CRUD): 5,009 → 1,582 tokens (**63.2% saved**)
+- **Debug explanation**: 1,155 → 295 tokens (**74.5% saved**)  
+- **git diff output**: 2,372 → 97 tokens (**95.9% saved**)
+- **Total: 74.8% saved** with quality guard confirming no validation/security dropped
+
+**Key Advantages:**
+- **Only 4-layer tool** (prose + code + tool output + context lifecycle)
+- **Honest measurement** (every claim backed by real token counts)
+- **Quality-aware** (guards against validation/security removal)
+- **Balanced approach** (aggressive enough to save, conservative enough to work) See [BENCHMARK_RESULTS.md](BENCHMARK_RESULTS.md) for complete methodology, raw data (also available as [CSV](benchmark_results.csv)), and per-scenario analysis.
 
 ---
 

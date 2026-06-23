@@ -1,0 +1,12 @@
+Pool reuse open DB connections. No new conn per request. Skip handshake overhead.
+
+App start: create N conns (configurable min pool size). Query arrives: grab idle conn from pool, run query, return conn. No TCP/auth overhead per query.
+
+Benefits: lower latency, fewer conns on DB server, bounded resource use.
+
+SQLAlchemy config:
+```python
+engine = create_engine(URL,
+    pool_size=10, max_overflow=20,
+    pool_timeout=30, pool_recycle=3600)
+```

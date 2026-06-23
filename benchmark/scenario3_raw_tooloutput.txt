@@ -1,0 +1,226 @@
+diff --git a/src/auth/middleware.ts b/src/auth/middleware.ts
+index 3f2a8b4..9e1c7d2 100644
+--- a/src/auth/middleware.ts
++++ b/src/auth/middleware.ts
+@@ -1,42 +1,98 @@
+ import { Request, Response, NextFunction } from 'express';
+ import jwt from 'jsonwebtoken';
++import { RateLimiter } from '../utils/rate-limiter';
++import { Logger } from '../utils/logger';
++import { UserRepository } from '../repositories/user.repository';
++import { TokenBlacklist } from '../utils/token-blacklist';
++import { SecurityAuditLog } from '../utils/security-audit';
+ 
+-export function authMiddleware(req: Request, res: Response, next: NextFunction) {
+-  const token = req.headers['authorization']?.split(' ')[1];
+-  if (!token) return res.status(401).json({ error: 'No token provided' });
+-  
++const logger = new Logger('AuthMiddleware');
++const rateLimiter = new RateLimiter({ windowMs: 15 * 60 * 1000, max: 100 });
++const tokenBlacklist = new TokenBlacklist();
++const auditLog = new SecurityAuditLog();
++
++export async function authMiddleware(
++  req: Request,
++  res: Response,
++  next: NextFunction
++): Promise<void> {
++  const startTime = Date.now();
++  const requestId = req.headers['x-request-id'] as string || `req-${Date.now()}`;
++
+   try {
+-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+-    req.user = decoded;
+-    next();
++    // Apply rate limiting first
++    const rateLimitResult = await rateLimiter.check(req.ip);
++    if (!rateLimitResult.allowed) {
++      logger.warn(`Rate limit exceeded for IP: ${req.ip}`, { requestId });
++      res.setHeader('X-RateLimit-Limit', rateLimitResult.limit);
++      res.setHeader('X-RateLimit-Remaining', 0);
++      res.setHeader('X-RateLimit-Reset', rateLimitResult.resetTime);
++      res.status(429).json({
++        error: 'Too many requests',
++        retryAfter: rateLimitResult.retryAfter
++      });
++      return;
++    }
++
++    // Extract and validate token
++    const authHeader = req.headers['authorization'];
++    if (!authHeader || !authHeader.startsWith('Bearer ')) {
++      auditLog.record({ type: 'auth_failure', ip: req.ip, reason: 'missing_token', requestId });
++      res.status(401).json({ error: 'Authorization header required' });
++      return;
++    }
++
++    const token = authHeader.split(' ')[1];
++
++    // Check token blacklist (for logged-out tokens)
++    if (await tokenBlacklist.isBlacklisted(token)) {
++      auditLog.record({ type: 'auth_failure', ip: req.ip, reason: 'blacklisted_token', requestId });
++      res.status(401).json({ error: 'Token has been revoked' });
++      return;
++    }
++
++    // Verify JWT
++    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JWTPayload;
++
++    // Load fresh user data to check if still active
++    const user = await UserRepository.findById(decoded.userId);
++    if (!user || !user.isActive) {
++      auditLog.record({ type: 'auth_failure', ip: req.ip, reason: 'inactive_user', requestId });
++      res.status(401).json({ error: 'User account is inactive' });
++      return;
++    }
++
++    // Attach user context
++    req.user = { ...decoded, roles: user.roles, permissions: user.permissions };
++    req.requestId = requestId;
++
++    // Log successful auth for audit trail
++    auditLog.record({
++      type: 'auth_success',
++      userId: user.id,
++      ip: req.ip,
++      requestId,
++      latencyMs: Date.now() - startTime
++    });
++
++    next();
+   } catch (error) {
+-    return res.status(401).json({ error: 'Invalid token' });
++    if (error instanceof jwt.TokenExpiredError) {
++      auditLog.record({ type: 'auth_failure', ip: req.ip, reason: 'token_expired', requestId });
++      res.status(401).json({ error: 'Token has expired', code: 'TOKEN_EXPIRED' });
++    } else if (error instanceof jwt.JsonWebTokenError) {
++      auditLog.record({ type: 'auth_failure', ip: req.ip, reason: 'invalid_token', requestId });
++      res.status(401).json({ error: 'Invalid token', code: 'INVALID_TOKEN' });
++    } else {
++      logger.error('Unexpected auth error', { error, requestId });
++      res.status(500).json({ error: 'Internal server error' });
++    }
+   }
+ }
++
++export async function optionalAuth(
++  req: Request,
++  res: Response,
++  next: NextFunction
++): Promise<void> {
++  try {
++    await authMiddleware(req, res, next);
++  } catch {
++    next(); // Auth failed but that's OK for optional routes
++  }
++}
+diff --git a/src/auth/middleware.test.ts b/src/auth/middleware.test.ts
+index 0000000..5c8a3f1 100644
+--- /dev/null
++++ b/src/auth/middleware.test.ts
+@@ -0,0 +1,89 @@
++import { describe, it, expect, vi, beforeEach } from 'vitest';
++import { authMiddleware } from './middleware';
++import jwt from 'jsonwebtoken';
++
++vi.mock('jsonwebtoken');
++vi.mock('../utils/rate-limiter');
++vi.mock('../repositories/user.repository');
++vi.mock('../utils/token-blacklist');
++vi.mock('../utils/security-audit');
++
++describe('authMiddleware', () => {
++  let mockReq: any;
++  let mockRes: any;
++  let mockNext: any;
++
++  beforeEach(() => {
++    mockReq = {
++      headers: {},
++      ip: '127.0.0.1',
++    };
++    mockRes = {
++      status: vi.fn().mockReturnThis(),
++      json: vi.fn().mockReturnThis(),
++      setHeader: vi.fn(),
++    };
++    mockNext = vi.fn();
++  });
++
++  it('returns 401 when no Authorization header', async () => {
++    await authMiddleware(mockReq, mockRes, mockNext);
++    expect(mockRes.status).toHaveBeenCalledWith(401);
++    expect(mockNext).not.toHaveBeenCalled();
++  });
++
++  it('returns 401 for expired token', async () => {
++    mockReq.headers.authorization = 'Bearer expired.token.here';
++    vi.mocked(jwt.verify).mockImplementation(() => {
++      throw new jwt.TokenExpiredError('expired', new Date());
++    });
++    await authMiddleware(mockReq, mockRes, mockNext);
++    expect(mockRes.status).toHaveBeenCalledWith(401);
++    expect(mockRes.json).toHaveBeenCalledWith(
++      expect.objectContaining({ code: 'TOKEN_EXPIRED' })
++    );
++  });
++
++  it('calls next() for valid token and active user', async () => {
++    mockReq.headers.authorization = 'Bearer valid.token';
++    vi.mocked(jwt.verify).mockReturnValue({ userId: '123' } as any);
++    const { RateLimiter } = await import('../utils/rate-limiter');
++    vi.mocked(RateLimiter.prototype.check).mockResolvedValue({ allowed: true, limit: 100 } as any);
++    const { UserRepository } = await import('../repositories/user.repository');
++    vi.mocked(UserRepository.findById).mockResolvedValue({ id: '123', isActive: true, roles: [] } as any);
++    const { TokenBlacklist } = await import('../utils/token-blacklist');
++    vi.mocked(TokenBlacklist.prototype.isBlacklisted).mockResolvedValue(false);
++    await authMiddleware(mockReq, mockRes, mockNext);
++    expect(mockNext).toHaveBeenCalled();
++  });
++
++  it('returns 429 when rate limit exceeded', async () => {
++    mockReq.headers.authorization = 'Bearer some.token';
++    const { RateLimiter } = await import('../utils/rate-limiter');
++    vi.mocked(RateLimiter.prototype.check).mockResolvedValue({
++      allowed: false, limit: 100, resetTime: Date.now() + 60000, retryAfter: 60
++    } as any);
++    await authMiddleware(mockReq, mockRes, mockNext);
++    expect(mockRes.status).toHaveBeenCalledWith(429);
++  });
++
++  it('returns 401 for blacklisted token', async () => {
++    mockReq.headers.authorization = 'Bearer blacklisted.token';
++    vi.mocked(jwt.verify).mockReturnValue({ userId: '123' } as any);
++    const { RateLimiter } = await import('../utils/rate-limiter');
++    vi.mocked(RateLimiter.prototype.check).mockResolvedValue({ allowed: true, limit: 100 } as any);
++    const { TokenBlacklist } = await import('../utils/token-blacklist');
++    vi.mocked(TokenBlacklist.prototype.isBlacklisted).mockResolvedValue(true);
++    await authMiddleware(mockReq, mockRes, mockNext);
++    expect(mockRes.status).toHaveBeenCalledWith(401);
++    expect(mockRes.json).toHaveBeenCalledWith(
++      expect.objectContaining({ error: 'Token has been revoked' })
++    );
++  });
++});
+diff --git a/src/routes/user.routes.ts b/src/routes/user.routes.ts
+index 8c1d2f3..4a7e90d 100644
+--- a/src/routes/user.routes.ts
++++ b/src/routes/user.routes.ts
+@@ -14,8 +14,22 @@ router.get('/profile', authMiddleware, async (req, res) => {
+   const user = await UserRepository.findById(req.user.userId);
+   if (!user) return res.status(404).json({ error: 'User not found' });
+   res.json({ id: user.id, email: user.email, name: user.name });
+ });
+ 
+-router.put('/profile', authMiddleware, async (req, res) => {
++router.put('/profile', authMiddleware, async (req: Request, res: Response) => {
++  const { name, bio } = req.body;
++  if (!name || typeof name !== 'string' || name.trim().length < 2) {
++    return res.status(400).json({ error: 'Name must be at least 2 characters' });
++  }
++  if (bio && bio.length > 500) {
++    return res.status(400).json({ error: 'Bio must be under 500 characters' });
++  }
+   const updated = await UserRepository.update(req.user.userId, req.body);
+   res.json(updated);
+ });

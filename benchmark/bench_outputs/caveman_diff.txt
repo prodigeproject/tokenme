@@ -1,0 +1,3 @@
+src/auth/middleware.ts +56/-12: async authMiddleware. Rate-limit check. Blacklist check. Audit log. optionalAuth added.
+src/routes/user.routes.ts +14/-2: PUT /profile validate name+bio before update.
+2 files, +70/-14.

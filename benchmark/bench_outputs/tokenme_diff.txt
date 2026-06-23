@@ -1,0 +1,3 @@
+src/auth/middleware.ts  | +56/-12  (rate-limit, blacklist, audit log, optionalAuth)
+src/routes/user.routes.ts | +14/-2  (PUT /profile: validate name+bio before update)
+2 files changed, 70 insertions(+), 14 deletions(-)

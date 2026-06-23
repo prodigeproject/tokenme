@@ -1,0 +1,48 @@
+Connection pool exhausted = sessions not returned to pool on exceptions.
+
+Root causes (pick the one that fits):
+1. Missing `session.close()` in exception path
+2. Long-running queries holding connections
+3. pool_size too small for concurrency
+
+Fix 1 — proper session scope (covers 90% of cases):
+
+```python
+@contextmanager
+def get_session():
+    session = Session()
+    try:
+        yield session
+        session.commit()
+    except Exception:
+        session.rollback()
+        raise
+    finally:
+        session.close()  # always runs
+```
+
+Fix 2 — pool config:
+
+```python
+engine = create_engine(URL,
+    pool_size=10, max_overflow=20,
+    pool_timeout=30, pool_recycle=3600,
+    pool_pre_ping=True)
+```
+
+Fix 3 — diagnose with events:
+
+```python
+@event.listens_for(Pool, "checkout")
+def on_checkout(conn, rec, proxy):
+    rec.info["t"] = time.time()
+
+@event.listens_for(Pool, "checkin")
+def on_checkin(conn, rec):
+    held = time.time() - rec.info.get("t", time.time())
+    if held > 5: logger.warning("conn held %.1fs", held)
+```
+
+Health check: `GET /health/db` → `pool.checkedout()` shows live leaks.
+
+Share your session-opening code if the context manager pattern doesn't resolve it.

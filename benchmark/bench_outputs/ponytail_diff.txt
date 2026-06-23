@@ -1,0 +1,4 @@
+middleware.ts: added rate limiting, token blacklist, audit logging, optionalAuth. +56/-12.
+user.routes.ts: PUT /profile now validates name (min 2) and bio (max 500) before update. +14/-2.
+
+Skipped: showing full diff. Add when specific line review needed.

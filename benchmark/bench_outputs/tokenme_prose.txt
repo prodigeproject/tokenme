@@ -1,0 +1,9 @@
+Connection pooling reuses open DB connections — skips TCP/auth handshake per request.
+
+On startup: pool opens N connections. Per query: checkout → execute → return to pool. Pool exhausted: wait up to `pool_timeout`, then error.
+
+```python
+engine = create_engine(URL,
+    pool_size=10, max_overflow=20,
+    pool_timeout=30, pool_recycle=3600)
+```

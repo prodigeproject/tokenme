@@ -1,0 +1,109 @@
+﻿C:\Users\PC\Downloads\tokenme\benchmark\bench_inputs\diff_before.txt ΓåÆ C:\Users\PC\Downloads\tokenme\benchmark\bench_inputs\diff_after.txt
+   +97 added, -9 removed, ~0 modified
+
+-   1 ∩╗┐export function authMiddleware(req: Request, res: Response, next: NextFunction) {
++   1 ∩╗┐import { RateLimiter } from '../utils/rate-limiter';
+-   2   const token = req.headers['authorization']?.split(' ')[1];
++   2 import { Logger } from '../utils/logger';
+-   3   if (!token) return res.status(401).json({ error: 'No token provided' });
++   3 import { UserRepository } from '../repositories/user.repository';
+-   4   
++   4 import { TokenBlacklist } from '../utils/token-blacklist';
+-   5     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
++   5 import { SecurityAuditLog } from '../utils/security-audit';
+-   6     req.user = decoded;
++   6 const logger = new Logger('AuthMiddleware');
+-   7     next();
++   7 const rateLimiter = new RateLimiter({ windowMs: 15 * 60 * 1000, max: 100 });
+-   8     return res.status(401).json({ error: 'Invalid token' });
++   8 const tokenBlacklist = new TokenBlacklist();
+-   9 router.put('/profile', authMiddleware, async (req, res) => {
++   9 const auditLog = new SecurityAuditLog();
++  10 
++  11 export async function authMiddleware(
++  12   req: Request,
++  13   res: Response,
++  14   next: NextFunction
++  15 ): Promise<void> {
++  16   const startTime = Date.now();
++  17   const requestId = req.headers['x-request-id'] as string || `req-${Date.now()}`;
++  18 
++  19     const rateLimitResult = await rateLimiter.check(req.ip);
++  20     if (!rateLimitResult.allowed) {
++  21       logger.warn(`Rate limit exceeded for IP: ${req.ip}`, { requestId });
++  22       res.setHeader('X-RateLimit-Limit', rateLimitResult.limit);
++  23       res.setHeader('X-RateLimit-Remaining', 0);
++  24       res.setHeader('X-RateLimit-Reset', rateLimitResult.resetTime);
++  25       res.status(429).json({
++  26         error: 'Too many requests',
++  27         retryAfter: rateLimitResult.retryAfter
++  28       });
++  29       return;
++  30     }
++  31 
++  32     const authHeader = req.headers['authorization'];
++  33     if (!authHeader || !authHeader.startsWith('Bearer ')) {
++  34       auditLog.record({ type: 'auth_failure', ip: req.ip, reason: 'missing_token', requestId });
++  35       res.status(401).json({ error: 'Authorization header required' });
++  36       return;
++  37     }
++  38 
++  39     const token = authHeader.split(' ')[1];
++  40 
++  41     if (await tokenBlacklist.isBlacklisted(token)) {
++  42       auditLog.record({ type: 'auth_failure', ip: req.ip, reason: 'blacklisted_token', requestId });
++  43       res.status(401).json({ error: 'Token has been revoked' });
++  44       return;
++  45     }
++  46 
++  47     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JWTPayload;
++  48 
++  49     const user = await UserRepository.findById(decoded.userId);
++  50     if (!user || !user.isActive) {
++  51       auditLog.record({ type: 'auth_failure', ip: req.ip, reason: 'inactive_user', requestId });
++  52       res.status(401).json({ error: 'User account is inactive' });
++  53       return;
++  54     }
++  55 
++  56     req.user = { ...decoded, roles: user.roles, permissions: user.permissions };
++  57     req.requestId = requestId;
++  58 
++  59     auditLog.record({
++  60       type: 'auth_success',
++  61       userId: user.id,
++  62       ip: req.ip,
++  63       requestId,
++  64       latencyMs: Date.now() - startTime
++  65     });
++  66 
++  67     next();
++  68     if (error instanceof jwt.TokenExpiredError) {
++  69       auditLog.record({ type: 'auth_failure', ip: req.ip, reason: 'token_expired', requestId });
++  70       res.status(401).json({ error: 'Token has expired', code: 'TOKEN_EXPIRED' });
++  71     } else if (error instanceof jwt.JsonWebTokenError) {
++  72       auditLog.record({ type: 'auth_failure', ip: req.ip, reason: 'invalid_token', requestId });
++  73       res.status(401).json({ error: 'Invalid token', code: 'INVALID_TOKEN' });
++  74     } else {
++  75       logger.error('Unexpected auth error', { error, requestId });
++  76       res.status(500).json({ error: 'Internal server error' });
++  77     }
++  78 
++  79 export async function optionalAuth(
++  80   req: Request,
++  81   res: Response,
++  82   next: NextFunction
++  83 ): Promise<void> {
++  84   try {
++  85     await authMiddleware(req, res, next);
++  86   } catch {
++  87     next();
++  88   }
++  89 }
++  90 router.put('/profile', authMiddleware, async (req: Request, res: Response) => {
++  91   const { name, bio } = req.body;
++  92   if (!name || typeof name !== 'string' || name.trim().length < 2) {
++  93     return res.status(400).json({ error: 'Name must be at least 2 characters' });
++  94   }
++  95   if (bio && bio.length > 500) {
++  96     return res.status(400).json({ error: 'Bio must be under 500 characters' });
++  97   }

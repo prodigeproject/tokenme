@@ -1,0 +1,13 @@
+Tool,Scenario,Input_Tokens,Output_Tokens,Tokens_Saved,Percent_Reduction,Quality_Risk,Notes
+rtk,Git Diff,1356,1507,-151,-11.1%,LOW,Actually increased tokens due to diff format overhead
+caveman,Git Diff,1356,57,1299,95.8%,MEDIUM,Winner - excellent at summarization but can lose nuance
+ponytail,Git Diff,1356,65,1291,95.2%,LOW,YAGNI philosophy works well for diffs
+tokenme,Git Diff,1356,63,1293,95.4%,MEDIUM,Balanced 4-layer approach
+rtk,Test Output,742,N/A,N/A,N/A,N/A,Proxy only - not applicable to test output
+caveman,Test Output,742,25,717,96.6%,MEDIUM,Tie for winner - simple pass/fail pattern
+ponytail,Test Output,742,25,717,96.6%,LOW,Tie for winner - minimal code philosophy
+tokenme,Test Output,742,24,718,96.8%,MEDIUM,Slight winner - comprehensive approach
+rtk,Verbose Prose,588,12,576,97.9%,HIGH,Winner but aggressive smart summary loses context
+caveman,Verbose Prose,588,107,481,81.8%,MEDIUM,Strong compression but some nuance lost
+ponytail,Verbose Prose,588,113,475,80.8%,LOW,Philosophy-dependent results
+tokenme,Verbose Prose,588,82,506,86.1%,MEDIUM,Balanced approach maintains context
