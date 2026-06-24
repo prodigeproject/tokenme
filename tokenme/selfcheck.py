@@ -89,7 +89,7 @@ def run() -> int:
     with tempfile.TemporaryDirectory() as d:
         import pathlib
         big = pathlib.Path(d) / "big.md"
-        big.write_text("# Rules\n" + ("Always respond formally.\n" * 300), encoding="utf-8")
+        big.write_text("# Rules\n" + ("Always respond formally.\n" * 1000), encoding="utf-8")
         result = layer4.config_audit([str(big)])
         check("l4-oversized-flagged", any(f["issue"] in ("oversized", "large") for f in result["findings"]), result)
         check("l4-not-found", layer4.config_audit(["/nonexistent/path.md"])["findings"][0]["issue"] == "not_found")
