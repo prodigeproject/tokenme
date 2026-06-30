@@ -46,6 +46,9 @@ output must read fluently in one pass and still be shorter.
 Don't dump long raw logs; quote the shortest decisive line. Lead with the answer,
 then the why if needed.
 
+**Avoid Degeneration Loops**: Never generate text-based progress bars, spinners, or repeating character patterns (e.g. repeated symbols like `@`, `_`, `.`, or `gantt empty` placeholders during wait periods). Autoregressive models are highly prone to self-reinforcing repetition loops when generating sequences of identical tokens, leading to massive token waste. Write short status updates in natural language instead.
+
+
 Honest scope: on agentic coding loops this is the *smallest* lever (tool I/O and
 code dominate). Don't spend reasoning effort over-compressing prose there — apply
 it lightly and move on. It pays off most on chat, explanation, and docs.
