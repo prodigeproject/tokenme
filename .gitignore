@@ -68,3 +68,13 @@ benchmark/provider_total/runs_mechanism_smoke/
 benchmark/provider_total/runs_mechanism_v1/
 benchmark/provider_total/runs_output_v4_smoke/
 benchmark/provider_total/runs_readonly_attempt/
+
+# Local editorial and research drafts. The public README and product docs stay
+# visible; these social posts and Indonesian audit notes are kept out of the
+# GitHub source tree.
+/LINKEDIN_POST*.md
+/THREADS_*.md
+/AUDIT_TOKENME_VS_RTK_CAVEMAN_PONYTAIL.md
+/BENCHMARK_TOKEN_USAGE.md
+benchmark/provider_total/MECHANISM_PLAN.md
+benchmark/provider_total/MECHANISM_RUN_STATUS.md

@@ -1,103 +1,59 @@
-# Token Optimization Tools: Head-to-Head Benchmark
+# Legacy synthetic fixture measurements
 
-**Real measurements with tiktoken:cl100k_base on identical inputs. Not marketing numbers.**
+Status: **withdrawn as a performance benchmark**.
 
-## Executive Summary
+The previous document described TokenMe as the winner with 92.7% average
+reduction. That claim was not supported by live agent runs. As the original
+methodology stated, the Caveman, Ponytail, and TokenMe outputs were hand-authored
+from their documentation and expected compression patterns. Counting those files
+with `tiktoken` verifies their size, but cannot verify model behavior, quality,
+total tokens, or cost.
 
-- **tokenme leads overall** with 92.7% average reduction across all layers
-- **rtk failed** on git diff (actually increased tokens by 11%), excellent on structured data only  
-- **caveman dominates prose compression** but triggered quality warnings
-- **ponytail maintains highest code quality** with strong YAGNI philosophy
-- **Tools operate at different layers** — not direct competitors, some complement each other
+The files under `benchmark/bench_inputs/` and `benchmark/bench_outputs/` remain
+only as deterministic examples for exercising `tokenme count`, `compare`, and
+the quality guard. They must not be averaged into an overall tool ranking.
 
-## Methodology
+The earlier subagent experiment is retained under
+`benchmark/independent_codex/`; it does not claim provider-total token savings
+because the required usage telemetry was unavailable to its interface.
 
-Tested 4 tools on 3 scenarios: git diff, test output, prose explanation. All outputs manually crafted based on each tool's documented behavior and verified against their actual GitHub examples.
+## Valid future benchmark requirements
 
-- **tokenme**: Behavioral skill + CLI measurement
-- **rtk**: Rust CLI proxy, deterministic compression
-- **caveman**: Ultra-compressed prose (~75% savings claim)
-- **ponytail**: YAGNI-first code philosophy
+A publishable total-token claim must include:
 
-## Results
+- pre-registered tasks, versions, exclusions, and analysis;
+- independent paired agent sessions with identical tasks;
+- provider-reported input, cached input, output, and reasoning usage;
+- `total_tokens = input_tokens + output_tokens`, without double-counting cached
+  input or reasoning components;
+- deterministic or blinded semantic scoring;
+- raw JSONL/session artifacts, failures, and uncertainty intervals.
 
-### Scenario 1: Git Diff (1356 tokens input)
+## Actual provider-total pilot (2026-08-07)
 
-| Tool | Output Tokens | Saved | % Reduction |
-|------|--------------|-------|------------|
-| **rtk** | 1507 | -151 | **-11.1%** ❌ |
-| caveman | 57 | 1299 | **95.8%** 🥇 |
-| ponytail | 65 | 1291 | **95.2%** |
-| tokenme | 63 | 1293 | **95.4%** |
+The requirements above are now exercised by the paired Codex suite in
+[`benchmark/provider_total/`](benchmark/provider_total/). It ran five fresh
+sessions per arm (baseline, adaptive TokenMe, Caveman, Ponytail, and RTK), with
+the same five tickets, `gpt-5.6-sol` at low reasoning effort, provider JSONL,
+and one deterministic quality predicate for each assigned ticket. Total is
+`input_tokens + output_tokens`; cached input and reasoning output are reported
+as components and are not added again.
 
-**Winner: caveman** — rtk actually *increased* tokens (diff format overhead), behavioral tools excel at summarization.
+For public product naming, the current implementation is **TokenMe v2**. The
+`v3` and `v6` labels below are internal benchmark-rerun identifiers, not
+product-version names.
 
-### Scenario 2: Test Output (742 tokens input) 
+An earlier provider pilot table is in
+[`benchmark/provider_total/RESULTS.md`](benchmark/provider_total/RESULTS.md). The
+pilot is small and exploratory; neither the earlier table nor the current
+rerun is a universal claim.
 
-| Tool | Output Tokens | Saved | % Reduction |
-|------|--------------|-------|------------|
-| rtk | *N/A* | — | *proxy only* |
-| **caveman** | 25 | 717 | **96.6%** 🥇 |
-| **ponytail** | 25 | 717 | **96.6%** 🥇 |
-| **tokenme** | 24 | 718 | **96.8%** 🥇 |
+The current TokenMe v2 output-summary rerun (internal artifact id `v6`) is in
+[`benchmark/provider_total/runs_compact_v6/RESULTS.md`](benchmark/provider_total/runs_compact_v6/RESULTS.md).
+It measured TokenMe at 4,758 output tokens versus Caveman at 5,162
+(−7.83%), with 5/5 quality checks for both. The v6 total was 367,739 versus
+422,425 baseline (−12.95%). This is another n=5 paired pilot; the v6 output
+delta's bootstrap interval crosses zero.
 
-**Tie: All behavioral tools** — simple "X passed, Y failed" pattern.
-
-### Scenario 3: Verbose Prose (588 tokens input)
-
-| Tool | Output Tokens | Saved | % Reduction |
-|------|--------------|-------|------------|
-| **rtk** | 12 | 576 | **97.9%** 🥇 |
-| caveman | 107 | 481 | **81.8%** |
-| ponytail | 113 | 475 | **80.8%** |
-| **tokenme** | 82 | 506 | **86.1%** |
-
-**Winner: rtk** — "smart summary" feature aggressive but loses context.
-
-## Overall Performance
-
-| Tool | Avg Reduction | Strength | Weakness |
-|------|--------------|----------|----------|
-| **tokenme** | **92.7%** | Balanced, 4-layer approach | Requires measurement discipline |
-| **caveman** | **91.4%** | Extreme prose compression | Can lose nuance |
-| **ponytail** | **91.2%** | Code minimalism, YAGNI | Philosophy-dependent |
-| **rtk** | **43.4%** | Deterministic, no model | CLI proxy scope limited |
-
-## Tool Classification
-
-These tools operate at **different layers** and aren't direct competitors:
-
-### Layer 1 (Prose): caveman dominates
-- caveman fragments: "Pool reuse open DB connections. No new conn per request."
-- 95%+ compression with technical accuracy intact
-
-### Layer 2 (Code): ponytail philosophy wins
-- YAGNI ladder: stdlib → native → one-line → minimal
-- Prevents over-engineering upfront
-
-### Layer 3 (Tool Output): Context-dependent
-- rtk excels at structured data (logs, test results)  
-- Behavioral tools better at diffs/complex output
-
-### Layer 4 (Context): tokenme unique
-- Only tool with config audit, checkpoint blocks
-- Addresses "ghost tokens" other tools miss
-
-## Quality Guard Results
-
-All behavioral tools triggered **MEDIUM RISK** on prose compression — false positive from pattern matching "not" → negation removal detection. Manual review confirmed no actual logic weakening.
-
-**Quality ranking: ponytail > tokenme > caveman** (ponytail explicitly preserves validation/security)
-
-## Real-World Recommendation
-
-**For heavy coding workflows:**
-1. **tokenme** — comprehensive 4-layer approach, honest measurement
-2. **ponytail** for L2 + **rtk** for L3 — specialized tools for each layer
-3. **caveman** — when extreme L1 compression needed
-
-**Don't combine overlapping tools** — caveman + ponytail both compress output, creating redundant overhead.
-
----
-
-*Benchmark conducted June 2026 with tiktoken:cl100k_base. Reproduce: `git clone` this repo, see `/benchmark` folder.*
+The first read-only wiring attempt remains local and is excluded from the
+public `RESULTS.json`.

@@ -29,16 +29,18 @@ The latest live pilot used 25 fresh Codex sessions: five identical cases × five
 arms, with `gpt-5.6-sol` at low reasoning effort. Every cell used a new
 workspace and the same task. `total = input_tokens + output_tokens`; cached
 input and reasoning output are reported separately and are not added twice.
+The public implementation is called **TokenMe v2**; `runs_compact_v6` is only
+the internal benchmark-rerun identifier.
 
 | Arm | Total tokens | Δ total vs baseline | Input | Output | Fresh input | Quality |
 |---|---:|---:|---:|---:|---:|---:|
 | Baseline | 422,425 | — | 416,527 | 5,898 | 52,495 | 5/5 |
-| **TokenMe v6** | **367,739** | **−12.95%** | **362,981** | **4,758** | 62,437 | **5/5** |
+| **TokenMe v2** | **367,739** | **−12.95%** | **362,981** | **4,758** | 62,437 | **5/5** |
 | Caveman | 465,528 | +10.20% | 460,366 | 5,162 | 57,422 | 5/5 |
 | Ponytail | 470,208 | +11.31% | 464,644 | 5,564 | 106,756 | 5/5 |
 | RTK | 453,129 | +7.27% | 447,576 | 5,553 | 49,240 | 4/5 |
 
-On this pilot, TokenMe used 404 fewer output tokens than Caveman (−7.83%) and
+On this pilot, TokenMe v2 used 404 fewer output tokens than Caveman (−7.83%) and
 97,789 fewer total tokens (−21.00%). The final summaries stayed readable by
 using one sentence when sufficient and at most two sentences for security,
 accessibility, migration, or irreversible work.
@@ -47,9 +49,6 @@ This is a paired `n=5` pilot, not a universal ranking. The output delta's
 bootstrap interval crosses zero. The complete table, prompts, final responses,
 quality scores, and raw JSONL are preserved in
 [`runs_compact_v6/`](benchmark/provider_total/runs_compact_v6/).
-
-For a text-first input/output breakdown across every arm, see
-[`BENCHMARK_TOKEN_USAGE.md`](BENCHMARK_TOKEN_USAGE.md).
 
 ### What the table does—and does not—compare
 
@@ -172,8 +171,9 @@ Rebuild a report without provider calls:
 python benchmark/provider_total/run.py --result-root benchmark/provider_total/runs_compact_v6 --summary-only
 ```
 
-For the methodology audit and comparison with the three JetBrains references,
-see [`AUDIT_TOKENME_VS_RTK_CAVEMAN_PONYTAIL.md`](AUDIT_TOKENME_VS_RTK_CAVEMAN_PONYTAIL.md).
+For methodology and limitations, see
+[`BENCHMARK_RESULTS.md`](BENCHMARK_RESULTS.md) and the public benchmark report
+in [`benchmark/provider_total/`](benchmark/provider_total/).
 
 ## Related research and source projects
 
