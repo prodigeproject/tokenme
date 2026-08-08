@@ -1,0 +1,1 @@
+Implemented `strip_version` by reusing the existing helper. Focused checks passed.

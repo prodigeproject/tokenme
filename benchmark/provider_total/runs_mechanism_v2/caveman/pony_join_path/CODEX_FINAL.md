@@ -1,0 +1,1 @@
+Implemented `join_path` with `pathlib.Path`; returns joined path as string. Focused check passed.

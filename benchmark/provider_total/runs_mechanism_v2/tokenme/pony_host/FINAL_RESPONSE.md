@@ -1,0 +1,1 @@
+Implemented `split_host` in `work.py` using `urllib.parse.urlsplit`, returning the parsed hostname or `None` when absent. Focused checks passed for hosted and relative URLs.

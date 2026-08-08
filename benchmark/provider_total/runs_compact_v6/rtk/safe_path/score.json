@@ -1,0 +1,10 @@
+{
+  "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\rtk\\safe_path",
+  "added_loc": 10,
+  "test_loc": 0,
+  "checks": {
+    "safe_path": true
+  },
+  "final_chars": 256,
+  "passed": 1
+}

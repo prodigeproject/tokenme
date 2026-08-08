@@ -1,0 +1,1 @@
+Implemented `env_default`: returns `mapping[name]` when present, otherwise `default`. Focused check passed.

@@ -1,0 +1,1 @@
+Implemented `post_slug(title)` using existing `textutils.slugify` helper. Focused slug checks pass.

@@ -1,0 +1,43 @@
+{
+  "arm": "rtk",
+  "task": "pony_json_bool",
+  "returncode": 0,
+  "duration_seconds": 61.945,
+  "usage": {
+    "input_tokens": 113161,
+    "cached_input_tokens": 102400,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 992,
+    "reasoning_output_tokens": 173,
+    "total_tokens": 114153,
+    "uncached_input_tokens": 10761,
+    "fresh_input_tokens": 10761,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\rtk\\pony_json_bool\\workspace",
+    "checks": {
+      "pony_json_bool": true
+    },
+    "passed": 1,
+    "final_chars": 195,
+    "added_loc": 7,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+    "modules": [
+      "rtk-awareness"
+    ],
+    "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+  },
+  "activation": {
+    "rtk_db_exists": true,
+    "rtk_db_bytes": 24576,
+    "gain_returncode": 0
+  },
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\rtk\\pony_json_bool",
+  "status": "ok"
+}

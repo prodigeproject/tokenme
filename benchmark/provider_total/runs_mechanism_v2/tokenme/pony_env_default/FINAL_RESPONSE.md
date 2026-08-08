@@ -1,0 +1,1 @@
+Implemented `env_default` in `work.py` using `mapping.get(name, default)`. The focused check passed for present and missing keys.

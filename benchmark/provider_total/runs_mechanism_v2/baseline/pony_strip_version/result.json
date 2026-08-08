@@ -1,0 +1,36 @@
+{
+  "arm": "baseline",
+  "task": "pony_strip_version",
+  "returncode": 0,
+  "duration_seconds": 44.688,
+  "usage": {
+    "input_tokens": 68750,
+    "cached_input_tokens": 63232,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 722,
+    "reasoning_output_tokens": 68,
+    "total_tokens": 69472,
+    "uncached_input_tokens": 5518,
+    "fresh_input_tokens": 5518,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\baseline\\pony_strip_version\\workspace",
+    "checks": {
+      "pony_strip_version": true
+    },
+    "passed": 1,
+    "final_chars": 255,
+    "added_loc": 7,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "none",
+    "modules": []
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\baseline\\pony_strip_version",
+  "status": "ok"
+}

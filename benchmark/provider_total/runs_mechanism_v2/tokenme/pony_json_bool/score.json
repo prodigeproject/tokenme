@@ -1,0 +1,10 @@
+{
+  "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\tokenme\\pony_json_bool\\workspace",
+  "checks": {
+    "pony_json_bool": true
+  },
+  "passed": 1,
+  "final_chars": 164,
+  "added_loc": 8,
+  "test_loc": 0
+}

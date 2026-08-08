@@ -1,0 +1,36 @@
+{
+  "arm": "baseline",
+  "task": "csv_sum",
+  "returncode": 0,
+  "duration_seconds": 43.295,
+  "usage": {
+    "input_tokens": 68970,
+    "cached_input_tokens": 58112,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 952,
+    "reasoning_output_tokens": 137,
+    "total_tokens": 69922,
+    "uncached_input_tokens": 10858,
+    "fresh_input_tokens": 10858,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\baseline\\csv_sum",
+    "added_loc": 18,
+    "test_loc": 0,
+    "checks": {
+      "csv_sum": true
+    },
+    "final_chars": 198,
+    "passed": 1
+  },
+  "instructions": {
+    "source": "none",
+    "modules": []
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_compact_v6\\baseline\\csv_sum",
+  "status": "ok"
+}

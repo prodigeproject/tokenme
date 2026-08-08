@@ -1,0 +1,15 @@
+Contract
+
+The Exports API exposes `POST /v1/exports`. A caller submits a JSON filter describing the data to export, and an idempotency key is required in the `Idempotency-Key` request header. The service’s success contract is asynchronous: an accepted request returns HTTP `202` together with an `export_id`, and `202` means processing rather than completion. Consumers therefore must not interpret the initial response as evidence that an export file is ready. They should retain the returned identifier for the later workflow that observes or retrieves the export, as defined by the surrounding product integration.
+
+Idempotency is part of the request contract, not an optional resilience enhancement. A client should create a stable key for one logical export request and preserve both that key and the original JSON body across retries. This lets a retry represent the same operation after a timeout, disconnect, or ambiguous response. If the intended filter changes, the client must treat it as a different logical request and use a different key. Logging the key, `export_id`, response status, and a safe representation of the filter will make operational tracing easier, provided sensitive filter content is handled according to existing logging policy.
+
+Failure modes
+
+HTTP `400` means the submitted filter is invalid. The client should classify this as a request-correction problem, surface an actionable validation message where possible, and avoid automatic retries with the unchanged body. HTTP `409` means an idempotency key was reused with a different body. That indicates a client-side identity or retry defect: the request must not simply be replayed, because changing the body while retaining the key violates the contract. The implementation should preserve the original body for genuine retries and generate a new key only for a genuinely new export request.
+
+HTTP `429` means the service is rate-limiting the caller and instructs the client to retry after the supplied delay. Retry handling should honor that delay, retain the same idempotency key and body, and avoid turning throttling into duplicate logical exports. Network failures and timeouts can leave acceptance ambiguous; those cases also call for retrying the identical request with the identical key. A `202` response is not a failure, but treating it as completed work is a significant integration failure mode because processing is still underway. Monitoring and user messaging should distinguish accepted, processing, completed, and failed states whenever those later states are available through the broader export workflow.
+
+Next action
+
+Implement a focused contract test for the export client that sends `POST /v1/exports` with a JSON filter and required `Idempotency-Key`, verifies that `202` is recorded as processing with the returned `export_id`, and confirms that retries preserve the original key and body while `400`, `409`, and `429` follow the handling described above.

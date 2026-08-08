@@ -1,0 +1,36 @@
+{
+  "arm": "baseline",
+  "task": "auth_token",
+  "returncode": 0,
+  "duration_seconds": 52.698,
+  "usage": {
+    "input_tokens": 83320,
+    "cached_input_tokens": 71168,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1256,
+    "reasoning_output_tokens": 202,
+    "total_tokens": 84576,
+    "uncached_input_tokens": 12152,
+    "fresh_input_tokens": 12152,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\baseline\\auth_token",
+    "added_loc": 13,
+    "test_loc": 0,
+    "checks": {
+      "auth_token": true
+    },
+    "final_chars": 271,
+    "passed": 1
+  },
+  "instructions": {
+    "source": "none",
+    "modules": []
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_compact_v6\\baseline\\auth_token",
+  "status": "ok"
+}

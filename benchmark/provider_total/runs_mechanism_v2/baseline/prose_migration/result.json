@@ -1,0 +1,36 @@
+{
+  "arm": "baseline",
+  "task": "prose_migration",
+  "returncode": 0,
+  "duration_seconds": 66.777,
+  "usage": {
+    "input_tokens": 56704,
+    "cached_input_tokens": 45056,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1529,
+    "reasoning_output_tokens": 101,
+    "total_tokens": 58233,
+    "uncached_input_tokens": 11648,
+    "fresh_input_tokens": 11648,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\baseline\\prose_migration\\workspace",
+    "checks": {
+      "prose_migration": true
+    },
+    "passed": 1,
+    "final_chars": 2698,
+    "added_loc": 0,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "none",
+    "modules": []
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\baseline\\prose_migration",
+  "status": "ok"
+}

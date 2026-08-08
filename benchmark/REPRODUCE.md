@@ -1,11 +1,15 @@
-# Reproduce the Benchmark
+# Reproduce the legacy synthetic fixtures
+
+These commands reproduce file-size/tokenizer counts only. The behavioral outputs
+were hand-authored and do not constitute an agent, total-token, quality, or cost
+benchmark. See `../BENCHMARK_RESULTS.md`.
 
 All inputs, outputs, and measurement commands used in the head-to-head comparison.
 
 ## Prerequisites
 
 ```bash
-# Install tokenme with tiktoken for exact counts
+# Install TokenMe with a named tiktoken encoding
 pip install ".[exact]"
 
 # Download other tools (optional, outputs pre-generated)

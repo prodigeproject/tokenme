@@ -1,0 +1,43 @@
+{
+  "arm": "rtk",
+  "task": "auth_token",
+  "returncode": 0,
+  "duration_seconds": 51.466,
+  "usage": {
+    "input_tokens": 115033,
+    "cached_input_tokens": 101376,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1372,
+    "reasoning_output_tokens": 249,
+    "total_tokens": 116405,
+    "uncached_input_tokens": 13657,
+    "fresh_input_tokens": 13657,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\rtk\\auth_token",
+    "added_loc": 15,
+    "test_loc": 0,
+    "checks": {
+      "auth_token": true
+    },
+    "final_chars": 228,
+    "passed": 1
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+    "modules": [
+      "rtk-awareness"
+    ],
+    "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+  },
+  "activation": {
+    "rtk_db_exists": true,
+    "rtk_db_bytes": 24576,
+    "gain_returncode": 0
+  },
+  "artifact": "benchmark\\provider_total\\runs_compact_v6\\rtk\\auth_token",
+  "status": "ok"
+}

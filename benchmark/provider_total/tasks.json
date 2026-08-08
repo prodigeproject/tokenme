@@ -1,0 +1,26 @@
+{
+  "suite": "tokenme-adaptive-router-codex-v6-output-summary",
+  "description": "Five identical implementation cases with compiled adaptive routing and a one-to-two-sentence, safety-aware output summary policy, one isolated Codex session per case and arm.",
+  "tasks": [
+    {
+      "id": "safe_path",
+      "ticket": "Implement safe_upload_path(base_dir, filename) in safe_path/uploads.py. filename is untrusted. A normal filename must resolve inside base_dir; nested paths inside base_dir are allowed; traversal and absolute paths must be rejected."
+    },
+    {
+      "id": "auth_token",
+      "ticket": "Implement verify_token(token, secret) in auth_token/auth.py. Return the user id only when the HMAC-SHA256 signature produced by make_token is valid. Malformed, forged, wrong-secret, and tampered tokens must return None."
+    },
+    {
+      "id": "reuse_slug",
+      "ticket": "Implement post_slug(title) in reuse_slug/posts.py using the canonical slug behavior already present in this mini-codebase. Reuse the existing project helper instead of duplicating it."
+    },
+    {
+      "id": "csv_sum",
+      "ticket": "Implement sum_amounts(csv_text) in csv_sum/sales.py. Sum finite numeric values in the amount column and skip malformed, missing, NaN, and infinite values."
+    },
+    {
+      "id": "date_picker",
+      "ticket": "Add an accessible React date-picker component in date_picker/DatePicker.tsx with a label, controlled value, a date input, and an onChange callback. Use only what this ticket needs."
+    }
+  ]
+}

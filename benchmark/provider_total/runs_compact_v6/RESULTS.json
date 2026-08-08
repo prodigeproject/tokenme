@@ -1,0 +1,1680 @@
+{
+  "manifest": {
+    "suite": "tokenme-adaptive-router-codex-v6-output-summary",
+    "description": "Five identical implementation cases with compiled adaptive routing and a one-to-two-sentence, safety-aware output summary policy, one isolated Codex session per case and arm.",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "low",
+    "arms": [
+      "baseline",
+      "tokenme",
+      "caveman",
+      "ponytail",
+      "rtk"
+    ],
+    "sessions_per_arm": 5,
+    "tasks": [
+      {
+        "id": "date_picker",
+        "ticket": "Add an accessible React date-picker component in date_picker/DatePicker.tsx with a label, controlled value, a date input, and an onChange callback. Use only what this ticket needs."
+      },
+      {
+        "id": "csv_sum",
+        "ticket": "Implement sum_amounts(csv_text) in csv_sum/sales.py. Sum finite numeric values in the amount column and skip malformed, missing, NaN, and infinite values."
+      },
+      {
+        "id": "auth_token",
+        "ticket": "Implement verify_token(token, secret) in auth_token/auth.py. Return the user id only when the HMAC-SHA256 signature produced by make_token is valid. Malformed, forged, wrong-secret, and tampered tokens must return None."
+      },
+      {
+        "id": "reuse_slug",
+        "ticket": "Implement post_slug(title) in reuse_slug/posts.py using the canonical slug behavior already present in this mini-codebase. Reuse the existing project helper instead of duplicating it."
+      },
+      {
+        "id": "safe_path",
+        "ticket": "Implement safe_upload_path(base_dir, filename) in safe_path/uploads.py. filename is untrusted. A normal filename must resolve inside base_dir; nested paths inside base_dir are allowed; traversal and absolute paths must be rejected."
+      }
+    ],
+    "seed": 20260807,
+    "template": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\independent_codex\\template",
+    "rtk_binary": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-rtk-v0420-audit\\rtk.exe",
+    "rtk_version": "0.42.0 official Windows binary",
+    "quality_scorer": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\independent_codex\\score.py"
+  },
+  "runs": [
+    {
+      "arm": "baseline",
+      "task": "auth_token",
+      "returncode": 0,
+      "duration_seconds": 52.698,
+      "usage": {
+        "input_tokens": 83320,
+        "cached_input_tokens": 71168,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1256,
+        "reasoning_output_tokens": 202,
+        "total_tokens": 84576,
+        "uncached_input_tokens": 12152,
+        "fresh_input_tokens": 12152,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\baseline\\auth_token",
+        "added_loc": 13,
+        "test_loc": 0,
+        "checks": {
+          "auth_token": true
+        },
+        "final_chars": 271,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "none",
+        "modules": []
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\baseline\\auth_token",
+      "status": "ok"
+    },
+    {
+      "arm": "baseline",
+      "task": "csv_sum",
+      "returncode": 0,
+      "duration_seconds": 43.295,
+      "usage": {
+        "input_tokens": 68970,
+        "cached_input_tokens": 58112,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 952,
+        "reasoning_output_tokens": 137,
+        "total_tokens": 69922,
+        "uncached_input_tokens": 10858,
+        "fresh_input_tokens": 10858,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\baseline\\csv_sum",
+        "added_loc": 18,
+        "test_loc": 0,
+        "checks": {
+          "csv_sum": true
+        },
+        "final_chars": 198,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "none",
+        "modules": []
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\baseline\\csv_sum",
+      "status": "ok"
+    },
+    {
+      "arm": "baseline",
+      "task": "date_picker",
+      "returncode": 0,
+      "duration_seconds": 51.345,
+      "usage": {
+        "input_tokens": 83201,
+        "cached_input_tokens": 75264,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1219,
+        "reasoning_output_tokens": 390,
+        "total_tokens": 84420,
+        "uncached_input_tokens": 7937,
+        "fresh_input_tokens": 7937,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\baseline\\date_picker",
+        "added_loc": 25,
+        "test_loc": 0,
+        "checks": {
+          "date_picker": true
+        },
+        "final_chars": 217,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "none",
+        "modules": []
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\baseline\\date_picker",
+      "status": "ok"
+    },
+    {
+      "arm": "baseline",
+      "task": "reuse_slug",
+      "returncode": 0,
+      "duration_seconds": 45.427,
+      "usage": {
+        "input_tokens": 97382,
+        "cached_input_tokens": 82176,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1056,
+        "reasoning_output_tokens": 149,
+        "total_tokens": 98438,
+        "uncached_input_tokens": 15206,
+        "fresh_input_tokens": 15206,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\baseline\\reuse_slug",
+        "added_loc": 2,
+        "test_loc": 0,
+        "checks": {
+          "reuse_slug": true
+        },
+        "final_chars": 190,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "none",
+        "modules": []
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\baseline\\reuse_slug",
+      "status": "ok"
+    },
+    {
+      "arm": "baseline",
+      "task": "safe_path",
+      "returncode": 0,
+      "duration_seconds": 61.666,
+      "usage": {
+        "input_tokens": 83654,
+        "cached_input_tokens": 77312,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1415,
+        "reasoning_output_tokens": 363,
+        "total_tokens": 85069,
+        "uncached_input_tokens": 6342,
+        "fresh_input_tokens": 6342,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\baseline\\safe_path",
+        "added_loc": 10,
+        "test_loc": 0,
+        "checks": {
+          "safe_path": true
+        },
+        "final_chars": 305,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "none",
+        "modules": []
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\baseline\\safe_path",
+      "status": "ok"
+    },
+    {
+      "arm": "tokenme",
+      "task": "auth_token",
+      "returncode": 0,
+      "duration_seconds": 42.797,
+      "usage": {
+        "input_tokens": 69851,
+        "cached_input_tokens": 60160,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 949,
+        "reasoning_output_tokens": 228,
+        "total_tokens": 70800,
+        "uncached_input_tokens": 9691,
+        "fresh_input_tokens": 9691,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\tokenme\\auth_token",
+        "added_loc": 12,
+        "test_loc": 0,
+        "checks": {
+          "auth_token": true
+        },
+        "final_chars": 201,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "local-tokenme-compiled",
+        "modules": [
+          "layer2-code"
+        ],
+        "route": {
+          "router_version": "3",
+          "layers": [
+            2
+          ],
+          "modules": [
+            "layer2-code"
+          ],
+          "scores": {
+            "1": 0,
+            "2": 2,
+            "3": 0,
+            "4": 0
+          },
+          "confidence": {
+            "2": 1.0
+          },
+          "tool_adapter": "native-output",
+          "summary_mode": "expanded",
+          "route_key": "code=1;tools=0;context=0;noisy=0",
+          "core_budget_tokens": 160,
+          "estimated_module_tokens": 145,
+          "fallback": "native-output",
+          "core_only": false,
+          "reason": "no explicit tool-output signal; keep native-output",
+          "instruction_mode": "micro",
+          "compiled_instruction_chars": 694,
+          "feedback_action": "none"
+        },
+        "prompt_chars": 721,
+        "skill_sha256": "7a146eab447858a2b7ddff2d5d8ea8a18bd660c5bf3077ab0b43d6c633361a85"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\tokenme\\auth_token",
+      "status": "ok"
+    },
+    {
+      "arm": "tokenme",
+      "task": "csv_sum",
+      "returncode": 0,
+      "duration_seconds": 41.513,
+      "usage": {
+        "input_tokens": 69482,
+        "cached_input_tokens": 63232,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 964,
+        "reasoning_output_tokens": 251,
+        "total_tokens": 70446,
+        "uncached_input_tokens": 6250,
+        "fresh_input_tokens": 6250,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\tokenme\\csv_sum",
+        "added_loc": 15,
+        "test_loc": 0,
+        "checks": {
+          "csv_sum": true
+        },
+        "final_chars": 162,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "local-tokenme-compiled",
+        "modules": [
+          "layer2-code"
+        ],
+        "route": {
+          "router_version": "3",
+          "layers": [
+            2
+          ],
+          "modules": [
+            "layer2-code"
+          ],
+          "scores": {
+            "1": 0,
+            "2": 1,
+            "3": 0,
+            "4": 0
+          },
+          "confidence": {
+            "2": 0.5
+          },
+          "tool_adapter": "native-output",
+          "summary_mode": "brief",
+          "route_key": "code=1;tools=0;context=0;noisy=0",
+          "core_budget_tokens": 160,
+          "estimated_module_tokens": 145,
+          "fallback": "native-output",
+          "core_only": false,
+          "reason": "no explicit tool-output signal; keep native-output",
+          "instruction_mode": "micro",
+          "compiled_instruction_chars": 694,
+          "feedback_action": "none"
+        },
+        "prompt_chars": 721,
+        "skill_sha256": "9544f8a290b97e0de22f84ee87b47e76cc4531c6876b31cd50eb3f5097252fd3"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\tokenme\\csv_sum",
+      "status": "ok"
+    },
+    {
+      "arm": "tokenme",
+      "task": "date_picker",
+      "returncode": 0,
+      "duration_seconds": 45.321,
+      "usage": {
+        "input_tokens": 69052,
+        "cached_input_tokens": 59136,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 933,
+        "reasoning_output_tokens": 229,
+        "total_tokens": 69985,
+        "uncached_input_tokens": 9916,
+        "fresh_input_tokens": 9916,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\tokenme\\date_picker",
+        "added_loc": 22,
+        "test_loc": 0,
+        "checks": {
+          "date_picker": true
+        },
+        "final_chars": 147,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "local-tokenme-compiled",
+        "modules": [
+          "layer2-code"
+        ],
+        "route": {
+          "router_version": "3",
+          "layers": [
+            2
+          ],
+          "modules": [
+            "layer2-code"
+          ],
+          "scores": {
+            "1": 0,
+            "2": 2,
+            "3": 0,
+            "4": 0
+          },
+          "confidence": {
+            "2": 1.0
+          },
+          "tool_adapter": "native-output",
+          "summary_mode": "brief",
+          "route_key": "code=1;tools=0;context=0;noisy=0",
+          "core_budget_tokens": 160,
+          "estimated_module_tokens": 145,
+          "fallback": "native-output",
+          "core_only": false,
+          "reason": "no explicit tool-output signal; keep native-output",
+          "instruction_mode": "micro",
+          "compiled_instruction_chars": 694,
+          "feedback_action": "none"
+        },
+        "prompt_chars": 721,
+        "skill_sha256": "9544f8a290b97e0de22f84ee87b47e76cc4531c6876b31cd50eb3f5097252fd3"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\tokenme\\date_picker",
+      "status": "ok"
+    },
+    {
+      "arm": "tokenme",
+      "task": "reuse_slug",
+      "returncode": 0,
+      "duration_seconds": 33.057,
+      "usage": {
+        "input_tokens": 69394,
+        "cached_input_tokens": 50944,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 596,
+        "reasoning_output_tokens": 59,
+        "total_tokens": 69990,
+        "uncached_input_tokens": 18450,
+        "fresh_input_tokens": 18450,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\tokenme\\reuse_slug",
+        "added_loc": 2,
+        "test_loc": 0,
+        "checks": {
+          "reuse_slug": true
+        },
+        "final_chars": 158,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "local-tokenme-compiled",
+        "modules": [
+          "layer2-code"
+        ],
+        "route": {
+          "router_version": "3",
+          "layers": [
+            2
+          ],
+          "modules": [
+            "layer2-code"
+          ],
+          "scores": {
+            "1": 0,
+            "2": 1,
+            "3": 0,
+            "4": 0
+          },
+          "confidence": {
+            "2": 0.5
+          },
+          "tool_adapter": "native-output",
+          "summary_mode": "brief",
+          "route_key": "code=1;tools=0;context=0;noisy=0",
+          "core_budget_tokens": 160,
+          "estimated_module_tokens": 145,
+          "fallback": "native-output",
+          "core_only": false,
+          "reason": "no explicit tool-output signal; keep native-output",
+          "instruction_mode": "micro",
+          "compiled_instruction_chars": 694,
+          "feedback_action": "none"
+        },
+        "prompt_chars": 721,
+        "skill_sha256": "9544f8a290b97e0de22f84ee87b47e76cc4531c6876b31cd50eb3f5097252fd3"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\tokenme\\reuse_slug",
+      "status": "ok"
+    },
+    {
+      "arm": "tokenme",
+      "task": "safe_path",
+      "returncode": 0,
+      "duration_seconds": 57.539,
+      "usage": {
+        "input_tokens": 85202,
+        "cached_input_tokens": 67072,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1316,
+        "reasoning_output_tokens": 507,
+        "total_tokens": 86518,
+        "uncached_input_tokens": 18130,
+        "fresh_input_tokens": 18130,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\tokenme\\safe_path",
+        "added_loc": 8,
+        "test_loc": 0,
+        "checks": {
+          "safe_path": true
+        },
+        "final_chars": 223,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "local-tokenme-compiled",
+        "modules": [
+          "layer2-code"
+        ],
+        "route": {
+          "router_version": "3",
+          "layers": [
+            2
+          ],
+          "modules": [
+            "layer2-code"
+          ],
+          "scores": {
+            "1": 0,
+            "2": 1,
+            "3": 0,
+            "4": 0
+          },
+          "confidence": {
+            "2": 0.5
+          },
+          "tool_adapter": "native-output",
+          "summary_mode": "expanded",
+          "route_key": "code=1;tools=0;context=0;noisy=0",
+          "core_budget_tokens": 160,
+          "estimated_module_tokens": 145,
+          "fallback": "native-output",
+          "core_only": false,
+          "reason": "no explicit tool-output signal; keep native-output",
+          "instruction_mode": "micro",
+          "compiled_instruction_chars": 694,
+          "feedback_action": "none"
+        },
+        "prompt_chars": 721,
+        "skill_sha256": "7a146eab447858a2b7ddff2d5d8ea8a18bd660c5bf3077ab0b43d6c633361a85"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\tokenme\\safe_path",
+      "status": "ok"
+    },
+    {
+      "arm": "caveman",
+      "task": "auth_token",
+      "returncode": 0,
+      "duration_seconds": 40.436,
+      "usage": {
+        "input_tokens": 76272,
+        "cached_input_tokens": 68352,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 965,
+        "reasoning_output_tokens": 237,
+        "total_tokens": 77237,
+        "uncached_input_tokens": 7920,
+        "fresh_input_tokens": 7920,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\caveman\\auth_token",
+        "added_loc": 12,
+        "test_loc": 0,
+        "checks": {
+          "auth_token": true
+        },
+        "final_chars": 189,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+        "modules": [
+          "caveman"
+        ],
+        "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\caveman\\auth_token",
+      "status": "ok"
+    },
+    {
+      "arm": "caveman",
+      "task": "csv_sum",
+      "returncode": 0,
+      "duration_seconds": 43.162,
+      "usage": {
+        "input_tokens": 92504,
+        "cached_input_tokens": 74240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1094,
+        "reasoning_output_tokens": 306,
+        "total_tokens": 93598,
+        "uncached_input_tokens": 18264,
+        "fresh_input_tokens": 18264,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\caveman\\csv_sum",
+        "added_loc": 15,
+        "test_loc": 0,
+        "checks": {
+          "csv_sum": true
+        },
+        "final_chars": 145,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+        "modules": [
+          "caveman"
+        ],
+        "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\caveman\\csv_sum",
+      "status": "ok"
+    },
+    {
+      "arm": "caveman",
+      "task": "date_picker",
+      "returncode": 0,
+      "duration_seconds": 41.744,
+      "usage": {
+        "input_tokens": 75366,
+        "cached_input_tokens": 63232,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 788,
+        "reasoning_output_tokens": 246,
+        "total_tokens": 76154,
+        "uncached_input_tokens": 12134,
+        "fresh_input_tokens": 12134,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\caveman\\date_picker",
+        "added_loc": 19,
+        "test_loc": 0,
+        "checks": {
+          "date_picker": true
+        },
+        "final_chars": 148,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+        "modules": [
+          "caveman"
+        ],
+        "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\caveman\\date_picker",
+      "status": "ok"
+    },
+    {
+      "arm": "caveman",
+      "task": "reuse_slug",
+      "returncode": 0,
+      "duration_seconds": 51.354,
+      "usage": {
+        "input_tokens": 122958,
+        "cached_input_tokens": 114688,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 970,
+        "reasoning_output_tokens": 162,
+        "total_tokens": 123928,
+        "uncached_input_tokens": 8270,
+        "fresh_input_tokens": 8270,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\caveman\\reuse_slug",
+        "added_loc": 2,
+        "test_loc": 0,
+        "checks": {
+          "reuse_slug": true
+        },
+        "final_chars": 100,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+        "modules": [
+          "caveman"
+        ],
+        "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\caveman\\reuse_slug",
+      "status": "ok"
+    },
+    {
+      "arm": "caveman",
+      "task": "safe_path",
+      "returncode": 0,
+      "duration_seconds": 59.094,
+      "usage": {
+        "input_tokens": 93266,
+        "cached_input_tokens": 82432,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1345,
+        "reasoning_output_tokens": 485,
+        "total_tokens": 94611,
+        "uncached_input_tokens": 10834,
+        "fresh_input_tokens": 10834,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\caveman\\safe_path",
+        "added_loc": 12,
+        "test_loc": 0,
+        "checks": {
+          "safe_path": true
+        },
+        "final_chars": 192,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+        "modules": [
+          "caveman"
+        ],
+        "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\caveman\\safe_path",
+      "status": "ok"
+    },
+    {
+      "arm": "ponytail",
+      "task": "auth_token",
+      "returncode": 0,
+      "duration_seconds": 46.923,
+      "usage": {
+        "input_tokens": 93442,
+        "cached_input_tokens": 70144,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1140,
+        "reasoning_output_tokens": 300,
+        "total_tokens": 94582,
+        "uncached_input_tokens": 23298,
+        "fresh_input_tokens": 23298,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\ponytail\\auth_token",
+        "added_loc": 6,
+        "test_loc": 7,
+        "checks": {
+          "auth_token": true
+        },
+        "final_chars": 189,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+        "modules": [
+          "ponytail"
+        ],
+        "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\ponytail\\auth_token",
+      "status": "ok"
+    },
+    {
+      "arm": "ponytail",
+      "task": "csv_sum",
+      "returncode": 0,
+      "duration_seconds": 50.319,
+      "usage": {
+        "input_tokens": 93235,
+        "cached_input_tokens": 55808,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1161,
+        "reasoning_output_tokens": 344,
+        "total_tokens": 94396,
+        "uncached_input_tokens": 37427,
+        "fresh_input_tokens": 37427,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\ponytail\\csv_sum",
+        "added_loc": 11,
+        "test_loc": 4,
+        "checks": {
+          "csv_sum": true
+        },
+        "final_chars": 188,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+        "modules": [
+          "ponytail"
+        ],
+        "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\ponytail\\csv_sum",
+      "status": "ok"
+    },
+    {
+      "arm": "ponytail",
+      "task": "date_picker",
+      "returncode": 0,
+      "duration_seconds": 57.887,
+      "usage": {
+        "input_tokens": 92729,
+        "cached_input_tokens": 76288,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1244,
+        "reasoning_output_tokens": 416,
+        "total_tokens": 93973,
+        "uncached_input_tokens": 16441,
+        "fresh_input_tokens": 16441,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\ponytail\\date_picker",
+        "added_loc": 20,
+        "test_loc": 0,
+        "checks": {
+          "date_picker": true
+        },
+        "final_chars": 172,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+        "modules": [
+          "ponytail"
+        ],
+        "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\ponytail\\date_picker",
+      "status": "ok"
+    },
+    {
+      "arm": "ponytail",
+      "task": "reuse_slug",
+      "returncode": 0,
+      "duration_seconds": 46.34,
+      "usage": {
+        "input_tokens": 92160,
+        "cached_input_tokens": 80384,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 802,
+        "reasoning_output_tokens": 160,
+        "total_tokens": 92962,
+        "uncached_input_tokens": 11776,
+        "fresh_input_tokens": 11776,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\ponytail\\reuse_slug",
+        "added_loc": 2,
+        "test_loc": 0,
+        "checks": {
+          "reuse_slug": true
+        },
+        "final_chars": 136,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+        "modules": [
+          "ponytail"
+        ],
+        "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\ponytail\\reuse_slug",
+      "status": "ok"
+    },
+    {
+      "arm": "ponytail",
+      "task": "safe_path",
+      "returncode": 0,
+      "duration_seconds": 48.031,
+      "usage": {
+        "input_tokens": 93078,
+        "cached_input_tokens": 75264,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1217,
+        "reasoning_output_tokens": 327,
+        "total_tokens": 94295,
+        "uncached_input_tokens": 17814,
+        "fresh_input_tokens": 17814,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\ponytail\\safe_path",
+        "added_loc": 8,
+        "test_loc": 0,
+        "checks": {
+          "safe_path": true
+        },
+        "final_chars": 220,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+        "modules": [
+          "ponytail"
+        ],
+        "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+      },
+      "activation": {},
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\ponytail\\safe_path",
+      "status": "ok"
+    },
+    {
+      "arm": "rtk",
+      "task": "auth_token",
+      "returncode": 0,
+      "duration_seconds": 51.466,
+      "usage": {
+        "input_tokens": 115033,
+        "cached_input_tokens": 101376,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1372,
+        "reasoning_output_tokens": 249,
+        "total_tokens": 116405,
+        "uncached_input_tokens": 13657,
+        "fresh_input_tokens": 13657,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\rtk\\auth_token",
+        "added_loc": 15,
+        "test_loc": 0,
+        "checks": {
+          "auth_token": true
+        },
+        "final_chars": 228,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+        "modules": [
+          "rtk-awareness"
+        ],
+        "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+      },
+      "activation": {
+        "rtk_db_exists": true,
+        "rtk_db_bytes": 24576,
+        "gain_returncode": 0
+      },
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\rtk\\auth_token",
+      "status": "ok"
+    },
+    {
+      "arm": "rtk",
+      "task": "csv_sum",
+      "returncode": 0,
+      "duration_seconds": 51.068,
+      "usage": {
+        "input_tokens": 83102,
+        "cached_input_tokens": 77312,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1077,
+        "reasoning_output_tokens": 177,
+        "total_tokens": 84179,
+        "uncached_input_tokens": 5790,
+        "fresh_input_tokens": 5790,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\rtk\\csv_sum",
+        "added_loc": 20,
+        "test_loc": 0,
+        "checks": {
+          "csv_sum": true
+        },
+        "final_chars": 257,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+        "modules": [
+          "rtk-awareness"
+        ],
+        "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+      },
+      "activation": {
+        "rtk_db_exists": true,
+        "rtk_db_bytes": 24576,
+        "gain_returncode": 0
+      },
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\rtk\\csv_sum",
+      "status": "ok"
+    },
+    {
+      "arm": "rtk",
+      "task": "date_picker",
+      "returncode": 0,
+      "duration_seconds": 47.048,
+      "usage": {
+        "input_tokens": 83258,
+        "cached_input_tokens": 73216,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 955,
+        "reasoning_output_tokens": 214,
+        "total_tokens": 84213,
+        "uncached_input_tokens": 10042,
+        "fresh_input_tokens": 10042,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\rtk\\date_picker",
+        "added_loc": 21,
+        "test_loc": 0,
+        "checks": {
+          "date_picker": true
+        },
+        "final_chars": 169,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+        "modules": [
+          "rtk-awareness"
+        ],
+        "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+      },
+      "activation": {
+        "rtk_db_exists": true,
+        "rtk_db_bytes": 24576,
+        "gain_returncode": 0
+      },
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\rtk\\date_picker",
+      "status": "ok"
+    },
+    {
+      "arm": "rtk",
+      "task": "reuse_slug",
+      "returncode": 0,
+      "duration_seconds": 44.117,
+      "usage": {
+        "input_tokens": 82220,
+        "cached_input_tokens": 72192,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 736,
+        "reasoning_output_tokens": 122,
+        "total_tokens": 82956,
+        "uncached_input_tokens": 10028,
+        "fresh_input_tokens": 10028,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\rtk\\reuse_slug",
+        "added_loc": 2,
+        "test_loc": 0,
+        "checks": {
+          "reuse_slug": false
+        },
+        "final_chars": 160,
+        "passed": 0
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+        "modules": [
+          "rtk-awareness"
+        ],
+        "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+      },
+      "activation": {
+        "rtk_db_exists": true,
+        "rtk_db_bytes": 24576,
+        "gain_returncode": 0
+      },
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\rtk\\reuse_slug",
+      "status": "ok"
+    },
+    {
+      "arm": "rtk",
+      "task": "safe_path",
+      "returncode": 0,
+      "duration_seconds": 60.472,
+      "usage": {
+        "input_tokens": 83963,
+        "cached_input_tokens": 74240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1413,
+        "reasoning_output_tokens": 398,
+        "total_tokens": 85376,
+        "uncached_input_tokens": 9723,
+        "fresh_input_tokens": 9723,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\rtk\\safe_path",
+        "added_loc": 10,
+        "test_loc": 0,
+        "checks": {
+          "safe_path": true
+        },
+        "final_chars": 256,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+        "modules": [
+          "rtk-awareness"
+        ],
+        "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+      },
+      "activation": {
+        "rtk_db_exists": true,
+        "rtk_db_bytes": 24576,
+        "gain_returncode": 0
+      },
+      "artifact": "benchmark\\provider_total\\runs_compact_v6\\rtk\\safe_path",
+      "status": "ok"
+    }
+  ],
+  "arms": {
+    "baseline": {
+      "runs": 5,
+      "provider_completed_runs": 5,
+      "provider_failed_runs": 0,
+      "quality_valid_runs": 5,
+      "successful_runs": 5,
+      "quality_checks_total": 5,
+      "quality_checks_possible": 5,
+      "median_total_tokens": 84576,
+      "mean_total_tokens": 84485,
+      "median_input_tokens": 83320,
+      "median_output_tokens": 1219,
+      "total_tokens": 422425,
+      "input_tokens": 416527,
+      "output_tokens": 5898,
+      "cached_input_tokens": 364032,
+      "fresh_input_tokens": 52495,
+      "reasoning_output_tokens": 1241,
+      "added_loc": 68,
+      "test_loc": 0,
+      "final_chars": 1181,
+      "rtk_activated_runs": 0
+    },
+    "tokenme": {
+      "runs": 5,
+      "provider_completed_runs": 5,
+      "provider_failed_runs": 0,
+      "quality_valid_runs": 5,
+      "successful_runs": 5,
+      "quality_checks_total": 5,
+      "quality_checks_possible": 5,
+      "median_total_tokens": 70446,
+      "mean_total_tokens": 73547.8,
+      "median_input_tokens": 69482,
+      "median_output_tokens": 949,
+      "total_tokens": 367739,
+      "input_tokens": 362981,
+      "output_tokens": 4758,
+      "cached_input_tokens": 300544,
+      "fresh_input_tokens": 62437,
+      "reasoning_output_tokens": 1274,
+      "added_loc": 59,
+      "test_loc": 0,
+      "final_chars": 891,
+      "rtk_activated_runs": 0
+    },
+    "caveman": {
+      "runs": 5,
+      "provider_completed_runs": 5,
+      "provider_failed_runs": 0,
+      "quality_valid_runs": 5,
+      "successful_runs": 5,
+      "quality_checks_total": 5,
+      "quality_checks_possible": 5,
+      "median_total_tokens": 93598,
+      "mean_total_tokens": 93105.6,
+      "median_input_tokens": 92504,
+      "median_output_tokens": 970,
+      "total_tokens": 465528,
+      "input_tokens": 460366,
+      "output_tokens": 5162,
+      "cached_input_tokens": 402944,
+      "fresh_input_tokens": 57422,
+      "reasoning_output_tokens": 1436,
+      "added_loc": 60,
+      "test_loc": 0,
+      "final_chars": 774,
+      "rtk_activated_runs": 0
+    },
+    "ponytail": {
+      "runs": 5,
+      "provider_completed_runs": 5,
+      "provider_failed_runs": 0,
+      "quality_valid_runs": 5,
+      "successful_runs": 5,
+      "quality_checks_total": 5,
+      "quality_checks_possible": 5,
+      "median_total_tokens": 94295,
+      "mean_total_tokens": 94041.6,
+      "median_input_tokens": 93078,
+      "median_output_tokens": 1161,
+      "total_tokens": 470208,
+      "input_tokens": 464644,
+      "output_tokens": 5564,
+      "cached_input_tokens": 357888,
+      "fresh_input_tokens": 106756,
+      "reasoning_output_tokens": 1547,
+      "added_loc": 47,
+      "test_loc": 11,
+      "final_chars": 905,
+      "rtk_activated_runs": 0
+    },
+    "rtk": {
+      "runs": 5,
+      "provider_completed_runs": 5,
+      "provider_failed_runs": 0,
+      "quality_valid_runs": 4,
+      "successful_runs": 5,
+      "quality_checks_total": 4,
+      "quality_checks_possible": 5,
+      "median_total_tokens": 84213,
+      "mean_total_tokens": 90625.8,
+      "median_input_tokens": 83258,
+      "median_output_tokens": 1077,
+      "total_tokens": 453129,
+      "input_tokens": 447576,
+      "output_tokens": 5553,
+      "cached_input_tokens": 398336,
+      "fresh_input_tokens": 49240,
+      "reasoning_output_tokens": 1160,
+      "added_loc": 68,
+      "test_loc": 0,
+      "final_chars": 1070,
+      "rtk_activated_runs": 5
+    }
+  },
+  "by_stratum": {
+    "unclassified": {
+      "baseline": {
+        "runs": 5,
+        "provider_completed_runs": 5,
+        "provider_failed_runs": 0,
+        "quality_valid_runs": 5,
+        "total_tokens": 422425,
+        "input_tokens": 416527,
+        "fresh_input_tokens": 52495,
+        "output_tokens": 5898,
+        "median_total_tokens": 84576,
+        "quality_checks_total": 5,
+        "quality_checks_possible": 5,
+        "added_loc": 68,
+        "test_loc": 0,
+        "final_chars": 1181
+      },
+      "tokenme": {
+        "runs": 5,
+        "provider_completed_runs": 5,
+        "provider_failed_runs": 0,
+        "quality_valid_runs": 5,
+        "total_tokens": 367739,
+        "input_tokens": 362981,
+        "fresh_input_tokens": 62437,
+        "output_tokens": 4758,
+        "median_total_tokens": 70446,
+        "quality_checks_total": 5,
+        "quality_checks_possible": 5,
+        "added_loc": 59,
+        "test_loc": 0,
+        "final_chars": 891
+      },
+      "caveman": {
+        "runs": 5,
+        "provider_completed_runs": 5,
+        "provider_failed_runs": 0,
+        "quality_valid_runs": 5,
+        "total_tokens": 465528,
+        "input_tokens": 460366,
+        "fresh_input_tokens": 57422,
+        "output_tokens": 5162,
+        "median_total_tokens": 93598,
+        "quality_checks_total": 5,
+        "quality_checks_possible": 5,
+        "added_loc": 60,
+        "test_loc": 0,
+        "final_chars": 774
+      },
+      "ponytail": {
+        "runs": 5,
+        "provider_completed_runs": 5,
+        "provider_failed_runs": 0,
+        "quality_valid_runs": 5,
+        "total_tokens": 470208,
+        "input_tokens": 464644,
+        "fresh_input_tokens": 106756,
+        "output_tokens": 5564,
+        "median_total_tokens": 94295,
+        "quality_checks_total": 5,
+        "quality_checks_possible": 5,
+        "added_loc": 47,
+        "test_loc": 11,
+        "final_chars": 905
+      },
+      "rtk": {
+        "runs": 5,
+        "provider_completed_runs": 5,
+        "provider_failed_runs": 0,
+        "quality_valid_runs": 4,
+        "total_tokens": 453129,
+        "input_tokens": 447576,
+        "fresh_input_tokens": 49240,
+        "output_tokens": 5553,
+        "median_total_tokens": 84213,
+        "quality_checks_total": 4,
+        "quality_checks_possible": 5,
+        "added_loc": 68,
+        "test_loc": 0,
+        "final_chars": 1070
+      }
+    }
+  },
+  "paired_vs_baseline": {
+    "tokenme": [
+      {
+        "task": "auth_token",
+        "treatment": 70800,
+        "baseline": 84576,
+        "delta": -13776,
+        "reduction_pct": 16.29
+      },
+      {
+        "task": "csv_sum",
+        "treatment": 70446,
+        "baseline": 69922,
+        "delta": 524,
+        "reduction_pct": -0.75
+      },
+      {
+        "task": "date_picker",
+        "treatment": 69985,
+        "baseline": 84420,
+        "delta": -14435,
+        "reduction_pct": 17.1
+      },
+      {
+        "task": "reuse_slug",
+        "treatment": 69990,
+        "baseline": 98438,
+        "delta": -28448,
+        "reduction_pct": 28.9
+      },
+      {
+        "task": "safe_path",
+        "treatment": 86518,
+        "baseline": 85069,
+        "delta": 1449,
+        "reduction_pct": -1.7
+      }
+    ],
+    "caveman": [
+      {
+        "task": "auth_token",
+        "treatment": 77237,
+        "baseline": 84576,
+        "delta": -7339,
+        "reduction_pct": 8.68
+      },
+      {
+        "task": "csv_sum",
+        "treatment": 93598,
+        "baseline": 69922,
+        "delta": 23676,
+        "reduction_pct": -33.86
+      },
+      {
+        "task": "date_picker",
+        "treatment": 76154,
+        "baseline": 84420,
+        "delta": -8266,
+        "reduction_pct": 9.79
+      },
+      {
+        "task": "reuse_slug",
+        "treatment": 123928,
+        "baseline": 98438,
+        "delta": 25490,
+        "reduction_pct": -25.89
+      },
+      {
+        "task": "safe_path",
+        "treatment": 94611,
+        "baseline": 85069,
+        "delta": 9542,
+        "reduction_pct": -11.22
+      }
+    ],
+    "ponytail": [
+      {
+        "task": "auth_token",
+        "treatment": 94582,
+        "baseline": 84576,
+        "delta": 10006,
+        "reduction_pct": -11.83
+      },
+      {
+        "task": "csv_sum",
+        "treatment": 94396,
+        "baseline": 69922,
+        "delta": 24474,
+        "reduction_pct": -35.0
+      },
+      {
+        "task": "date_picker",
+        "treatment": 93973,
+        "baseline": 84420,
+        "delta": 9553,
+        "reduction_pct": -11.32
+      },
+      {
+        "task": "reuse_slug",
+        "treatment": 92962,
+        "baseline": 98438,
+        "delta": -5476,
+        "reduction_pct": 5.56
+      },
+      {
+        "task": "safe_path",
+        "treatment": 94295,
+        "baseline": 85069,
+        "delta": 9226,
+        "reduction_pct": -10.85
+      }
+    ],
+    "rtk": [
+      {
+        "task": "auth_token",
+        "treatment": 116405,
+        "baseline": 84576,
+        "delta": 31829,
+        "reduction_pct": -37.63
+      },
+      {
+        "task": "csv_sum",
+        "treatment": 84179,
+        "baseline": 69922,
+        "delta": 14257,
+        "reduction_pct": -20.39
+      },
+      {
+        "task": "date_picker",
+        "treatment": 84213,
+        "baseline": 84420,
+        "delta": -207,
+        "reduction_pct": 0.25
+      },
+      {
+        "task": "reuse_slug",
+        "treatment": 82956,
+        "baseline": 98438,
+        "delta": -15482,
+        "reduction_pct": 15.73
+      },
+      {
+        "task": "safe_path",
+        "treatment": 85376,
+        "baseline": 85069,
+        "delta": 307,
+        "reduction_pct": -0.36
+      }
+    ]
+  },
+  "paired_summary": {
+    "tokenme": {
+      "total": {
+        "n": 5,
+        "mean_delta": -10937.2,
+        "median_delta": -13776,
+        "bootstrap_95ci_mean_delta": [
+          -19908.4,
+          -1912.8
+        ]
+      },
+      "input": {
+        "n": 5,
+        "mean_delta": -10709.2,
+        "median_delta": -13469,
+        "bootstrap_95ci_mean_delta": [
+          -19548.6,
+          -1798.6
+        ]
+      },
+      "fresh_input": {
+        "n": 5,
+        "mean_delta": 1988.4,
+        "median_delta": 1979,
+        "bootstrap_95ci_mean_delta": [
+          -2608.2,
+          7229.4
+        ]
+      },
+      "output": {
+        "n": 5,
+        "mean_delta": -228,
+        "median_delta": -286,
+        "bootstrap_95ci_mean_delta": [
+          -364.0,
+          -82.4
+        ]
+      }
+    },
+    "caveman": {
+      "total": {
+        "n": 5,
+        "mean_delta": 8620.6,
+        "median_delta": 9542,
+        "bootstrap_95ci_mean_delta": [
+          -4333.6,
+          21574.8
+        ]
+      },
+      "input": {
+        "n": 5,
+        "mean_delta": 8767.8,
+        "median_delta": 9612,
+        "bootstrap_95ci_mean_delta": [
+          -4030.8,
+          21566.4
+        ]
+      },
+      "fresh_input": {
+        "n": 5,
+        "mean_delta": 985.4,
+        "median_delta": 4197,
+        "bootstrap_95ci_mean_delta": [
+          -4109.6,
+          5598.6
+        ]
+      },
+      "output": {
+        "n": 5,
+        "mean_delta": -147.2,
+        "median_delta": -86,
+        "bootstrap_95ci_mean_delta": [
+          -316.4,
+          13.0
+        ]
+      }
+    },
+    "ponytail": {
+      "total": {
+        "n": 5,
+        "mean_delta": 9556.6,
+        "median_delta": 9553,
+        "bootstrap_95ci_mean_delta": [
+          560.8,
+          18484.0
+        ]
+      },
+      "input": {
+        "n": 5,
+        "mean_delta": 9623.4,
+        "median_delta": 9528,
+        "bootstrap_95ci_mean_delta": [
+          776.0,
+          18367.6
+        ]
+      },
+      "fresh_input": {
+        "n": 5,
+        "mean_delta": 10852.2,
+        "median_delta": 11146,
+        "bootstrap_95ci_mean_delta": [
+          2465.6,
+          19936.6
+        ]
+      },
+      "output": {
+        "n": 5,
+        "mean_delta": -66.8,
+        "median_delta": -116,
+        "bootstrap_95ci_mean_delta": [
+          -204.0,
+          90.8
+        ]
+      }
+    },
+    "rtk": {
+      "total": {
+        "n": 5,
+        "mean_delta": 6140.8,
+        "median_delta": 307,
+        "bootstrap_95ci_mean_delta": [
+          -6376.4,
+          21285.8
+        ]
+      },
+      "input": {
+        "n": 5,
+        "mean_delta": 6209.8,
+        "median_delta": 309,
+        "bootstrap_95ci_mean_delta": [
+          -6209.0,
+          21164.4
+        ]
+      },
+      "fresh_input": {
+        "n": 5,
+        "mean_delta": -651,
+        "median_delta": 1505,
+        "bootstrap_95ci_mean_delta": [
+          -3797.4,
+          2495.4
+        ]
+      },
+      "output": {
+        "n": 5,
+        "mean_delta": -69,
+        "median_delta": -2,
+        "bootstrap_95ci_mean_delta": [
+          -234.0,
+          96.0
+        ]
+      }
+    }
+  }
+}

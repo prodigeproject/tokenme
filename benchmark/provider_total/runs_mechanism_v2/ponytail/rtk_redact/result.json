@@ -1,0 +1,39 @@
+{
+  "arm": "ponytail",
+  "task": "rtk_redact",
+  "returncode": 0,
+  "duration_seconds": 60.467,
+  "usage": {
+    "input_tokens": 121417,
+    "cached_input_tokens": 99840,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1274,
+    "reasoning_output_tokens": 285,
+    "total_tokens": 122691,
+    "uncached_input_tokens": 21577,
+    "fresh_input_tokens": 21577,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\ponytail\\rtk_redact\\workspace",
+    "checks": {
+      "rtk_redact": true
+    },
+    "passed": 1,
+    "final_chars": 199,
+    "added_loc": 3,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+    "modules": [
+      "ponytail"
+    ],
+    "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\ponytail\\rtk_redact",
+  "status": "ok"
+}

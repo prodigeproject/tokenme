@@ -1,0 +1,36 @@
+{
+  "arm": "baseline",
+  "task": "pony_iso_date",
+  "returncode": 0,
+  "duration_seconds": 53.851,
+  "usage": {
+    "input_tokens": 83523,
+    "cached_input_tokens": 77312,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 850,
+    "reasoning_output_tokens": 248,
+    "total_tokens": 84373,
+    "uncached_input_tokens": 6211,
+    "fresh_input_tokens": 6211,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\baseline\\pony_iso_date\\workspace",
+    "checks": {
+      "pony_iso_date": true
+    },
+    "passed": 1,
+    "final_chars": 126,
+    "added_loc": 6,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "none",
+    "modules": []
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\baseline\\pony_iso_date",
+  "status": "ok"
+}

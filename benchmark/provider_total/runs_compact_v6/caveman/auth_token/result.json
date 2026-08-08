@@ -1,0 +1,39 @@
+{
+  "arm": "caveman",
+  "task": "auth_token",
+  "returncode": 0,
+  "duration_seconds": 40.436,
+  "usage": {
+    "input_tokens": 76272,
+    "cached_input_tokens": 68352,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 965,
+    "reasoning_output_tokens": 237,
+    "total_tokens": 77237,
+    "uncached_input_tokens": 7920,
+    "fresh_input_tokens": 7920,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\caveman\\auth_token",
+    "added_loc": 12,
+    "test_loc": 0,
+    "checks": {
+      "auth_token": true
+    },
+    "final_chars": 189,
+    "passed": 1
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+    "modules": [
+      "caveman"
+    ],
+    "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_compact_v6\\caveman\\auth_token",
+  "status": "ok"
+}

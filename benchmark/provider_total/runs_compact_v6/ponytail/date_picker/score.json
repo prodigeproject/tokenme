@@ -1,0 +1,10 @@
+{
+  "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\ponytail\\date_picker",
+  "added_loc": 20,
+  "test_loc": 0,
+  "checks": {
+    "date_picker": true
+  },
+  "final_chars": 172,
+  "passed": 1
+}

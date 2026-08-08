@@ -1,0 +1,39 @@
+{
+  "arm": "caveman",
+  "task": "pony_json_bool",
+  "returncode": 0,
+  "duration_seconds": 53.854,
+  "usage": {
+    "input_tokens": 92157,
+    "cached_input_tokens": 64000,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 802,
+    "reasoning_output_tokens": 233,
+    "total_tokens": 92959,
+    "uncached_input_tokens": 28157,
+    "fresh_input_tokens": 28157,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\caveman\\pony_json_bool\\workspace",
+    "checks": {
+      "pony_json_bool": true
+    },
+    "passed": 1,
+    "final_chars": 123,
+    "added_loc": 8,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+    "modules": [
+      "caveman"
+    ],
+    "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\caveman\\pony_json_bool",
+  "status": "ok"
+}

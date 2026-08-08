@@ -1,0 +1,37 @@
+{
+  "source": "local-tokenme-compiled",
+  "modules": [
+    "layer2-code"
+  ],
+  "route": {
+    "router_version": "3",
+    "layers": [
+      2
+    ],
+    "modules": [
+      "layer2-code"
+    ],
+    "scores": {
+      "1": 0,
+      "2": 2,
+      "3": 0,
+      "4": 0
+    },
+    "confidence": {
+      "2": 1.0
+    },
+    "tool_adapter": "native-output",
+    "summary_mode": "expanded",
+    "route_key": "code=1;tools=0;context=0;noisy=0",
+    "core_budget_tokens": 160,
+    "estimated_module_tokens": 145,
+    "fallback": "native-output",
+    "core_only": false,
+    "reason": "no explicit tool-output signal; keep native-output",
+    "instruction_mode": "micro",
+    "compiled_instruction_chars": 694,
+    "feedback_action": "none"
+  },
+  "prompt_chars": 721,
+  "skill_sha256": "7a146eab447858a2b7ddff2d5d8ea8a18bd660c5bf3077ab0b43d6c633361a85"
+}

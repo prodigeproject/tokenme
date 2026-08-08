@@ -1,0 +1,39 @@
+{
+  "arm": "ponytail",
+  "task": "prose_change",
+  "returncode": 0,
+  "duration_seconds": 82.571,
+  "usage": {
+    "input_tokens": 79670,
+    "cached_input_tokens": 57088,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1741,
+    "reasoning_output_tokens": 121,
+    "total_tokens": 81411,
+    "uncached_input_tokens": 22582,
+    "fresh_input_tokens": 22582,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\ponytail\\prose_change\\workspace",
+    "checks": {
+      "prose_change": true
+    },
+    "passed": 1,
+    "final_chars": 2695,
+    "added_loc": 0,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+    "modules": [
+      "ponytail"
+    ],
+    "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\ponytail\\prose_change",
+  "status": "ok"
+}

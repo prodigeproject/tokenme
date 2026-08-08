@@ -1,0 +1,36 @@
+{
+  "arm": "baseline",
+  "task": "rtk_failed",
+  "returncode": 0,
+  "duration_seconds": 73.925,
+  "usage": {
+    "input_tokens": 96957,
+    "cached_input_tokens": 74240,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1289,
+    "reasoning_output_tokens": 169,
+    "total_tokens": 98246,
+    "uncached_input_tokens": 22717,
+    "fresh_input_tokens": 22717,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\baseline\\rtk_failed\\workspace",
+    "checks": {
+      "rtk_failed": true
+    },
+    "passed": 1,
+    "final_chars": 283,
+    "added_loc": 10,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "none",
+    "modules": []
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\baseline\\rtk_failed",
+  "status": "ok"
+}

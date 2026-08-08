@@ -78,8 +78,10 @@ def run() -> int:
         check("tracker-saved-total", agg["saved_tokens"] == 800)
         check("tracker-coverage-gt0", 0 < agg["coverage_pct"] <= 100)
         check("tracker-by-layer-3", 3 in agg["by_layer"])
-        check("tracker-no-negative-clamp",
-              tracker.record(kind="x", raw_tokens=10, kept_tokens=100, layer=3)["saved"] == 0)
+        regression = tracker.record(kind="x", raw_tokens=10, kept_tokens=100, layer=3)
+        check("tracker-signed-regression", regression["saved"] == -90)
+        check("tracker-regression-status", regression["measurement_status"] == "measured")
+        check("tracker-metric", regression["metric"] == "command_output_reduction")
         check("is_day_bucket-true", tracker.is_day_bucket("day-20260619"))
         check("is_day_bucket-false", not tracker.is_day_bucket("selftest"))
         os.environ.pop("TOKENME_HOME", None)

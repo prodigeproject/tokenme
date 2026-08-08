@@ -1,0 +1,10 @@
+{
+  "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\tokenme\\pony_strip_version\\workspace",
+  "checks": {
+    "pony_strip_version": true
+  },
+  "passed": 1,
+  "final_chars": 239,
+  "added_loc": 7,
+  "test_loc": 0
+}

@@ -1,0 +1,39 @@
+{
+  "arm": "ponytail",
+  "task": "pony_host",
+  "returncode": 0,
+  "duration_seconds": 58.762,
+  "usage": {
+    "input_tokens": 109889,
+    "cached_input_tokens": 97536,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 893,
+    "reasoning_output_tokens": 177,
+    "total_tokens": 110782,
+    "uncached_input_tokens": 12353,
+    "fresh_input_tokens": 12353,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\ponytail\\pony_host\\workspace",
+    "checks": {
+      "pony_host": true
+    },
+    "passed": 1,
+    "final_chars": 150,
+    "added_loc": 7,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+    "modules": [
+      "ponytail"
+    ],
+    "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\ponytail\\pony_host",
+  "status": "ok"
+}

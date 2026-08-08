@@ -1,0 +1,43 @@
+{
+  "arm": "rtk",
+  "task": "rtk_kv",
+  "returncode": 0,
+  "duration_seconds": 90.378,
+  "usage": {
+    "input_tokens": 150140,
+    "cached_input_tokens": 131840,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2148,
+    "reasoning_output_tokens": 450,
+    "total_tokens": 152288,
+    "uncached_input_tokens": 18300,
+    "fresh_input_tokens": 18300,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\rtk\\rtk_kv\\workspace",
+    "checks": {
+      "rtk_kv": true
+    },
+    "passed": 1,
+    "final_chars": 258,
+    "added_loc": 12,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+    "modules": [
+      "rtk-awareness"
+    ],
+    "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+  },
+  "activation": {
+    "rtk_db_exists": true,
+    "rtk_db_bytes": 24576,
+    "gain_returncode": 0
+  },
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\rtk\\rtk_kv",
+  "status": "ok"
+}

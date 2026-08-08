@@ -1,0 +1,48 @@
+{
+  "summary": {
+    "total_commands": 2,
+    "total_input": 323,
+    "total_output": 323,
+    "total_saved": 0,
+    "avg_savings_pct": 0.0,
+    "total_time_ms": 296,
+    "avg_time_ms": 148
+  },
+  "daily": [
+    {
+      "date": "2026-08-07",
+      "commands": 2,
+      "input_tokens": 323,
+      "output_tokens": 323,
+      "saved_tokens": 0,
+      "savings_pct": 0.0,
+      "total_time_ms": 296,
+      "avg_time_ms": 148
+    }
+  ],
+  "weekly": [
+    {
+      "week_start": "2026-08-03",
+      "week_end": "2026-08-09",
+      "commands": 2,
+      "input_tokens": 323,
+      "output_tokens": 323,
+      "saved_tokens": 0,
+      "savings_pct": 0.0,
+      "total_time_ms": 296,
+      "avg_time_ms": 148
+    }
+  ],
+  "monthly": [
+    {
+      "month": "2026-08",
+      "commands": 2,
+      "input_tokens": 323,
+      "output_tokens": 323,
+      "saved_tokens": 0,
+      "savings_pct": 0.0,
+      "total_time_ms": 296,
+      "avg_time_ms": 148
+    }
+  ]
+}

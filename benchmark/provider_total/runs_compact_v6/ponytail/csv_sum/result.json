@@ -1,0 +1,39 @@
+{
+  "arm": "ponytail",
+  "task": "csv_sum",
+  "returncode": 0,
+  "duration_seconds": 50.319,
+  "usage": {
+    "input_tokens": 93235,
+    "cached_input_tokens": 55808,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1161,
+    "reasoning_output_tokens": 344,
+    "total_tokens": 94396,
+    "uncached_input_tokens": 37427,
+    "fresh_input_tokens": 37427,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\ponytail\\csv_sum",
+    "added_loc": 11,
+    "test_loc": 4,
+    "checks": {
+      "csv_sum": true
+    },
+    "final_chars": 188,
+    "passed": 1
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+    "modules": [
+      "ponytail"
+    ],
+    "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_compact_v6\\ponytail\\csv_sum",
+  "status": "ok"
+}

@@ -1,0 +1,13 @@
+Highlights
+
+Version 2.4.0 ships bulk export, giving users a direct way to export data in both CSV and JSON formats. This is the principal customer-facing capability in the release and should be the centerpiece of internal enablement and release communication. The release also delivers a meaningful performance improvement from query batching: benchmark p95 latency fell from 820 ms to 610 ms. That change reduces p95 latency by 210 ms and should improve responsiveness for the requests represented by the benchmark. Together, bulk export and lower tail latency make this release valuable both as a feature delivery and as an operational improvement. The implementation notes also provide a defined deployment sequence, which gives engineering and operations a concrete basis for planning the rollout and evaluating rollback decisions.
+
+Risks
+
+The migration contains two additive steps, followed by a destructive index swap at migration step 3. Rollback is safe before migration step 3, but it is not safe after the destructive index swap. This boundary must be treated as an explicit operational decision point, not as a routine continuation of deployment. Before step 3 begins, the deployment owner should verify application health, bulk-export behavior, relevant latency signals, and readiness to proceed. Any issue that could justify rollback should be resolved or acted upon while the safe rollback window remains open. Once step 3 starts, responders cannot rely on the earlier rollback procedure, so proceeding without a clear go/no-go decision would create avoidable recovery risk.
+
+The support runbook must also be updated. Until that update is complete and available to responders, support may lack accurate guidance about the new export formats, expected behavior, migration sequencing, and the rollback cutoff. Release messaging should avoid implying that the latency benchmark guarantees identical improvement in every production workload; the supported claim is specifically that benchmark p95 latency moved from 820 ms to 610 ms after query batching. Operational monitoring during rollout remains important because the fixture does not provide production measurements or broader workload results.
+
+Next action
+
+Engineering and Support should jointly update and review the runbook before deployment, documenting CSV and JSON bulk export checks, the p95 benchmark result, the two additive migration steps, and a mandatory go/no-go checkpoint immediately before migration step 3. The deployment owner should require explicit confirmation at that checkpoint that validation has passed and no rollback-triggering issue remains. Next, assign one named release owner to complete and approve that runbook update before version 2.4.0 enters the migration sequence.

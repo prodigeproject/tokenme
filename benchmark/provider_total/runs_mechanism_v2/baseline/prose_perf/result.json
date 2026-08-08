@@ -1,0 +1,36 @@
+{
+  "arm": "baseline",
+  "task": "prose_perf",
+  "returncode": 0,
+  "duration_seconds": 71.979,
+  "usage": {
+    "input_tokens": 71508,
+    "cached_input_tokens": 64256,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1814,
+    "reasoning_output_tokens": 180,
+    "total_tokens": 73322,
+    "uncached_input_tokens": 7252,
+    "fresh_input_tokens": 7252,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\baseline\\prose_perf\\workspace",
+    "checks": {
+      "prose_perf": true
+    },
+    "passed": 1,
+    "final_chars": 2771,
+    "added_loc": 0,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "none",
+    "modules": []
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\baseline\\prose_perf",
+  "status": "ok"
+}

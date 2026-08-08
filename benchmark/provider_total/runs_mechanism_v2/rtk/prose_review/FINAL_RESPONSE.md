@@ -1,0 +1,13 @@
+Finding
+
+This review identifies a P1 performance issue in `billing/history.py`. The billing history endpoint performs N+1 reads: it first loads the invoice collection and then issues one separate line-item query for every invoice row. That access pattern makes database work grow directly with the number of invoices returned, so tenants with larger histories place disproportionately greater read pressure on the database each time the endpoint is called. Because this behavior sits in a billing-history path and scales with tenant data volume, it should be treated as a priority production concern rather than a routine optimization opportunity.
+
+Evidence
+
+The reviewed implementation loads invoices and then performs one line-item query per row. For the concrete case documented in the review, a tenant with 400 invoices causes 401 reads: one initial read followed by 400 per-invoice reads. This is the characteristic N+1 query pattern. The repeated query filters using `tenant_id` and `created_at`, which means the database must repeatedly service lookups constrained by that pair of columns. The review also confirms that the database engine supports a composite index on those columns. No additional throughput, latency, or resource-consumption measurements were provided, so the priority assessment rests on the demonstrated read amplification and its predictable growth as invoice counts increase.
+
+Recommendation
+
+Address both the query shape and its supporting access path. Replace the per-row line-item lookup with a batched query or equivalent join that retrieves the needed line items for the invoice set in one operation, then associates those results with their invoices in application code if necessary. This removes the N+1 reads instead of merely making each repeated read faster. In addition, add a composite index covering `tenant_id` and `created_at`, ordered to match the endpoint’s actual filtering and sorting behavior. The index is explicitly available in the current database engine and should reduce the cost of locating the relevant tenant history.
+
+Validate the change with a focused regression test that captures query count for a multi-invoice history request, plus an execution-plan check confirming use of the composite index. Preserve the endpoint’s existing response content and ordering while making the database access bounded rather than proportional to invoice rows. The concrete next action is to open a P1 engineering task to batch the line-item query and add the `tenant_id`/`created_at` composite index.

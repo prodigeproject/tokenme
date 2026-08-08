@@ -1,0 +1,36 @@
+{
+  "arm": "baseline",
+  "task": "prose_release",
+  "returncode": 0,
+  "duration_seconds": 70.092,
+  "usage": {
+    "input_tokens": 71309,
+    "cached_input_tokens": 57088,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1654,
+    "reasoning_output_tokens": 122,
+    "total_tokens": 72963,
+    "uncached_input_tokens": 14221,
+    "fresh_input_tokens": 14221,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\baseline\\prose_release\\workspace",
+    "checks": {
+      "prose_release": true
+    },
+    "passed": 1,
+    "final_chars": 2672,
+    "added_loc": 0,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "none",
+    "modules": []
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\baseline\\prose_release",
+  "status": "ok"
+}

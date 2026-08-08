@@ -1,0 +1,10 @@
+{
+  "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\caveman\\csv_sum",
+  "added_loc": 15,
+  "test_loc": 0,
+  "checks": {
+    "csv_sum": true
+  },
+  "final_chars": 145,
+  "passed": 1
+}

@@ -1,0 +1,10 @@
+{
+  "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\baseline\\auth_token",
+  "added_loc": 13,
+  "test_loc": 0,
+  "checks": {
+    "auth_token": true
+  },
+  "final_chars": 271,
+  "passed": 1
+}

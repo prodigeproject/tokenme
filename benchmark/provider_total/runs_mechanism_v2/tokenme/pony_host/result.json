@@ -1,0 +1,72 @@
+{
+  "arm": "tokenme",
+  "task": "pony_host",
+  "returncode": 0,
+  "duration_seconds": 48.523,
+  "usage": {
+    "input_tokens": 83636,
+    "cached_input_tokens": 77312,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 740,
+    "reasoning_output_tokens": 136,
+    "total_tokens": 84376,
+    "uncached_input_tokens": 6324,
+    "fresh_input_tokens": 6324,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\tokenme\\pony_host\\workspace",
+    "checks": {
+      "pony_host": true
+    },
+    "passed": 1,
+    "final_chars": 174,
+    "added_loc": 7,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "local-tokenme-compiled",
+    "modules": [
+      "layer2-code",
+      "layer3-tools"
+    ],
+    "route": {
+      "router_version": "3",
+      "layers": [
+        2,
+        3
+      ],
+      "modules": [
+        "layer2-code",
+        "layer3-tools"
+      ],
+      "scores": {
+        "1": 0,
+        "2": 2,
+        "3": 1,
+        "4": 0
+      },
+      "confidence": {
+        "2": 1.0,
+        "3": 0.5
+      },
+      "tool_adapter": "native-output",
+      "route_key": "code=1;tools=1;context=0;noisy=0",
+      "core_budget_tokens": 160,
+      "estimated_module_tokens": 305,
+      "fallback": "native-output",
+      "core_only": false,
+      "reason": "explicit tool signal; load layer3",
+      "instruction_mode": "micro",
+      "compiled_instruction_chars": 638,
+      "feedback_action": "none"
+    },
+    "prompt_chars": 665,
+    "skill_sha256": "2291324a196ecef6c24951681539e344a6d2fe471775cf292a8733181714a425"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\tokenme\\pony_host",
+  "status": "ok"
+}

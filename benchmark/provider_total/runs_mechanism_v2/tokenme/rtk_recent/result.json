@@ -1,0 +1,73 @@
+{
+  "arm": "tokenme",
+  "task": "rtk_recent",
+  "returncode": 1,
+  "duration_seconds": 10.979,
+  "usage": {
+    "input_tokens": 0,
+    "cached_input_tokens": 0,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 0,
+    "reasoning_output_tokens": 0,
+    "total_tokens": 0,
+    "uncached_input_tokens": 0,
+    "fresh_input_tokens": 0,
+    "turns": 0,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\tokenme\\rtk_recent\\workspace",
+    "checks": {
+      "rtk_recent": false
+    },
+    "check_error": "NotImplementedError: ",
+    "passed": 0,
+    "final_chars": 0,
+    "added_loc": 2,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "local-tokenme-compiled",
+    "modules": [
+      "layer2-code",
+      "layer3-tools"
+    ],
+    "route": {
+      "router_version": "3",
+      "layers": [
+        2,
+        3
+      ],
+      "modules": [
+        "layer2-code",
+        "layer3-tools"
+      ],
+      "scores": {
+        "1": 0,
+        "2": 3,
+        "3": 8,
+        "4": 0
+      },
+      "confidence": {
+        "2": 1.0,
+        "3": 1.0
+      },
+      "tool_adapter": "rtk-eligible",
+      "route_key": "code=1;tools=1;context=0;noisy=1",
+      "core_budget_tokens": 160,
+      "estimated_module_tokens": 305,
+      "fallback": "native-output",
+      "core_only": false,
+      "reason": "explicit tool signal; load layer3",
+      "instruction_mode": "micro",
+      "compiled_instruction_chars": 638,
+      "feedback_action": "none"
+    },
+    "prompt_chars": 665,
+    "skill_sha256": "2291324a196ecef6c24951681539e344a6d2fe471775cf292a8733181714a425"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\tokenme\\rtk_recent",
+  "status": "failed"
+}

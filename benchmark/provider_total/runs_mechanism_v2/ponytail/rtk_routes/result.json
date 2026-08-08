@@ -1,0 +1,39 @@
+{
+  "arm": "ponytail",
+  "task": "rtk_routes",
+  "returncode": 0,
+  "duration_seconds": 75.351,
+  "usage": {
+    "input_tokens": 120738,
+    "cached_input_tokens": 101632,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1439,
+    "reasoning_output_tokens": 327,
+    "total_tokens": 122177,
+    "uncached_input_tokens": 19106,
+    "fresh_input_tokens": 19106,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\ponytail\\rtk_routes\\workspace",
+    "checks": {
+      "rtk_routes": true
+    },
+    "passed": 1,
+    "final_chars": 161,
+    "added_loc": 9,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+    "modules": [
+      "ponytail"
+    ],
+    "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\ponytail\\rtk_routes",
+  "status": "ok"
+}

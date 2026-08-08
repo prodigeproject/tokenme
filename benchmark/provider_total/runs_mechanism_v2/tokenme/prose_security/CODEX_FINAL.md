@@ -1,0 +1,15 @@
+Threat
+
+The upload flow accepts an untrusted filename, creating a path traversal threat. An attacker can supply a relative path containing `../` segments or provide an absolute path. If the application treats either form as a normal destination, the resolved target can escape the intended upload root. That could cause uploaded content to be written into application, configuration, or other filesystem locations reachable by the service account. The important security boundary is therefore not the filename’s surface syntax but the final filesystem location it identifies. Filtering only familiar traversal strings would be insufficient because alternate spellings and platform-specific path behavior can still resolve outside the approved directory.
+
+Control
+
+The required control is canonicalization plus containment. The application should combine the untrusted filename with the upload root, canonicalize the candidate path, and then require the canonical result to remain under the canonical upload root. The containment comparison must respect path-component boundaries, rather than using a simple string prefix that could confuse a sibling directory with the real root. A candidate that is absolute, resolves above the root, or otherwise fails containment must be rejected before any write occurs. This design evaluates where the operating system will resolve the path instead of relying on incomplete input pattern matching. It directly addresses both `../` traversal and absolute-path attempts while keeping the upload root as the explicit authorization boundary.
+
+Residual risk
+
+The remaining risk is symlink replacement. Even when validation correctly canonicalizes the candidate and proves containment, an attacker with suitable filesystem access may replace a validated directory with a symlink between validation and open. The later open operation could then follow that symlink to a location outside the upload root. This is a time-of-check-to-time-of-use race, so repeating the same path check does not make the final file operation atomic with validation. Exposure depends on whether an attacker can modify relevant directories, but the race should not be treated as resolved by canonicalization alone. Directory ownership and permissions can reduce opportunity; they do not provide the same guarantee as an open operation that refuses symbolic links while resolving the path.
+
+Next action
+
+Implement the upload write using a no-follow open primitive where the target platform provides one, resolving from a trusted upload-root directory handle and rejecting any symbolic-link component. Add focused tests that attempt `../`, absolute paths, and a symlink swap around validation. The concrete next action is to assign the upload owner to replace the current validate-then-open sequence with this no-follow, root-relative open and submit the accompanying security tests for review.

@@ -19,7 +19,7 @@
           {
             "type": "command",
             "command": "python3 \"${TOKENME_DIR:-$HOME/.tokenme-repo}/hooks/hook_record.py\"",
-            "command_win": "python \"%TOKENME_DIR:%USERPROFILE%\\.tokenme-repo%\\hooks\\hook_record.py\""
+            "command_win": "powershell -NoProfile -Command \"$d=$env:TOKENME_DIR; if (-not $d) { $d=Join-Path $env:USERPROFILE '.tokenme-repo' }; python (Join-Path $d 'hooks\\hook_record.py')\""
           }
         ]
       },
@@ -30,7 +30,7 @@
           {
             "type": "command",
             "command": "python3 \"${TOKENME_DIR:-$HOME/.tokenme-repo}/hooks/hook_response.py\"",
-            "command_win": "python \"%TOKENME_DIR:%USERPROFILE%\\.tokenme-repo%\\hooks\\hook_response.py\""
+            "command_win": "powershell -NoProfile -Command \"$d=$env:TOKENME_DIR; if (-not $d) { $d=Join-Path $env:USERPROFILE '.tokenme-repo' }; python (Join-Path $d 'hooks\\hook_response.py')\""
           }
         ]
       }
@@ -42,7 +42,7 @@
           {
             "type": "command",
             "command": "python3 \"${TOKENME_DIR:-$HOME/.tokenme-repo}/hooks/hook_response.py\"",
-            "command_win": "python \"%TOKENME_DIR:%USERPROFILE%\\.tokenme-repo%\\hooks\\hook_response.py\""
+            "command_win": "powershell -NoProfile -Command \"$d=$env:TOKENME_DIR; if (-not $d) { $d=Join-Path $env:USERPROFILE '.tokenme-repo' }; python (Join-Path $d 'hooks\\hook_response.py')\""
           }
         ]
       }

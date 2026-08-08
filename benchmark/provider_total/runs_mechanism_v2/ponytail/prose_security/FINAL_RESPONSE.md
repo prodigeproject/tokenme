@@ -1,0 +1,15 @@
+Threat
+
+The upload flow accepts an untrusted filename, creating a path traversal threat. An attacker can supply `../` segments to escape the intended upload directory or provide an absolute path that points somewhere else on the host. If the application joins that input to the upload root without a reliable boundary check, the resulting file operation may write to or open files outside the area designated for uploads. The important security boundary is therefore not the spelling of the submitted filename but the actual filesystem location it resolves to. Filtering a few suspicious strings would be fragile because different path forms and normalization behavior can produce the same destination. This issue should be treated as a direct violation of filesystem containment rather than merely malformed input.
+
+Control
+
+The appropriate control is canonicalization plus containment. First, construct the candidate path and canonicalize it so relative components and other path syntax are resolved consistently. Then require the canonical candidate to remain under the canonical upload root before any file is opened. Both steps are necessary: canonicalization establishes the destination being evaluated, while containment enforces the permitted boundary. A candidate that resolves to the upload root or an allowed descendant can proceed according to the application’s file policy; a candidate outside that root must be rejected. This design covers both `../` traversal and absolute-path attempts without depending on an expanding blacklist. The check should use the platform’s path-aware relationship semantics rather than a raw string-prefix comparison, which can confuse neighboring names with genuine descendants.
+
+Residual risk
+
+Canonicalization and containment do not fully bind validation to the later file operation. A race remains if an attacker can replace a directory with a symlink between validation and open. The path may be safely contained when checked but resolve outside the upload root by the time the application opens it. This symlink replacement risk is a time-of-check-to-time-of-use problem, so repeating the same pathname validation does not create a strong guarantee. Exposure depends on whether an attacker can modify relevant directories or links, but the control should not assume that the filesystem namespace remains unchanged across separate operations. Permissions that prevent untrusted users from changing ancestor directories reduce opportunity, yet they do not substitute for an open operation that enforces the rule at use time.
+
+Next action
+
+Update the upload implementation to canonicalize each candidate, verify containment beneath the upload root, and open the target with a no-follow open primitive where the platform provides one; add a focused regression check covering `../`, absolute paths, and symlink replacement before release.

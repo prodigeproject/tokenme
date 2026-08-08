@@ -1,0 +1,43 @@
+{
+  "arm": "rtk",
+  "task": "reuse_slug",
+  "returncode": 0,
+  "duration_seconds": 44.117,
+  "usage": {
+    "input_tokens": 82220,
+    "cached_input_tokens": 72192,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 736,
+    "reasoning_output_tokens": 122,
+    "total_tokens": 82956,
+    "uncached_input_tokens": 10028,
+    "fresh_input_tokens": 10028,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\rtk\\reuse_slug",
+    "added_loc": 2,
+    "test_loc": 0,
+    "checks": {
+      "reuse_slug": false
+    },
+    "final_chars": 160,
+    "passed": 0
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+    "modules": [
+      "rtk-awareness"
+    ],
+    "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+  },
+  "activation": {
+    "rtk_db_exists": true,
+    "rtk_db_bytes": 24576,
+    "gain_returncode": 0
+  },
+  "artifact": "benchmark\\provider_total\\runs_compact_v6\\rtk\\reuse_slug",
+  "status": "ok"
+}

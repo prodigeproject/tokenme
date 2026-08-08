@@ -1,0 +1,68 @@
+{
+  "arm": "tokenme",
+  "task": "prose_perf",
+  "returncode": 0,
+  "duration_seconds": 70.077,
+  "usage": {
+    "input_tokens": 56350,
+    "cached_input_tokens": 51200,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1568,
+    "reasoning_output_tokens": 252,
+    "total_tokens": 57918,
+    "uncached_input_tokens": 5150,
+    "fresh_input_tokens": 5150,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\tokenme\\prose_perf\\workspace",
+    "checks": {
+      "prose_perf": true
+    },
+    "passed": 1,
+    "final_chars": 2375,
+    "added_loc": 0,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "local-tokenme-compiled",
+    "modules": [
+      "layer1-prose"
+    ],
+    "route": {
+      "router_version": "3",
+      "layers": [
+        1
+      ],
+      "modules": [
+        "layer1-prose"
+      ],
+      "scores": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "confidence": {
+        "1": 0.0
+      },
+      "tool_adapter": "native-output",
+      "route_key": "code=0;tools=0;context=0;noisy=0",
+      "core_budget_tokens": 160,
+      "estimated_module_tokens": 115,
+      "fallback": "native-output",
+      "core_only": false,
+      "reason": "no explicit tool-output signal; keep native-output",
+      "instruction_mode": "micro",
+      "compiled_instruction_chars": 403,
+      "feedback_action": "none"
+    },
+    "prompt_chars": 430,
+    "skill_sha256": "6240f9502d2790bd2855b9c84321159e7371b25a85da0fcc38309a0991025b4f"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\tokenme\\prose_perf",
+  "status": "ok"
+}

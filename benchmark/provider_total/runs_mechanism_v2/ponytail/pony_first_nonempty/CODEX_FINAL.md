@@ -1,0 +1,1 @@
+Implemented `first_nonempty` using the existing helper. Focused checks passed.

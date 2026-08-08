@@ -1,0 +1,1 @@
+Implemented `split_host` with `urllib.parse.urlsplit`; returns hostname or `None` when absent. Focused check passed.

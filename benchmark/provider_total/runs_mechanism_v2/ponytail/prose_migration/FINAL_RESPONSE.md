@@ -1,0 +1,15 @@
+Before
+
+Migration M-17 changes the account identifier field from `account.handle` to `account.slug`. Before the migration, application reads and writes are centered on `account.handle`, so consumers may depend on that name even when the underlying value and business meaning are unchanged. The principal delivery risk is therefore coordination: application code, background work, and operational procedures must move to the new column without turning deployment timing into an outage or making an interrupted data copy restart from the beginning. The migration plan limits that risk by separating compatibility, backfill, and removal rather than treating the rename as one irreversible event.
+
+After
+
+The application transitions to `account.slug` as the new field. The old column remains readable for one release, giving deployed code and dependent readers a defined compatibility window while the new path settles. Existing records are copied through a cursor-tracked process. Because the cursor records progress, the backfill is resumable after interruption; operators can continue from the recorded position instead of discarding completed work. This makes routine pauses or failures operationally manageable and avoids coupling successful completion to one uninterrupted run. During the compatibility release, teams should verify that expected consumers read the new column and that the backfill reaches completion before removal is considered. The plan does not require a new framework or dependency: the staged database change and its recorded cursor provide the necessary controls.
+
+Rollback
+
+Rollback is supported only while the old column still exists. If validation identifies a problem during rollout or backfill, application traffic can return to the old readable field and the migration can pause at its saved cursor. Operationally, rollback stops before drop: the drop-column step is the explicit point beyond which the normal rollback path no longer applies. Once that step has run, recovering the removed data requires restoration from backup rather than reversing the migration. The release procedure should therefore treat column removal as a separate, gated action, confirm that the compatibility release has elapsed, and require evidence that consumers have moved and the resumable backfill has completed. This boundary should be visible in the runbook so an operator does not confuse pausing the backfill with authorization to remove the source column.
+
+Next action
+
+Schedule M-17 for the next release with the drop-column step disabled, then assign an owner to record the backfill cursor and verify completion and consumer cutover during the one-release readability window. Do not schedule the drop until that evidence is reviewed, because rollback must stop before drop and later recovery would depend on backup restoration.

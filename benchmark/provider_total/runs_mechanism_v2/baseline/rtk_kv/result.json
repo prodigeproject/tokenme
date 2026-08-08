@@ -1,0 +1,36 @@
+{
+  "arm": "baseline",
+  "task": "rtk_kv",
+  "returncode": 0,
+  "duration_seconds": 73.625,
+  "usage": {
+    "input_tokens": 134211,
+    "cached_input_tokens": 112896,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1579,
+    "reasoning_output_tokens": 409,
+    "total_tokens": 135790,
+    "uncached_input_tokens": 21315,
+    "fresh_input_tokens": 21315,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\baseline\\rtk_kv\\workspace",
+    "checks": {
+      "rtk_kv": true
+    },
+    "passed": 1,
+    "final_chars": 221,
+    "added_loc": 10,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "none",
+    "modules": []
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\baseline\\rtk_kv",
+  "status": "ok"
+}

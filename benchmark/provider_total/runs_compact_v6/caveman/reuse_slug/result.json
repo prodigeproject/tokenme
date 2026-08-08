@@ -1,0 +1,39 @@
+{
+  "arm": "caveman",
+  "task": "reuse_slug",
+  "returncode": 0,
+  "duration_seconds": 51.354,
+  "usage": {
+    "input_tokens": 122958,
+    "cached_input_tokens": 114688,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 970,
+    "reasoning_output_tokens": 162,
+    "total_tokens": 123928,
+    "uncached_input_tokens": 8270,
+    "fresh_input_tokens": 8270,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\caveman\\reuse_slug",
+    "added_loc": 2,
+    "test_loc": 0,
+    "checks": {
+      "reuse_slug": true
+    },
+    "final_chars": 100,
+    "passed": 1
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+    "modules": [
+      "caveman"
+    ],
+    "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_compact_v6\\caveman\\reuse_slug",
+  "status": "ok"
+}

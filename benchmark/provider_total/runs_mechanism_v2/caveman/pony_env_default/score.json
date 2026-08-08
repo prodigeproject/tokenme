@@ -1,0 +1,10 @@
+{
+  "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\caveman\\pony_env_default\\workspace",
+  "checks": {
+    "pony_env_default": true
+  },
+  "passed": 1,
+  "final_chars": 108,
+  "added_loc": 6,
+  "test_loc": 0
+}

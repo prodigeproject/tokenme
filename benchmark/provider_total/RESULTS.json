@@ -1,0 +1,1341 @@
+{
+  "manifest": {
+    "suite": "tokenme-adaptive-router-codex-v2",
+    "description": "Five identical implementation cases, one isolated Codex session per case and arm.",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "low",
+    "arms": [
+      "baseline",
+      "tokenme",
+      "caveman",
+      "ponytail",
+      "rtk"
+    ],
+    "sessions_per_arm": 5,
+    "tasks": [
+      {
+        "id": "safe_path",
+        "ticket": "Implement safe_upload_path(base_dir, filename) in safe_path/uploads.py. filename is untrusted. A normal filename must resolve inside base_dir; nested paths inside base_dir are allowed; traversal and absolute paths must be rejected."
+      },
+      {
+        "id": "auth_token",
+        "ticket": "Implement verify_token(token, secret) in auth_token/auth.py. Return the user id only when the HMAC-SHA256 signature produced by make_token is valid. Malformed, forged, wrong-secret, and tampered tokens must return None."
+      },
+      {
+        "id": "reuse_slug",
+        "ticket": "Implement post_slug(title) in reuse_slug/posts.py using the canonical slug behavior already present in this mini-codebase. Reuse the existing project helper instead of duplicating it."
+      },
+      {
+        "id": "csv_sum",
+        "ticket": "Implement sum_amounts(csv_text) in csv_sum/sales.py. Sum finite numeric values in the amount column and skip malformed, missing, NaN, and infinite values."
+      },
+      {
+        "id": "date_picker",
+        "ticket": "Add an accessible React date-picker component in date_picker/DatePicker.tsx with a label, controlled value, a date input, and an onChange callback. Use only what this ticket needs."
+      }
+    ],
+    "template": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\independent_codex\\template",
+    "rtk_binary": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-rtk-v0420-audit\\rtk.exe",
+    "rtk_version": "0.42.0 official Windows binary",
+    "quality_scorer": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\independent_codex\\score.py"
+  },
+  "runs": [
+    {
+      "arm": "baseline",
+      "task": "auth_token",
+      "returncode": 0,
+      "duration_seconds": 53.65,
+      "usage": {
+        "input_tokens": 84598,
+        "cached_input_tokens": 74240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1047,
+        "reasoning_output_tokens": 156,
+        "total_tokens": 85645,
+        "uncached_input_tokens": 10358,
+        "fresh_input_tokens": 10358,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\baseline\\auth_token",
+        "added_loc": 12,
+        "test_loc": 0,
+        "checks": {
+          "auth_token": true
+        },
+        "final_chars": 250,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "none",
+        "modules": []
+      },
+      "artifact": "benchmark\\provider_total\\runs\\baseline\\auth_token",
+      "status": "ok"
+    },
+    {
+      "arm": "baseline",
+      "task": "csv_sum",
+      "returncode": 0,
+      "duration_seconds": 56.185,
+      "usage": {
+        "input_tokens": 70611,
+        "cached_input_tokens": 62208,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1217,
+        "reasoning_output_tokens": 328,
+        "total_tokens": 71828,
+        "uncached_input_tokens": 8403,
+        "fresh_input_tokens": 8403,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\baseline\\csv_sum",
+        "added_loc": 17,
+        "test_loc": 0,
+        "checks": {
+          "csv_sum": true
+        },
+        "final_chars": 313,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "none",
+        "modules": []
+      },
+      "artifact": "benchmark\\provider_total\\runs\\baseline\\csv_sum",
+      "status": "ok"
+    },
+    {
+      "arm": "baseline",
+      "task": "date_picker",
+      "returncode": 0,
+      "duration_seconds": 48.617,
+      "usage": {
+        "input_tokens": 69070,
+        "cached_input_tokens": 63232,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 835,
+        "reasoning_output_tokens": 161,
+        "total_tokens": 69905,
+        "uncached_input_tokens": 5838,
+        "fresh_input_tokens": 5838,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\baseline\\date_picker",
+        "added_loc": 21,
+        "test_loc": 0,
+        "checks": {
+          "date_picker": true
+        },
+        "final_chars": 145,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "none",
+        "modules": []
+      },
+      "artifact": "benchmark\\provider_total\\runs\\baseline\\date_picker",
+      "status": "ok"
+    },
+    {
+      "arm": "baseline",
+      "task": "reuse_slug",
+      "returncode": 0,
+      "duration_seconds": 52.064,
+      "usage": {
+        "input_tokens": 97938,
+        "cached_input_tokens": 78336,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 950,
+        "reasoning_output_tokens": 87,
+        "total_tokens": 98888,
+        "uncached_input_tokens": 19602,
+        "fresh_input_tokens": 19602,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\baseline\\reuse_slug",
+        "added_loc": 2,
+        "test_loc": 0,
+        "checks": {
+          "reuse_slug": true
+        },
+        "final_chars": 199,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "none",
+        "modules": []
+      },
+      "artifact": "benchmark\\provider_total\\runs\\baseline\\reuse_slug",
+      "status": "ok"
+    },
+    {
+      "arm": "baseline",
+      "task": "safe_path",
+      "returncode": 0,
+      "duration_seconds": 70.107,
+      "usage": {
+        "input_tokens": 85885,
+        "cached_input_tokens": 72192,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1558,
+        "reasoning_output_tokens": 524,
+        "total_tokens": 87443,
+        "uncached_input_tokens": 13693,
+        "fresh_input_tokens": 13693,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\baseline\\safe_path",
+        "added_loc": 10,
+        "test_loc": 0,
+        "checks": {
+          "safe_path": true
+        },
+        "final_chars": 289,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "none",
+        "modules": []
+      },
+      "artifact": "benchmark\\provider_total\\runs\\baseline\\safe_path",
+      "status": "ok"
+    },
+    {
+      "arm": "tokenme",
+      "task": "auth_token",
+      "returncode": 0,
+      "duration_seconds": 50.313,
+      "usage": {
+        "input_tokens": 88182,
+        "cached_input_tokens": 80384,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1055,
+        "reasoning_output_tokens": 249,
+        "total_tokens": 89237,
+        "uncached_input_tokens": 7798,
+        "fresh_input_tokens": 7798,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\tokenme\\auth_token",
+        "added_loc": 11,
+        "test_loc": 0,
+        "checks": {
+          "auth_token": true
+        },
+        "final_chars": 228,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "local-tokenme",
+        "modules": [
+          "layer2-code"
+        ],
+        "route": {
+          "router_version": "2",
+          "layers": [
+            2
+          ],
+          "modules": [
+            "layer2-code"
+          ],
+          "scores": {
+            "1": 0,
+            "2": 2,
+            "3": 0,
+            "4": 0
+          },
+          "confidence": {
+            "2": 1.0
+          },
+          "tool_adapter": "native-output",
+          "route_key": "code=1;tools=0;context=0;noisy=0",
+          "core_budget_tokens": 160,
+          "estimated_module_tokens": 145,
+          "fallback": "native-output",
+          "core_only": false,
+          "reason": "no explicit tool-output signal; keep native-output",
+          "feedback_action": "none"
+        },
+        "skill_sha256": "8acc1aebb8de01802d93afa3ba423d1d656e88909ba633e91251c228eba6b049"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\tokenme\\auth_token",
+      "status": "ok"
+    },
+    {
+      "arm": "tokenme",
+      "task": "csv_sum",
+      "returncode": 0,
+      "duration_seconds": 56.298,
+      "usage": {
+        "input_tokens": 72305,
+        "cached_input_tokens": 66304,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 929,
+        "reasoning_output_tokens": 276,
+        "total_tokens": 73234,
+        "uncached_input_tokens": 6001,
+        "fresh_input_tokens": 6001,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\tokenme\\csv_sum",
+        "added_loc": 11,
+        "test_loc": 0,
+        "checks": {
+          "csv_sum": true
+        },
+        "final_chars": 179,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "local-tokenme",
+        "modules": [
+          "layer2-code"
+        ],
+        "route": {
+          "router_version": "2",
+          "layers": [
+            2
+          ],
+          "modules": [
+            "layer2-code"
+          ],
+          "scores": {
+            "1": 0,
+            "2": 1,
+            "3": 0,
+            "4": 0
+          },
+          "confidence": {
+            "2": 0.5
+          },
+          "tool_adapter": "native-output",
+          "route_key": "code=1;tools=0;context=0;noisy=0",
+          "core_budget_tokens": 160,
+          "estimated_module_tokens": 145,
+          "fallback": "native-output",
+          "core_only": false,
+          "reason": "no explicit tool-output signal; keep native-output",
+          "feedback_action": "none"
+        },
+        "skill_sha256": "8acc1aebb8de01802d93afa3ba423d1d656e88909ba633e91251c228eba6b049"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\tokenme\\csv_sum",
+      "status": "ok"
+    },
+    {
+      "arm": "tokenme",
+      "task": "date_picker",
+      "returncode": 0,
+      "duration_seconds": 46.23,
+      "usage": {
+        "input_tokens": 71843,
+        "cached_input_tokens": 64256,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 786,
+        "reasoning_output_tokens": 128,
+        "total_tokens": 72629,
+        "uncached_input_tokens": 7587,
+        "fresh_input_tokens": 7587,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\tokenme\\date_picker",
+        "added_loc": 20,
+        "test_loc": 0,
+        "checks": {
+          "date_picker": true
+        },
+        "final_chars": 154,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "local-tokenme",
+        "modules": [
+          "layer2-code"
+        ],
+        "route": {
+          "router_version": "2",
+          "layers": [
+            2
+          ],
+          "modules": [
+            "layer2-code"
+          ],
+          "scores": {
+            "1": 0,
+            "2": 2,
+            "3": 0,
+            "4": 0
+          },
+          "confidence": {
+            "2": 1.0
+          },
+          "tool_adapter": "native-output",
+          "route_key": "code=1;tools=0;context=0;noisy=0",
+          "core_budget_tokens": 160,
+          "estimated_module_tokens": 145,
+          "fallback": "native-output",
+          "core_only": false,
+          "reason": "no explicit tool-output signal; keep native-output",
+          "feedback_action": "none"
+        },
+        "skill_sha256": "8acc1aebb8de01802d93afa3ba423d1d656e88909ba633e91251c228eba6b049"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\tokenme\\date_picker",
+      "status": "ok"
+    },
+    {
+      "arm": "tokenme",
+      "task": "reuse_slug",
+      "returncode": 0,
+      "duration_seconds": 49.19,
+      "usage": {
+        "input_tokens": 89763,
+        "cached_input_tokens": 80384,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 724,
+        "reasoning_output_tokens": 113,
+        "total_tokens": 90487,
+        "uncached_input_tokens": 9379,
+        "fresh_input_tokens": 9379,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\tokenme\\reuse_slug",
+        "added_loc": 2,
+        "test_loc": 0,
+        "checks": {
+          "reuse_slug": true
+        },
+        "final_chars": 174,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "local-tokenme",
+        "modules": [
+          "layer2-code"
+        ],
+        "route": {
+          "router_version": "2",
+          "layers": [
+            2
+          ],
+          "modules": [
+            "layer2-code"
+          ],
+          "scores": {
+            "1": 0,
+            "2": 1,
+            "3": 0,
+            "4": 0
+          },
+          "confidence": {
+            "2": 0.5
+          },
+          "tool_adapter": "native-output",
+          "route_key": "code=1;tools=0;context=0;noisy=0",
+          "core_budget_tokens": 160,
+          "estimated_module_tokens": 145,
+          "fallback": "native-output",
+          "core_only": false,
+          "reason": "no explicit tool-output signal; keep native-output",
+          "feedback_action": "none"
+        },
+        "skill_sha256": "8acc1aebb8de01802d93afa3ba423d1d656e88909ba633e91251c228eba6b049"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\tokenme\\reuse_slug",
+      "status": "ok"
+    },
+    {
+      "arm": "tokenme",
+      "task": "safe_path",
+      "returncode": 0,
+      "duration_seconds": 63.431,
+      "usage": {
+        "input_tokens": 91730,
+        "cached_input_tokens": 82432,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1469,
+        "reasoning_output_tokens": 381,
+        "total_tokens": 93199,
+        "uncached_input_tokens": 9298,
+        "fresh_input_tokens": 9298,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\tokenme\\safe_path",
+        "added_loc": 12,
+        "test_loc": 0,
+        "checks": {
+          "safe_path": true
+        },
+        "final_chars": 305,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "local-tokenme",
+        "modules": [
+          "layer2-code"
+        ],
+        "route": {
+          "router_version": "2",
+          "layers": [
+            2
+          ],
+          "modules": [
+            "layer2-code"
+          ],
+          "scores": {
+            "1": 0,
+            "2": 1,
+            "3": 0,
+            "4": 0
+          },
+          "confidence": {
+            "2": 0.5
+          },
+          "tool_adapter": "native-output",
+          "route_key": "code=1;tools=0;context=0;noisy=0",
+          "core_budget_tokens": 160,
+          "estimated_module_tokens": 145,
+          "fallback": "native-output",
+          "core_only": false,
+          "reason": "no explicit tool-output signal; keep native-output",
+          "feedback_action": "none"
+        },
+        "skill_sha256": "8acc1aebb8de01802d93afa3ba423d1d656e88909ba633e91251c228eba6b049"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\tokenme\\safe_path",
+      "status": "ok"
+    },
+    {
+      "arm": "caveman",
+      "task": "auth_token",
+      "returncode": 0,
+      "duration_seconds": 53.99,
+      "usage": {
+        "input_tokens": 77776,
+        "cached_input_tokens": 62208,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1065,
+        "reasoning_output_tokens": 244,
+        "total_tokens": 78841,
+        "uncached_input_tokens": 15568,
+        "fresh_input_tokens": 15568,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\caveman\\auth_token",
+        "added_loc": 18,
+        "test_loc": 0,
+        "checks": {
+          "auth_token": true
+        },
+        "final_chars": 205,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+        "modules": [
+          "caveman"
+        ],
+        "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\caveman\\auth_token",
+      "status": "ok"
+    },
+    {
+      "arm": "caveman",
+      "task": "csv_sum",
+      "returncode": 0,
+      "duration_seconds": 58.128,
+      "usage": {
+        "input_tokens": 94081,
+        "cached_input_tokens": 79360,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1108,
+        "reasoning_output_tokens": 285,
+        "total_tokens": 95189,
+        "uncached_input_tokens": 14721,
+        "fresh_input_tokens": 14721,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\caveman\\csv_sum",
+        "added_loc": 18,
+        "test_loc": 0,
+        "checks": {
+          "csv_sum": true
+        },
+        "final_chars": 133,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+        "modules": [
+          "caveman"
+        ],
+        "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\caveman\\csv_sum",
+      "status": "ok"
+    },
+    {
+      "arm": "caveman",
+      "task": "date_picker",
+      "returncode": 0,
+      "duration_seconds": 48.407,
+      "usage": {
+        "input_tokens": 76707,
+        "cached_input_tokens": 63232,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 819,
+        "reasoning_output_tokens": 205,
+        "total_tokens": 77526,
+        "uncached_input_tokens": 13475,
+        "fresh_input_tokens": 13475,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\caveman\\date_picker",
+        "added_loc": 25,
+        "test_loc": 0,
+        "checks": {
+          "date_picker": true
+        },
+        "final_chars": 92,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+        "modules": [
+          "caveman"
+        ],
+        "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\caveman\\date_picker",
+      "status": "ok"
+    },
+    {
+      "arm": "caveman",
+      "task": "reuse_slug",
+      "returncode": 0,
+      "duration_seconds": 43.503,
+      "usage": {
+        "input_tokens": 92435,
+        "cached_input_tokens": 78336,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 659,
+        "reasoning_output_tokens": 123,
+        "total_tokens": 93094,
+        "uncached_input_tokens": 14099,
+        "fresh_input_tokens": 14099,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\caveman\\reuse_slug",
+        "added_loc": 2,
+        "test_loc": 0,
+        "checks": {
+          "reuse_slug": true
+        },
+        "final_chars": 95,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+        "modules": [
+          "caveman"
+        ],
+        "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\caveman\\reuse_slug",
+      "status": "ok"
+    },
+    {
+      "arm": "caveman",
+      "task": "safe_path",
+      "returncode": 0,
+      "duration_seconds": 57.621,
+      "usage": {
+        "input_tokens": 94407,
+        "cached_input_tokens": 86528,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1177,
+        "reasoning_output_tokens": 399,
+        "total_tokens": 95584,
+        "uncached_input_tokens": 7879,
+        "fresh_input_tokens": 7879,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\caveman\\safe_path",
+        "added_loc": 10,
+        "test_loc": 0,
+        "checks": {
+          "safe_path": true
+        },
+        "final_chars": 166,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+        "modules": [
+          "caveman"
+        ],
+        "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\caveman\\safe_path",
+      "status": "ok"
+    },
+    {
+      "arm": "ponytail",
+      "task": "auth_token",
+      "returncode": 0,
+      "duration_seconds": 59.379,
+      "usage": {
+        "input_tokens": 110829,
+        "cached_input_tokens": 99584,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1259,
+        "reasoning_output_tokens": 370,
+        "total_tokens": 112088,
+        "uncached_input_tokens": 11245,
+        "fresh_input_tokens": 11245,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\ponytail\\auth_token",
+        "added_loc": 6,
+        "test_loc": 9,
+        "checks": {
+          "auth_token": true
+        },
+        "final_chars": 218,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+        "modules": [
+          "ponytail"
+        ],
+        "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\ponytail\\auth_token",
+      "status": "ok"
+    },
+    {
+      "arm": "ponytail",
+      "task": "csv_sum",
+      "returncode": 0,
+      "duration_seconds": 52.91,
+      "usage": {
+        "input_tokens": 93552,
+        "cached_input_tokens": 86528,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 860,
+        "reasoning_output_tokens": 103,
+        "total_tokens": 94412,
+        "uncached_input_tokens": 7024,
+        "fresh_input_tokens": 7024,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\ponytail\\csv_sum",
+        "added_loc": 11,
+        "test_loc": 0,
+        "checks": {
+          "csv_sum": true
+        },
+        "final_chars": 162,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+        "modules": [
+          "ponytail"
+        ],
+        "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\ponytail\\csv_sum",
+      "status": "ok"
+    },
+    {
+      "arm": "ponytail",
+      "task": "date_picker",
+      "returncode": 0,
+      "duration_seconds": 46.843,
+      "usage": {
+        "input_tokens": 77715,
+        "cached_input_tokens": 68352,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 773,
+        "reasoning_output_tokens": 160,
+        "total_tokens": 78488,
+        "uncached_input_tokens": 9363,
+        "fresh_input_tokens": 9363,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\ponytail\\date_picker",
+        "added_loc": 16,
+        "test_loc": 0,
+        "checks": {
+          "date_picker": true
+        },
+        "final_chars": 125,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+        "modules": [
+          "ponytail"
+        ],
+        "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\ponytail\\date_picker",
+      "status": "ok"
+    },
+    {
+      "arm": "ponytail",
+      "task": "reuse_slug",
+      "returncode": 0,
+      "duration_seconds": 54.586,
+      "usage": {
+        "input_tokens": 127111,
+        "cached_input_tokens": 105472,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1141,
+        "reasoning_output_tokens": 213,
+        "total_tokens": 128252,
+        "uncached_input_tokens": 21639,
+        "fresh_input_tokens": 21639,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\ponytail\\reuse_slug",
+        "added_loc": 2,
+        "test_loc": 0,
+        "checks": {
+          "reuse_slug": true
+        },
+        "final_chars": 116,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+        "modules": [
+          "ponytail"
+        ],
+        "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\ponytail\\reuse_slug",
+      "status": "ok"
+    },
+    {
+      "arm": "ponytail",
+      "task": "safe_path",
+      "returncode": 0,
+      "duration_seconds": 74.081,
+      "usage": {
+        "input_tokens": 118889,
+        "cached_input_tokens": 95488,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1835,
+        "reasoning_output_tokens": 768,
+        "total_tokens": 120724,
+        "uncached_input_tokens": 23401,
+        "fresh_input_tokens": 23401,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\ponytail\\safe_path",
+        "added_loc": 8,
+        "test_loc": 14,
+        "checks": {
+          "safe_path": true
+        },
+        "final_chars": 236,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+        "modules": [
+          "ponytail"
+        ],
+        "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\ponytail\\safe_path",
+      "status": "ok"
+    },
+    {
+      "arm": "rtk",
+      "task": "auth_token",
+      "returncode": 0,
+      "duration_seconds": 65.814,
+      "usage": {
+        "input_tokens": 115335,
+        "cached_input_tokens": 93440,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1277,
+        "reasoning_output_tokens": 220,
+        "total_tokens": 116612,
+        "uncached_input_tokens": 21895,
+        "fresh_input_tokens": 21895,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\rtk\\auth_token",
+        "added_loc": 14,
+        "test_loc": 0,
+        "checks": {
+          "auth_token": true
+        },
+        "final_chars": 341,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+        "modules": [
+          "rtk-awareness"
+        ],
+        "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\rtk\\auth_token",
+      "status": "ok"
+    },
+    {
+      "arm": "rtk",
+      "task": "csv_sum",
+      "returncode": 0,
+      "duration_seconds": 59.396,
+      "usage": {
+        "input_tokens": 98717,
+        "cached_input_tokens": 90368,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1126,
+        "reasoning_output_tokens": 279,
+        "total_tokens": 99843,
+        "uncached_input_tokens": 8349,
+        "fresh_input_tokens": 8349,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\rtk\\csv_sum",
+        "added_loc": 15,
+        "test_loc": 0,
+        "checks": {
+          "csv_sum": true
+        },
+        "final_chars": 196,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+        "modules": [
+          "rtk-awareness"
+        ],
+        "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\rtk\\csv_sum",
+      "status": "ok"
+    },
+    {
+      "arm": "rtk",
+      "task": "date_picker",
+      "returncode": 0,
+      "duration_seconds": 57.344,
+      "usage": {
+        "input_tokens": 84561,
+        "cached_input_tokens": 77312,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1002,
+        "reasoning_output_tokens": 213,
+        "total_tokens": 85563,
+        "uncached_input_tokens": 7249,
+        "fresh_input_tokens": 7249,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\rtk\\date_picker",
+        "added_loc": 18,
+        "test_loc": 0,
+        "checks": {
+          "date_picker": true
+        },
+        "final_chars": 192,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+        "modules": [
+          "rtk-awareness"
+        ],
+        "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\rtk\\date_picker",
+      "status": "ok"
+    },
+    {
+      "arm": "rtk",
+      "task": "reuse_slug",
+      "returncode": 0,
+      "duration_seconds": 46.94,
+      "usage": {
+        "input_tokens": 83723,
+        "cached_input_tokens": 73216,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 753,
+        "reasoning_output_tokens": 133,
+        "total_tokens": 84476,
+        "uncached_input_tokens": 10507,
+        "fresh_input_tokens": 10507,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\rtk\\reuse_slug",
+        "added_loc": 2,
+        "test_loc": 0,
+        "checks": {
+          "reuse_slug": true
+        },
+        "final_chars": 220,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+        "modules": [
+          "rtk-awareness"
+        ],
+        "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\rtk\\reuse_slug",
+      "status": "ok"
+    },
+    {
+      "arm": "rtk",
+      "task": "safe_path",
+      "returncode": 0,
+      "duration_seconds": 63.441,
+      "usage": {
+        "input_tokens": 88596,
+        "cached_input_tokens": 79360,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1327,
+        "reasoning_output_tokens": 423,
+        "total_tokens": 89923,
+        "uncached_input_tokens": 9236,
+        "fresh_input_tokens": 9236,
+        "turns": 1,
+        "malformed_lines": 0,
+        "source": "provider:codex-jsonl"
+      },
+      "quality": {
+        "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-yziifp_w\\rtk\\safe_path",
+        "added_loc": 10,
+        "test_loc": 0,
+        "checks": {
+          "safe_path": true
+        },
+        "final_chars": 308,
+        "passed": 1
+      },
+      "instructions": {
+        "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+        "modules": [
+          "rtk-awareness"
+        ],
+        "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+      },
+      "artifact": "benchmark\\provider_total\\runs\\rtk\\safe_path",
+      "status": "ok"
+    }
+  ],
+  "arms": {
+    "baseline": {
+      "runs": 5,
+      "successful_runs": 5,
+      "quality_checks_total": 5,
+      "quality_checks_possible": 5,
+      "median_total_tokens": 85645,
+      "mean_total_tokens": 82741.8,
+      "median_input_tokens": 84598,
+      "median_output_tokens": 1047,
+      "total_tokens": 413709,
+      "input_tokens": 408102,
+      "output_tokens": 5607,
+      "cached_input_tokens": 350208,
+      "fresh_input_tokens": 57894,
+      "reasoning_output_tokens": 1256
+    },
+    "tokenme": {
+      "runs": 5,
+      "successful_runs": 5,
+      "quality_checks_total": 5,
+      "quality_checks_possible": 5,
+      "median_total_tokens": 89237,
+      "mean_total_tokens": 83757.2,
+      "median_input_tokens": 88182,
+      "median_output_tokens": 929,
+      "total_tokens": 418786,
+      "input_tokens": 413823,
+      "output_tokens": 4963,
+      "cached_input_tokens": 373760,
+      "fresh_input_tokens": 40063,
+      "reasoning_output_tokens": 1147
+    },
+    "caveman": {
+      "runs": 5,
+      "successful_runs": 5,
+      "quality_checks_total": 5,
+      "quality_checks_possible": 5,
+      "median_total_tokens": 93094,
+      "mean_total_tokens": 88046.8,
+      "median_input_tokens": 92435,
+      "median_output_tokens": 1065,
+      "total_tokens": 440234,
+      "input_tokens": 435406,
+      "output_tokens": 4828,
+      "cached_input_tokens": 369664,
+      "fresh_input_tokens": 65742,
+      "reasoning_output_tokens": 1256
+    },
+    "ponytail": {
+      "runs": 5,
+      "successful_runs": 5,
+      "quality_checks_total": 5,
+      "quality_checks_possible": 5,
+      "median_total_tokens": 112088,
+      "mean_total_tokens": 106792.8,
+      "median_input_tokens": 110829,
+      "median_output_tokens": 1141,
+      "total_tokens": 533964,
+      "input_tokens": 528096,
+      "output_tokens": 5868,
+      "cached_input_tokens": 455424,
+      "fresh_input_tokens": 72672,
+      "reasoning_output_tokens": 1614
+    },
+    "rtk": {
+      "runs": 5,
+      "successful_runs": 5,
+      "quality_checks_total": 5,
+      "quality_checks_possible": 5,
+      "median_total_tokens": 89923,
+      "mean_total_tokens": 95283.4,
+      "median_input_tokens": 88596,
+      "median_output_tokens": 1126,
+      "total_tokens": 476417,
+      "input_tokens": 470932,
+      "output_tokens": 5485,
+      "cached_input_tokens": 413696,
+      "fresh_input_tokens": 57236,
+      "reasoning_output_tokens": 1268
+    }
+  },
+  "paired_vs_baseline": {
+    "tokenme": [
+      {
+        "task": "auth_token",
+        "treatment": 89237,
+        "baseline": 85645,
+        "delta": 3592,
+        "reduction_pct": -4.19
+      },
+      {
+        "task": "csv_sum",
+        "treatment": 73234,
+        "baseline": 71828,
+        "delta": 1406,
+        "reduction_pct": -1.96
+      },
+      {
+        "task": "date_picker",
+        "treatment": 72629,
+        "baseline": 69905,
+        "delta": 2724,
+        "reduction_pct": -3.9
+      },
+      {
+        "task": "reuse_slug",
+        "treatment": 90487,
+        "baseline": 98888,
+        "delta": -8401,
+        "reduction_pct": 8.5
+      },
+      {
+        "task": "safe_path",
+        "treatment": 93199,
+        "baseline": 87443,
+        "delta": 5756,
+        "reduction_pct": -6.58
+      }
+    ],
+    "caveman": [
+      {
+        "task": "auth_token",
+        "treatment": 78841,
+        "baseline": 85645,
+        "delta": -6804,
+        "reduction_pct": 7.94
+      },
+      {
+        "task": "csv_sum",
+        "treatment": 95189,
+        "baseline": 71828,
+        "delta": 23361,
+        "reduction_pct": -32.52
+      },
+      {
+        "task": "date_picker",
+        "treatment": 77526,
+        "baseline": 69905,
+        "delta": 7621,
+        "reduction_pct": -10.9
+      },
+      {
+        "task": "reuse_slug",
+        "treatment": 93094,
+        "baseline": 98888,
+        "delta": -5794,
+        "reduction_pct": 5.86
+      },
+      {
+        "task": "safe_path",
+        "treatment": 95584,
+        "baseline": 87443,
+        "delta": 8141,
+        "reduction_pct": -9.31
+      }
+    ],
+    "ponytail": [
+      {
+        "task": "auth_token",
+        "treatment": 112088,
+        "baseline": 85645,
+        "delta": 26443,
+        "reduction_pct": -30.88
+      },
+      {
+        "task": "csv_sum",
+        "treatment": 94412,
+        "baseline": 71828,
+        "delta": 22584,
+        "reduction_pct": -31.44
+      },
+      {
+        "task": "date_picker",
+        "treatment": 78488,
+        "baseline": 69905,
+        "delta": 8583,
+        "reduction_pct": -12.28
+      },
+      {
+        "task": "reuse_slug",
+        "treatment": 128252,
+        "baseline": 98888,
+        "delta": 29364,
+        "reduction_pct": -29.69
+      },
+      {
+        "task": "safe_path",
+        "treatment": 120724,
+        "baseline": 87443,
+        "delta": 33281,
+        "reduction_pct": -38.06
+      }
+    ],
+    "rtk": [
+      {
+        "task": "auth_token",
+        "treatment": 116612,
+        "baseline": 85645,
+        "delta": 30967,
+        "reduction_pct": -36.16
+      },
+      {
+        "task": "csv_sum",
+        "treatment": 99843,
+        "baseline": 71828,
+        "delta": 28015,
+        "reduction_pct": -39.0
+      },
+      {
+        "task": "date_picker",
+        "treatment": 85563,
+        "baseline": 69905,
+        "delta": 15658,
+        "reduction_pct": -22.4
+      },
+      {
+        "task": "reuse_slug",
+        "treatment": 84476,
+        "baseline": 98888,
+        "delta": -14412,
+        "reduction_pct": 14.57
+      },
+      {
+        "task": "safe_path",
+        "treatment": 89923,
+        "baseline": 87443,
+        "delta": 2480,
+        "reduction_pct": -2.84
+      }
+    ]
+  }
+}

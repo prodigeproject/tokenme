@@ -1,0 +1,10 @@
+{
+  "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\rtk\\rtk_kv\\workspace",
+  "checks": {
+    "rtk_kv": true
+  },
+  "passed": 1,
+  "final_chars": 258,
+  "added_loc": 12,
+  "test_loc": 0
+}

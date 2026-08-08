@@ -1,0 +1,43 @@
+{
+  "arm": "rtk",
+  "task": "rtk_redact",
+  "returncode": 0,
+  "duration_seconds": 104.554,
+  "usage": {
+    "input_tokens": 240699,
+    "cached_input_tokens": 215552,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 2694,
+    "reasoning_output_tokens": 434,
+    "total_tokens": 243393,
+    "uncached_input_tokens": 25147,
+    "fresh_input_tokens": 25147,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\rtk\\rtk_redact\\workspace",
+    "checks": {
+      "rtk_redact": true
+    },
+    "passed": 1,
+    "final_chars": 267,
+    "added_loc": 3,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+    "modules": [
+      "rtk-awareness"
+    ],
+    "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+  },
+  "activation": {
+    "rtk_db_exists": true,
+    "rtk_db_bytes": 40960,
+    "gain_returncode": 0
+  },
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\rtk\\rtk_redact",
+  "status": "ok"
+}

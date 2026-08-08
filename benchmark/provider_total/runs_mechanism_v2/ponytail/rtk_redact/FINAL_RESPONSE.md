@@ -1,0 +1,1 @@
+Implemented `redact_tokens` in `work.py` using the standard library. It replaces every non-empty `token=<value>` value with `[REDACTED]` while preserving all other text. Focused verification passed.

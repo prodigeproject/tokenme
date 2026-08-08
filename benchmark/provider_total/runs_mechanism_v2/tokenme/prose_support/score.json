@@ -1,0 +1,10 @@
+{
+  "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\tokenme\\prose_support\\workspace",
+  "checks": {
+    "prose_support": true
+  },
+  "passed": 1,
+  "final_chars": 2387,
+  "added_loc": 0,
+  "test_loc": 0
+}

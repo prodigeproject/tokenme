@@ -1,0 +1,39 @@
+{
+  "arm": "caveman",
+  "task": "prose_change",
+  "returncode": 0,
+  "duration_seconds": 71.482,
+  "usage": {
+    "input_tokens": 78639,
+    "cached_input_tokens": 59136,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1562,
+    "reasoning_output_tokens": 262,
+    "total_tokens": 80201,
+    "uncached_input_tokens": 19503,
+    "fresh_input_tokens": 19503,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\caveman\\prose_change\\workspace",
+    "checks": {
+      "prose_change": true
+    },
+    "passed": 1,
+    "final_chars": 2603,
+    "added_loc": 0,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+    "modules": [
+      "caveman"
+    ],
+    "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\caveman\\prose_change",
+  "status": "ok"
+}

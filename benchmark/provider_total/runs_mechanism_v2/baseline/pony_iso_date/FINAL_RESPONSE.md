@@ -1,0 +1,1 @@
+Implemented `iso_date` in `work.py` to return the `YYYY-MM-DD` portion of an ISO timestamp. The focused fixture check passed.

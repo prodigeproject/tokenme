@@ -1,0 +1,1 @@
+Implemented `split_host` in `work.py` using standard URL parsing. It returns the hostname when present and `None` when absent. The focused check passed.

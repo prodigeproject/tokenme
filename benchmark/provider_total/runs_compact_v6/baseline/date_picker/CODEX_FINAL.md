@@ -1,0 +1,1 @@
+Implemented `date_picker/DatePicker.tsx` with a controlled native date input, an explicitly associated accessible label, and a string-valued `onChange` callback. The component supports both named and default imports.

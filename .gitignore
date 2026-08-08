@@ -1,7 +1,70 @@
+# Python bytecode and caches
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyright/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Packaging and virtual environments
 *.egg-info/
+.eggs/
 build/
 dist/
+wheels/
+pip-wheel-metadata/
+.venv/
+venv/
+env/
+ENV/
+
+# Local TokenMe state
 .tokenme/
+
+# Operating-system and editor files
 .DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Logs, databases, and temporary files
+*.log
+*.db
+*.sqlite
+*.sqlite3
+*.tmp
+*.temp
+
+# Benchmark runs create copied workspaces and transient session output. The
+# checked-in benchmark snapshots keep their summaries and usage JSONL, while
+# these generated copies are never useful in a public source tree.
+benchmark/**/workspace/
+benchmark/**/.pytest_cache/
+benchmark/**/runs/
+
+# Older/intermediate provider runs are reproducible locally but are not part
+# of the public snapshot. The current compact v6 and mechanism v2 artifacts
+# remain trackable for audit and reproduction.
+benchmark/provider_total/runs_adaptive_v1/
+benchmark/provider_total/runs_compact_v3/
+benchmark/provider_total/runs_compact_v4/
+benchmark/provider_total/runs_compact_v5/
+benchmark/provider_total/runs_mechanism_smoke/
+benchmark/provider_total/runs_mechanism_v1/
+benchmark/provider_total/runs_output_v4_smoke/
+benchmark/provider_total/runs_readonly_attempt/

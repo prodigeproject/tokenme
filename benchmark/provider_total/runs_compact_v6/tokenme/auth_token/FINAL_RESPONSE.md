@@ -1,0 +1,1 @@
+Implemented `verify_token(token, secret)` with constant-time HMAC-SHA256 signature validation, returning `None` for invalid inputs; focused valid, malformed, wrong-secret, and tampering checks passed.

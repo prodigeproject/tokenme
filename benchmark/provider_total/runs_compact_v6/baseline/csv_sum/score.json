@@ -1,0 +1,10 @@
+{
+  "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\baseline\\csv_sum",
+  "added_loc": 18,
+  "test_loc": 0,
+  "checks": {
+    "csv_sum": true
+  },
+  "final_chars": 198,
+  "passed": 1
+}

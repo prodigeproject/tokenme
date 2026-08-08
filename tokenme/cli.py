@@ -5,6 +5,9 @@ Subcommands:
   compare  --raw F --kept F [..]   record + show tokens saved (raw vs kept)
   record   --kind .. [--raw F]     log one tracking event (used by hooks)
   report   [--session ID] [--json] per-session + detailed usage report
+  provider-usage FILE             parse provider-reported Codex JSONL usage
+  route    --text/--file          select modules and output adapter
+  route-feedback                  store route outcome for closed-loop fallback
   sessions                         list tracked sessions
   quality  --diff F | --before A --after B   scan a change for removed safeguards
   audit    [paths ...]             Layer-4 config audit of context/memory files
@@ -19,7 +22,7 @@ import argparse
 import json
 import sys
 
-from . import __version__, estimate, quality, tracker
+from . import __version__, estimate, quality, tracker, provider, router
 from . import layer4
 
 
@@ -43,16 +46,19 @@ def cmd_compare(args):
     kept = _read(args.kept)
     rn, rm = estimate.count(raw, force_heuristic=args.heuristic)
     kn, km = estimate.count(kept, force_heuristic=args.heuristic)
-    saved = max(0, rn - kn)
+    saved = rn - kn
     pct = round(100 * saved / rn, 1) if rn else 0.0
     method = "~est" if (estimate.is_estimate(rm) or estimate.is_estimate(km)) else rm
     if not args.no_record:
         tracker.record(kind="tool_call", raw_tokens=rn, kept_tokens=kn,
                        layer=args.layer, label=args.label,
-                       session=args.session, method=method)
+                       session=args.session, method=method, metric=args.metric)
     print(f"raw:   {rn:>8} tokens")
     print(f"kept:  {kn:>8} tokens")
-    print(f"saved: {saved:>8} tokens  ({pct}%, {method})")
+    label = "saved" if saved >= 0 else "added"
+    amount = saved if saved >= 0 else -saved
+    signed_pct = pct if saved >= 0 else -pct
+    print(f"{label + ':':<6} {amount:>8} tokens  ({signed_pct}%, {method})")
     if not args.no_record:
         sid = args.session or tracker.current_session_id()
         note = "  [day-bucket: set TOKENME_SESSION for per-session tracking]" \
@@ -67,14 +73,15 @@ def cmd_record(args):
     ev = tracker.record(
         kind=args.kind, raw_text=raw_text, kept_text=kept_text,
         raw_tokens=args.raw_tokens, kept_tokens=args.kept_tokens,
-        layer=args.layer, label=args.label, session=args.session)
+        layer=args.layer, label=args.label, session=args.session,
+        metric=args.metric)
     if not args.quiet:
         print(json.dumps(ev, ensure_ascii=False))
 
 
 # ── report ───────────────────────────────────────────────────────────────────
 def _bar(pct: float, width: int = 24) -> str:
-    fill = int(round(width * min(pct, 100) / 100))
+    fill = int(round(width * max(0, min(pct, 100)) / 100))
     return "#" * fill + "." * (width - fill)
 
 
@@ -103,13 +110,22 @@ def cmd_report(args):
         print(f"\nsession: {sid}{bucket}")
         cov = agg.get("coverage_pct", 0.0)
         print(f"  events        : {agg['events']} "
-              f"({agg['measured_events']} measured, {cov}% coverage)")
+              f"({agg['measured_events']} measured, "
+              f"{agg['unknown_raw_events']} unknown raw, {cov}% coverage)")
         print(f"  tokens kept   : {agg['kept_tokens']:,}")
-        if agg["raw_tokens_where_known"]:
+        if agg["mixed_metrics"]:
+            print("  net delta      : not combined (multiple metric types)")
+        elif agg["raw_tokens_where_known"]:
             pct = agg["saved_pct_where_known"]
-            print(f"  tokens saved  : {agg['saved_tokens']:,}  "
-                  f"({pct}% of measured events only, {agg['method']})")
-            print(f"  [{_bar(pct)}] {pct}%")
+            direction = "saved" if agg["saved_tokens"] >= 0 else "added"
+            amount = abs(agg["saved_tokens"])
+            print(f"  tokens {direction:<5}: {amount:,}  "
+                  f"({pct}% net over measured events, {agg['method']})")
+            if pct >= 0:
+                print(f"  [{_bar(pct)}] {pct}%")
+            else:
+                print(f"  regression    : {agg['regression_events']} events, "
+                      f"{agg['regressed_tokens']:,} tokens added")
         if agg["by_layer"]:
             print("  by layer:")
             for layer in sorted(k for k in agg["by_layer"] if k is not None):
@@ -117,10 +133,29 @@ def cmd_report(args):
                 lname = {1: "prose", 2: "code", 3: "tool output", 4: "lifecycle"}.get(layer, "?")
                 print(f"    L{layer} {lname}: saved {s['saved']:,} tok "
                       f"over {s['events']} events")
+        if agg["by_metric"]:
+            print("  by metric:")
+            for metric, summary in sorted(agg["by_metric"].items()):
+                pct = summary["net_saved_pct"]
+                delta = summary["net_saved"]
+                detail = "unknown raw" if pct is None else f"{delta:+,} tok ({pct:+.1f}%)"
+                print(f"    {metric}: {detail}; {summary['measured_events']}/"
+                      f"{summary['events']} measured")
+        if agg.get("provider_usage"):
+            pu = agg["provider_usage"]
+            print("  provider telemetry:")
+            print(f"    total {pu['total_tokens']:,}; fresh input "
+                  f"{pu['fresh_input_tokens']:,}; turns {pu['turns']:,}; "
+                  f"output {pu['output_tokens']:,}")
     print("\n" + "-" * 60)
     tcov = total.get("coverage_pct", 0.0)
-    print(f"TOTAL  saved: {total['saved_tokens']:,}  "
-          f"({total['saved_pct_where_known']}%, {total['method']})")
+    if not total["measured_events"]:
+        print("TOTAL  net delta: unknown (no raw counterfactuals)")
+    elif total["mixed_metrics"]:
+        print("TOTAL  net delta: not combined across metric types")
+    else:
+        print(f"TOTAL  net saved: {total['saved_tokens'] or 0:,}  "
+              f"({total['saved_pct_where_known'] or 0.0}%, {total['method']})")
     print(f"       kept:  {total['kept_tokens']:,}")
     print(f"       measurement coverage: {tcov}% of events")
     print("-" * 60)
@@ -135,8 +170,69 @@ def cmd_sessions(args):
         agg = tracker.aggregate(tracker.load_session(sid))
         cov = agg.get("coverage_pct", 0.0)
         bkt = " [day]" if tracker.is_day_bucket(sid) else ""
+        if not agg["measured_events"]:
+            delta = "unknown raw"
+        elif agg["mixed_metrics"]:
+            delta = "mixed metrics"
+        else:
+            delta = f"net {agg['saved_tokens'] or 0:>8,} tok"
         print(f"{sid:40}{bkt}  {agg['events']:>4} ev  "
-              f"{cov:>5.1f}% cov  saved {agg['saved_tokens']:>8,} tok")
+              f"{cov:>5.1f}% cov  {delta}")
+
+
+# ── provider usage ────────────────────────────────────────────────────────────
+def cmd_provider_usage(args):
+    if args.format != "codex-jsonl":
+        raise ValueError(f"unsupported provider format: {args.format}")
+    usage = provider.parse_codex_jsonl(_read(args.file))
+    if args.record:
+        tracker.record_provider_usage(
+            usage, label=args.label or args.file, session=args.session)
+    if args.json:
+        print(json.dumps(usage, ensure_ascii=False, indent=2))
+        return
+    print(f"turns:                  {usage['turns']:,}")
+    print(f"input tokens:           {usage['input_tokens']:,}")
+    print(f"  cached input:         {usage['cached_input_tokens']:,}")
+    print(f"  uncached input:       {usage['uncached_input_tokens']:,}")
+    print(f"  cache write input:    {usage['cache_write_input_tokens']:,}")
+    print(f"output tokens:          {usage['output_tokens']:,}")
+    print(f"  reasoning output:     {usage['reasoning_output_tokens']:,}")
+    print(f"fresh input (uncached + write): {usage['fresh_input_tokens']:,}")
+    print(f"total (input + output): {usage['total_tokens']:,}")
+
+
+def cmd_route(args):
+    text = _read(args.file) if args.file else args.text
+    feedback = router.load_feedback(args.feedback) if args.feedback else None
+    result = router.route_text(text, feedback=feedback)
+    if args.json:
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return
+    print(f"layers: {','.join(map(str, result['layers']))}")
+    print(f"modules: {', '.join(result['modules'])}")
+    print(f"tool adapter: {result['tool_adapter']}")
+    print(f"route key: {result['route_key']}")
+    print(f"estimated module tokens: {result['estimated_module_tokens']}")
+    if result.get("feedback_action") not in (None, "none"):
+        print(f"feedback action: {result['feedback_action']}")
+
+
+def cmd_route_feedback(args):
+    event = router.record_feedback(
+        route_key=args.route_key,
+        outcome=args.outcome,
+        turns=args.turns,
+        retries=args.retries,
+        quality_ok=args.quality_ok,
+        total_tokens=args.total_tokens,
+        path=args.path,
+        label=args.label,
+    )
+    if args.json:
+        print(json.dumps(event, ensure_ascii=False, indent=2))
+    else:
+        print(f"recorded route feedback: {event['route_key']} ({event['outcome']})")
 
 
 # ── quality ──────────────────────────────────────────────────────────────────
@@ -241,6 +337,7 @@ def build_parser():
     c = sub.add_parser("compare", help="show + record tokens saved (raw vs kept)")
     c.add_argument("--raw", required=True); c.add_argument("--kept", required=True)
     c.add_argument("--layer", type=int); c.add_argument("--label", default="")
+    c.add_argument("--metric", choices=tracker.METRIC_TYPES)
     c.add_argument("--session"); c.add_argument("--heuristic", action="store_true")
     c.add_argument("--no-record", action="store_true")
     c.set_defaults(func=cmd_compare)
@@ -250,6 +347,7 @@ def build_parser():
     c.add_argument("--raw"); c.add_argument("--kept")
     c.add_argument("--raw-tokens", type=int); c.add_argument("--kept-tokens", type=int)
     c.add_argument("--layer", type=int); c.add_argument("--label", default="")
+    c.add_argument("--metric", choices=tracker.METRIC_TYPES)
     c.add_argument("--session"); c.add_argument("--quiet", action="store_true")
     c.set_defaults(func=cmd_record)
 
@@ -259,6 +357,38 @@ def build_parser():
 
     c = sub.add_parser("sessions", help="list tracked sessions")
     c.set_defaults(func=cmd_sessions)
+
+    c = sub.add_parser("provider-usage", help="read provider-reported usage")
+    c.add_argument("file", help="provider event stream, or - for stdin")
+    c.add_argument("--format", choices=("codex-jsonl",), default="codex-jsonl")
+    c.add_argument("--json", action="store_true")
+    c.add_argument("--record", action="store_true")
+    c.add_argument("--session"); c.add_argument("--label", default="")
+    c.set_defaults(func=cmd_provider_usage)
+
+    c = sub.add_parser("route", help="select TokenMe modules for a task")
+    source = c.add_mutually_exclusive_group(required=True)
+    source.add_argument("--text")
+    source.add_argument("--file")
+    c.add_argument("--feedback", help="optional route feedback JSONL")
+    c.add_argument("--json", action="store_true")
+    c.set_defaults(func=cmd_route)
+
+    c = sub.add_parser("route-feedback", help="record closed-loop route outcome")
+    c.add_argument("--route-key", required=True)
+    c.add_argument("--outcome", choices=("success", "retry", "quality-fail", "error"),
+                   default="success")
+    c.add_argument("--turns", type=int, default=0)
+    c.add_argument("--retries", type=int, default=0)
+    quality_group = c.add_mutually_exclusive_group()
+    quality_group.add_argument("--quality-ok", dest="quality_ok", action="store_true")
+    quality_group.add_argument("--quality-fail", dest="quality_ok", action="store_false")
+    c.set_defaults(quality_ok=None)
+    c.add_argument("--total-tokens", type=int, default=0)
+    c.add_argument("--path")
+    c.add_argument("--label", default="")
+    c.add_argument("--json", action="store_true")
+    c.set_defaults(func=cmd_route_feedback)
 
     c = sub.add_parser("quality", help="scan a change for removed safeguards")
     c.add_argument("--diff"); c.add_argument("--before"); c.add_argument("--after")

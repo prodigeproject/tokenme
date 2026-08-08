@@ -1,0 +1,1 @@
+Implemented `env_default` in `work.py`: it returns `mapping[name]` when the key exists and the supplied default otherwise. The focused check passed for both present and missing keys.

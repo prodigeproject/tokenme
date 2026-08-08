@@ -33,15 +33,15 @@ def _extract(payload: dict) -> tuple[str, int, str]:
 
     # L2: file write/edit
     if any(t in tool_str for t in ("write", "edit", "multiEdit", "create")):
-        for key in ("new_content", "content", "text", "patch"):
+        for key in ("new_string", "new_content", "content", "text", "patch"):
             v = payload.get(key) or (payload.get("tool_input") or {}).get(key, "")
             if isinstance(v, str) and v:
                 return v, 2, f"write:{tool}"
         return "", 2, f"write:{tool}"
 
     # L1: model prose response
-    for key in ("assistant_message", "response", "content", "text", "output",
-                "message"):
+    for key in ("last_assistant_message", "assistant_message", "response",
+                "content", "text", "output", "message"):
         v = payload.get(key)
         if isinstance(v, str) and v:
             return v, 1, "response"

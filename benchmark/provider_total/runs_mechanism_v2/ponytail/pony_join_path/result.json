@@ -1,0 +1,39 @@
+{
+  "arm": "ponytail",
+  "task": "pony_join_path",
+  "returncode": 0,
+  "duration_seconds": 46.299,
+  "usage": {
+    "input_tokens": 76560,
+    "cached_input_tokens": 70400,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 531,
+    "reasoning_output_tokens": 90,
+    "total_tokens": 77091,
+    "uncached_input_tokens": 6160,
+    "fresh_input_tokens": 6160,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\ponytail\\pony_join_path\\workspace",
+    "checks": {
+      "pony_join_path": true
+    },
+    "passed": 1,
+    "final_chars": 89,
+    "added_loc": 7,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\ponytail-main\\skills\\ponytail\\SKILL.md",
+    "modules": [
+      "ponytail"
+    ],
+    "skill_sha256": "848f369bcab27901248460831305e2569c7ee340328f1e53f4680cb1140b33b0"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\ponytail\\pony_join_path",
+  "status": "ok"
+}

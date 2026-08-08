@@ -1,0 +1,36 @@
+{
+  "arm": "baseline",
+  "task": "rtk_ids",
+  "returncode": 0,
+  "duration_seconds": 67.8,
+  "usage": {
+    "input_tokens": 95774,
+    "cached_input_tokens": 87552,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1281,
+    "reasoning_output_tokens": 204,
+    "total_tokens": 97055,
+    "uncached_input_tokens": 8222,
+    "fresh_input_tokens": 8222,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\baseline\\rtk_ids\\workspace",
+    "checks": {
+      "rtk_ids": true
+    },
+    "passed": 1,
+    "final_chars": 249,
+    "added_loc": 3,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "none",
+    "modules": []
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\baseline\\rtk_ids",
+  "status": "ok"
+}

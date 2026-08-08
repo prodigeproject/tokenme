@@ -1,0 +1,36 @@
+{
+  "arm": "baseline",
+  "task": "rtk_routes",
+  "returncode": 0,
+  "duration_seconds": 79.37,
+  "usage": {
+    "input_tokens": 172011,
+    "cached_input_tokens": 153344,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1816,
+    "reasoning_output_tokens": 409,
+    "total_tokens": 173827,
+    "uncached_input_tokens": 18667,
+    "fresh_input_tokens": 18667,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\baseline\\rtk_routes\\workspace",
+    "checks": {
+      "rtk_routes": true
+    },
+    "passed": 1,
+    "final_chars": 238,
+    "added_loc": 10,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "none",
+    "modules": []
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\baseline\\rtk_routes",
+  "status": "ok"
+}

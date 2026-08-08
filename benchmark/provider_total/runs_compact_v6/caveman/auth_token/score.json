@@ -1,0 +1,10 @@
+{
+  "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\caveman\\auth_token",
+  "added_loc": 12,
+  "test_loc": 0,
+  "checks": {
+    "auth_token": true
+  },
+  "final_chars": 189,
+  "passed": 1
+}

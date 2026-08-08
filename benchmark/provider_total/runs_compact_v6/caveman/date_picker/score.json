@@ -1,0 +1,10 @@
+{
+  "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\caveman\\date_picker",
+  "added_loc": 19,
+  "test_loc": 0,
+  "checks": {
+    "date_picker": true
+  },
+  "final_chars": 148,
+  "passed": 1
+}

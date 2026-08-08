@@ -1,0 +1,43 @@
+{
+  "arm": "rtk",
+  "task": "csv_sum",
+  "returncode": 0,
+  "duration_seconds": 51.068,
+  "usage": {
+    "input_tokens": 83102,
+    "cached_input_tokens": 77312,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1077,
+    "reasoning_output_tokens": 177,
+    "total_tokens": 84179,
+    "uncached_input_tokens": 5790,
+    "fresh_input_tokens": 5790,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\rtk\\csv_sum",
+    "added_loc": 20,
+    "test_loc": 0,
+    "checks": {
+      "csv_sum": true
+    },
+    "final_chars": 257,
+    "passed": 1
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\rtk-develop\\hooks\\codex\\rtk-awareness.md",
+    "modules": [
+      "rtk-awareness"
+    ],
+    "skill_sha256": "e4dd363c4d38a439595c512b67734655453d8352793cd487c4817951ebf75e56"
+  },
+  "activation": {
+    "rtk_db_exists": true,
+    "rtk_db_bytes": 24576,
+    "gain_returncode": 0
+  },
+  "artifact": "benchmark\\provider_total\\runs_compact_v6\\rtk\\csv_sum",
+  "status": "ok"
+}

@@ -1,0 +1,36 @@
+{
+  "arm": "baseline",
+  "task": "rtk_redact",
+  "returncode": 0,
+  "duration_seconds": 70.7,
+  "usage": {
+    "input_tokens": 115921,
+    "cached_input_tokens": 103680,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1713,
+    "reasoning_output_tokens": 329,
+    "total_tokens": 117634,
+    "uncached_input_tokens": 12241,
+    "fresh_input_tokens": 12241,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\baseline\\rtk_redact\\workspace",
+    "checks": {
+      "rtk_redact": true
+    },
+    "passed": 1,
+    "final_chars": 274,
+    "added_loc": 3,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "none",
+    "modules": []
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\baseline\\rtk_redact",
+  "status": "ok"
+}

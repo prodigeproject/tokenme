@@ -1,0 +1,37 @@
+{
+  "arm": "baseline",
+  "task": "pony_clamp",
+  "returncode": 1,
+  "duration_seconds": 11.289,
+  "usage": {
+    "input_tokens": 0,
+    "cached_input_tokens": 0,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 0,
+    "reasoning_output_tokens": 0,
+    "total_tokens": 0,
+    "uncached_input_tokens": 0,
+    "fresh_input_tokens": 0,
+    "turns": 0,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\baseline\\pony_clamp\\workspace",
+    "checks": {
+      "pony_clamp": false
+    },
+    "check_error": "NotImplementedError: ",
+    "passed": 0,
+    "final_chars": 0,
+    "added_loc": 6,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "none",
+    "modules": []
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\baseline\\pony_clamp",
+  "status": "failed"
+}

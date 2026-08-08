@@ -1,0 +1,10 @@
+{
+  "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\baseline\\reuse_slug",
+  "added_loc": 2,
+  "test_loc": 0,
+  "checks": {
+    "reuse_slug": true
+  },
+  "final_chars": 190,
+  "passed": 1
+}

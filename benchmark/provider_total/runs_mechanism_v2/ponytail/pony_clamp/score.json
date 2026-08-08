@@ -1,0 +1,11 @@
+{
+  "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\ponytail\\pony_clamp\\workspace",
+  "checks": {
+    "pony_clamp": false
+  },
+  "check_error": "NotImplementedError: ",
+  "passed": 0,
+  "final_chars": 0,
+  "added_loc": 6,
+  "test_loc": 0
+}

@@ -2,7 +2,8 @@
 import os, sys, tempfile, unittest, pathlib
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from tokenme import estimate, quality, tracker, layer4
+from tokenme import estimate, quality, tracker, layer4, provider, router, prompt
+from hooks import hook_record, hook_response
 
 
 class TestEstimate(unittest.TestCase):
@@ -147,9 +148,64 @@ class TestTracker(unittest.TestCase):
         agg = tracker.aggregate(tracker.load_session("unittest"))
         self.assertEqual(agg["coverage_pct"], 50.0)
 
-    def test_no_negative(self):
+    def test_regression_is_signed(self):
         ev = tracker.record(kind="x", raw_tokens=10, kept_tokens=200, layer=3)
-        self.assertEqual(ev["saved"], 0)
+        self.assertEqual(ev["saved"], -190)
+        agg = tracker.aggregate([ev])
+        self.assertEqual(agg["saved_tokens"], -190)
+        self.assertEqual(agg["regression_events"], 1)
+        self.assertEqual(agg["regressed_tokens"], 190)
+
+    def test_legacy_clamped_event_is_recomputed(self):
+        legacy = {"kind": "tool_call", "layer": 3, "raw": 10,
+                  "kept": 200, "saved": 0, "method": "given"}
+        agg = tracker.aggregate([legacy])
+        self.assertEqual(agg["saved_tokens"], -190)
+        self.assertEqual(agg["regression_events"], 1)
+
+    def test_unknown_raw_is_explicit(self):
+        ev = tracker.record(kind="note", kept_tokens=20, layer=1)
+        self.assertIsNone(ev["saved"])
+        self.assertEqual(ev["measurement_status"], "unknown_raw")
+        agg = tracker.aggregate([ev])
+        self.assertEqual(agg["unknown_raw_events"], 1)
+        self.assertEqual(agg["measured_events"], 0)
+        self.assertIsNone(agg["saved_tokens"])
+
+    def test_metrics_are_separate(self):
+        command = tracker.record(kind="tool_call", raw_tokens=100, kept_tokens=20, layer=3)
+        provider = tracker.record(kind="usage", raw_tokens=1000, kept_tokens=900,
+                                  metric="provider_total_tokens")
+        agg = tracker.aggregate([command, provider])
+        self.assertTrue(agg["mixed_metrics"])
+        self.assertIsNone(agg["saved_tokens"])
+        self.assertEqual(agg["by_metric"]["command_output_reduction"]["net_saved"], 80)
+        self.assertEqual(agg["by_metric"]["provider_total_tokens"]["net_saved"], 100)
+
+    def test_provider_usage_metadata_is_reported_separately(self):
+        usage = {
+            "input_tokens": 100,
+            "cached_input_tokens": 20,
+            "cache_write_input_tokens": 5,
+            "fresh_input_tokens": 85,
+            "uncached_input_tokens": 80,
+            "output_tokens": 10,
+            "reasoning_output_tokens": 2,
+            "total_tokens": 110,
+            "turns": 2,
+            "malformed_lines": 1,
+            "source": "provider:test",
+        }
+        tracker.record_provider_usage(usage)
+        ev = tracker.load_session("unittest")[-1]
+        self.assertEqual(ev["measurement_status"], "unknown_raw")
+        agg = tracker.aggregate(tracker.load_session("unittest"))
+        self.assertEqual(agg["provider_usage"]["fresh_input_tokens"], 85)
+        self.assertEqual(agg["provider_usage"]["turns"], 2)
+
+    def test_invalid_metric_rejected(self):
+        with self.assertRaises(ValueError):
+            tracker.record(kind="x", kept_tokens=1, metric="total-ish")
 
     def test_is_day_bucket(self):
         self.assertTrue(tracker.is_day_bucket("day-20260619"))
@@ -206,6 +262,128 @@ class TestLayer4(unittest.TestCase):
 
     def test_parse_none_on_missing(self):
         self.assertIsNone(layer4.parse_checkpoint("no checkpoint here"))
+
+
+class TestHookSchemas(unittest.TestCase):
+    def test_current_stop_payload(self):
+        text, layer, label = hook_response._extract(
+            {"last_assistant_message": "Implemented and tested."})
+        self.assertEqual((text, layer, label), ("Implemented and tested.", 1, "response"))
+
+    def test_current_edit_payload(self):
+        text, layer, label = hook_response._extract({
+            "tool_name": "Edit",
+            "tool_input": {"old_string": "before", "new_string": "after"},
+        })
+        self.assertEqual(text, "after")
+        self.assertEqual(layer, 2)
+        self.assertEqual(label, "write:Edit")
+
+    def test_current_write_payload(self):
+        text, layer, _ = hook_response._extract({
+            "tool_name": "Write", "tool_input": {"content": "new file"}})
+        self.assertEqual((text, layer), ("new file", 2))
+
+    def test_tool_response_string_and_object(self):
+        self.assertEqual(hook_record._extract_output({"tool_response": "stdout"}), "stdout")
+        self.assertEqual(hook_record._extract_output(
+            {"tool_response": {"stdout": "object stdout"}}), "object stdout")
+
+
+class TestProviderUsage(unittest.TestCase):
+    def test_codex_total_does_not_double_count_components(self):
+        stream = "\n".join([
+            '{"type":"thread.started","thread_id":"x"}',
+            '{"type":"turn.completed","usage":{"input_tokens":13109,'
+            '"cached_input_tokens":6912,"cache_write_input_tokens":0,'
+            '"output_tokens":105,"reasoning_output_tokens":80}}',
+        ])
+        usage = provider.parse_codex_jsonl(stream)
+        self.assertEqual(usage["total_tokens"], 13214)
+        self.assertEqual(usage["uncached_input_tokens"], 6197)
+        self.assertEqual(usage["reasoning_output_tokens"], 80)
+        self.assertEqual(usage["fresh_input_tokens"], 6197)
+        self.assertEqual(usage["turns"], 1)
+
+    def test_codex_usage_sums_turns_and_skips_malformed(self):
+        stream = "\n".join([
+            "not json",
+            '{"type":"turn.completed","usage":{"input_tokens":10,"output_tokens":2}}',
+            '{"type":"turn.completed","usage":{"input_tokens":20,"output_tokens":3}}',
+        ])
+        usage = provider.parse_codex_jsonl(stream)
+        self.assertEqual(usage["total_tokens"], 35)
+        self.assertEqual(usage["turns"], 2)
+        self.assertEqual(usage["malformed_lines"], 1)
+
+
+class TestAdaptiveRouter(unittest.TestCase):
+    def test_compiled_code_policy_is_small_and_keeps_invariants(self):
+        route = router.route_text("Implement safe_upload_path in uploads.py.")
+        text = prompt.render_instructions(route)
+        self.assertLess(len(text), 700)
+        for marker in ("safety", "security", "validation", "accessibility", "compatibility",
+                       "Result first", "Code:"):
+            self.assertIn(marker, text)
+        self.assertEqual(route["compiled_instruction_chars"], len(text))
+
+    def test_compiled_tool_policy_adds_only_selected_delta(self):
+        route = router.route_text("Inspect verbose pytest output and diff.")
+        text = prompt.render_instructions(route)
+        self.assertIn("Tools:", text)
+        self.assertLess(len(text), 900)
+        self.assertEqual(route["instruction_mode"], "micro")
+
+    def test_code_task_does_not_pay_for_tools_without_signal(self):
+        result = router.route_text("Implement safe_upload_path in uploads.py.")
+        self.assertEqual(result["layers"], [2])
+        self.assertEqual(result["tool_adapter"], "native-output")
+
+    def test_explicit_test_task_selects_code_and_tools(self):
+        result = router.route_text("Implement and test the auth function in this repository.")
+        self.assertIn(2, result["layers"])
+        self.assertIn(3, result["layers"])
+        self.assertEqual(result["tool_adapter"], "native-output")
+
+    def test_noisy_tool_task_recommends_rtk_eligible(self):
+        result = router.route_text("Inspect the verbose pytest test output and diff.")
+        self.assertIn(3, result["layers"])
+        self.assertEqual(result["tool_adapter"], "rtk-eligible")
+
+    def test_context_task_selects_l4(self):
+        result = router.route_text("Audit the context and write a compaction checkpoint.")
+        self.assertIn(4, result["layers"])
+        self.assertIn("layer4-context", result["modules"])
+
+    def test_high_stakes_summary_keeps_explicit_warnings(self):
+        result = router.route_text("Fix safe path traversal in auth token upload.")
+        self.assertEqual(result["summary_mode"], "expanded")
+        self.assertIn("warning", prompt.render_instructions(result))
+
+    def test_low_stakes_summary_is_brief(self):
+        result = router.route_text("Rename a local variable in a helper.")
+        self.assertEqual(result["summary_mode"], "brief")
+        self.assertIn("one sentence when sufficient", prompt.render_instructions(result))
+
+    def test_feedback_downgrades_repeated_bad_tool_route(self):
+        base = router.route_text("Inspect verbose pytest output and diff.")
+        feedback = {
+            base["route_key"]: {
+                "samples": 3,
+                "quality_failures": 1,
+                "retry_rate": 0.67,
+            }
+        }
+        result = router.route_text("Inspect verbose pytest output and diff.", feedback)
+        self.assertNotIn(3, result["layers"])
+        self.assertEqual(result["feedback_action"], "downgrade-layer3")
+
+    def test_feedback_waits_for_three_samples(self):
+        base = router.route_text("Inspect verbose pytest output and diff.")
+        feedback = {base["route_key"]: {"samples": 2, "quality_failures": 2, "retry_rate": 1}}
+        result = router.route_text("Inspect verbose pytest output and diff.", feedback)
+        self.assertIn(3, result["layers"])
+        self.assertEqual(result["feedback_action"], "observe_until_3_samples")
 
 
 if __name__ == "__main__":

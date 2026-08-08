@@ -1,0 +1,39 @@
+{
+  "arm": "caveman",
+  "task": "rtk_kv",
+  "returncode": 0,
+  "duration_seconds": 74.814,
+  "usage": {
+    "input_tokens": 172030,
+    "cached_input_tokens": 150016,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1581,
+    "reasoning_output_tokens": 489,
+    "total_tokens": 173611,
+    "uncached_input_tokens": 22014,
+    "fresh_input_tokens": 22014,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\caveman\\rtk_kv\\workspace",
+    "checks": {
+      "rtk_kv": true
+    },
+    "passed": 1,
+    "final_chars": 176,
+    "added_loc": 10,
+    "test_loc": 0
+  },
+  "instructions": {
+    "source": "C:\\Users\\Pc\\Downloads\\bench\\caveman-main\\plugins\\caveman\\skills\\caveman\\SKILL.md",
+    "modules": [
+      "caveman"
+    ],
+    "skill_sha256": "60665a83c4ae0492305c3ce13054c117f86dd67eadcc8cdf86a61f049bc18ba5"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_mechanism_v2\\caveman\\rtk_kv",
+  "status": "ok"
+}

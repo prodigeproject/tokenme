@@ -1,0 +1,69 @@
+{
+  "arm": "tokenme",
+  "task": "auth_token",
+  "returncode": 0,
+  "duration_seconds": 42.797,
+  "usage": {
+    "input_tokens": 69851,
+    "cached_input_tokens": 60160,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 949,
+    "reasoning_output_tokens": 228,
+    "total_tokens": 70800,
+    "uncached_input_tokens": 9691,
+    "fresh_input_tokens": 9691,
+    "turns": 1,
+    "malformed_lines": 0,
+    "source": "provider:codex-jsonl"
+  },
+  "quality": {
+    "run": "C:\\Users\\Pc\\AppData\\Local\\Temp\\tokenme-provider-total-k61o6wqk\\tokenme\\auth_token",
+    "added_loc": 12,
+    "test_loc": 0,
+    "checks": {
+      "auth_token": true
+    },
+    "final_chars": 201,
+    "passed": 1
+  },
+  "instructions": {
+    "source": "local-tokenme-compiled",
+    "modules": [
+      "layer2-code"
+    ],
+    "route": {
+      "router_version": "3",
+      "layers": [
+        2
+      ],
+      "modules": [
+        "layer2-code"
+      ],
+      "scores": {
+        "1": 0,
+        "2": 2,
+        "3": 0,
+        "4": 0
+      },
+      "confidence": {
+        "2": 1.0
+      },
+      "tool_adapter": "native-output",
+      "summary_mode": "expanded",
+      "route_key": "code=1;tools=0;context=0;noisy=0",
+      "core_budget_tokens": 160,
+      "estimated_module_tokens": 145,
+      "fallback": "native-output",
+      "core_only": false,
+      "reason": "no explicit tool-output signal; keep native-output",
+      "instruction_mode": "micro",
+      "compiled_instruction_chars": 694,
+      "feedback_action": "none"
+    },
+    "prompt_chars": 721,
+    "skill_sha256": "7a146eab447858a2b7ddff2d5d8ea8a18bd660c5bf3077ab0b43d6c633361a85"
+  },
+  "activation": {},
+  "artifact": "benchmark\\provider_total\\runs_compact_v6\\tokenme\\auth_token",
+  "status": "ok"
+}

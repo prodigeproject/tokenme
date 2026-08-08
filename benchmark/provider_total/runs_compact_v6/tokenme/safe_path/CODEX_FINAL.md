@@ -1,0 +1,1 @@
+Implemented `safe_upload_path(base_dir, filename)` with nested relative-path support and rejection of absolute paths, traversal, and resolved destinations outside `base_dir`. Focused checks for valid and unsafe paths pass.

@@ -1,0 +1,10 @@
+{
+  "run": "C:\\Users\\Pc\\Downloads\\tokenme\\benchmark\\provider_total\\runs_mechanism_v2\\baseline\\pony_first_nonempty\\workspace",
+  "checks": {
+    "pony_first_nonempty": false
+  },
+  "passed": 0,
+  "final_chars": 150,
+  "added_loc": 9,
+  "test_loc": 0
+}
