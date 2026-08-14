@@ -53,10 +53,10 @@ The direct v2/v3 before-after run is also preserved separately:
 | TokenMe v3 | 800,679 | $0.051442 |
 | Caveman skill | 875,935 | $0.058093 |
 
-This table explains why an older LinkedIn draft shows Normal as 796,310, while
-the current five-arm headline shows 772,077. Both are provider measurements from
-different fresh runs; use 772,077 for the latest v3 comparison and 796,310 only
-when discussing the direct v2/v3 historical snapshot.
+This table explains why the direct before/after snapshot has Normal at 796,310,
+while the current five-arm headline has 772,077. Both are provider measurements
+from different fresh runs; use 772,077 for the latest v3 comparison and 796,310
+only when discussing the direct v2/v3 benchmark.
 
 In this task pack, TokenMe v3 used 2.11% fewer total tokens than Normal and
 6.62% fewer output tokens. Its price-sheet estimate was 11.38% lower than
