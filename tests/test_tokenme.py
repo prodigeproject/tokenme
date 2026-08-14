@@ -345,6 +345,30 @@ class TestAdaptiveRouter(unittest.TestCase):
         self.assertIn(3, result["layers"])
         self.assertEqual(result["tool_adapter"], "native-output")
 
+    def test_read_only_api_report_does_not_load_code_or_tools(self):
+        result = router.route_text(
+            "Read api.md. Do not modify the fixture. In your final response, "
+            "write a clear 350-500 word report for an engineering manager with "
+            "exactly these section headings: Contract, Failure modes, Next action. "
+            "Include every fact below; a successful request returns 202."
+        )
+        self.assertEqual(result["task_mode"], "prose-only")
+        self.assertEqual(result["layers"], [1])
+        self.assertEqual(result["suppressed_layers"], [2])
+        self.assertEqual(result["tool_adapter"], "native-output")
+        rendered = prompt.render_instructions(result)
+        self.assertNotIn("Code:", rendered)
+        self.assertNotIn("Tools:", rendered)
+
+    def test_read_only_security_report_keeps_expanded_summary(self):
+        result = router.route_text(
+            "Read security.md. Do not modify the fixture. In your final response, "
+            "write a clear report with section headings Threat, Control, Residual risk."
+        )
+        self.assertEqual(result["task_mode"], "prose-only")
+        self.assertEqual(result["layers"], [1])
+        self.assertEqual(result["summary_mode"], "expanded")
+
     def test_noisy_tool_task_recommends_rtk_eligible(self):
         result = router.route_text("Inspect the verbose pytest test output and diff.")
         self.assertIn(3, result["layers"])

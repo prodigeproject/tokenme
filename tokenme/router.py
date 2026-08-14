@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Iterable
 
 
-ROUTER_VERSION = "3"
+ROUTER_VERSION = "4"
 MODULES = {
     1: "layer1-prose",
     2: "layer2-code",
@@ -37,6 +37,15 @@ _TOOL_ACTION = re.compile(
 _PROSE = re.compile(
     r"\b(explain|summarize|summary|rewrite|document|prose|answer|describe|"
     r"clarify|translate|draft|write up)\b"
+)
+_PROSE_DELIVERABLE = re.compile(
+    r"\b(final response|word report|report for|section headings|include every fact|"
+    r"engineering manager|do not modify (?:the )?(?:fixture|file)|"
+    r"read(?: the)? [\w./-]+\.(?:md|txt)|without modifying|summar(?:y|ize))\b"
+)
+_IMPLEMENTATION = re.compile(
+    r"\b(implement|fix|refactor|add|modify|change|create|patch|"
+    r"write (?:the )?(?:function|file|code))\b"
 )
 _CONTEXT = re.compile(
     r"\b(context|compact|compaction|checkpoint|memory|audit|instructions|"
@@ -62,9 +71,18 @@ MODULE_BUDGET_TOKENS = {
 CORE_BUDGET_TOKENS = 160
 
 
-def _feedback_key(scores: dict[int, int], noisy_tool: bool) -> str:
-    return (f"code={int(scores[2] > 0)};tools={int(scores[3] > 0)};"
-            f"context={int(scores[4] > 0)};noisy={int(noisy_tool)}")
+def _feedback_key(
+    scores: dict[int, int],
+    noisy_tool: bool,
+    task_mode: str = "normal",
+    layers: list[int] | None = None,
+) -> str:
+    effective = set(layers) if layers is not None else {
+        layer for layer, score in scores.items() if score
+    }
+    return (f"mode={task_mode};code={int(2 in effective)};"
+            f"tools={int(3 in effective)};context={int(4 in effective)};"
+            f"noisy={int(noisy_tool)}")
 
 
 def _empty_feedback() -> dict:
@@ -157,22 +175,43 @@ def route_text(text: str, feedback: dict | None = None) -> dict:
     layers = [layer for layer, score in scores.items() if score]
     if not layers:
         layers = [1]
+    # A read-only report request often contains domain words such as "API" or
+    # "security" and a single validation phrase such as "run one check". Those
+    # words describe the subject/deliverable, not a request for code or noisy
+    # command output. Suppress the expensive code/tool deltas unless the ticket
+    # also contains an implementation verb or an explicit noisy-output signal.
+    implementation_text = re.sub(
+        r"\bdo not (?:modify|change|add|create|fix|patch)\b", "", lower
+    )
+    prose_only = bool(_PROSE_DELIVERABLE.search(lower)) and not bool(
+        _IMPLEMENTATION.search(implementation_text)
+    ) and not noisy_tool
+    suppressed_layers: list[int] = []
+    if prose_only:
+        suppressed_layers = [layer for layer in layers if layer in {2, 3}]
+        layers = [layer for layer in layers if layer not in {2, 3}]
+        if not layers:
+            layers = [1]
     # Explicit tool actions, not generic repository words, justify layer 3.
     if 3 not in layers and (scores[3] > 0 or noisy_tool):
-        layers.append(3)
+        if not prose_only:
+            layers.append(3)
     layers.sort()
-    route_key = _feedback_key(scores, noisy_tool)
+    task_mode = "prose-only" if prose_only else "normal"
+    route_key = _feedback_key(scores, noisy_tool, task_mode, layers)
     modules = [MODULES[layer] for layer in layers]
     route = {
         "router_version": ROUTER_VERSION,
         "layers": layers,
         "modules": modules,
         "scores": {str(layer): score for layer, score in scores.items()},
+        "task_mode": task_mode,
+        "suppressed_layers": suppressed_layers,
         "confidence": {
             str(layer): round(min(1.0, scores[layer] / 2), 2)
             for layer in layers
         },
-        "tool_adapter": "rtk-eligible" if noisy_tool else "native-output",
+        "tool_adapter": "rtk-eligible" if noisy_tool and 3 in layers else "native-output",
         "summary_mode": "expanded" if high_stakes else "brief",
         "route_key": route_key,
         "core_budget_tokens": CORE_BUDGET_TOKENS,
@@ -180,6 +219,8 @@ def route_text(text: str, feedback: dict | None = None) -> dict:
         "fallback": "native-output",
         "core_only": not modules,
         "reason": (
+            "read-only prose deliverable; suppress code/tool deltas"
+            if prose_only else
             "explicit tool signal; load layer3"
             if 3 in layers else
             "no explicit tool-output signal; keep native-output"
