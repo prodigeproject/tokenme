@@ -44,6 +44,20 @@ total tokens** versus **422,425** for Normal (**-12.95%**). That was a separate
 five-case `gpt-5.6-sol` population, so it is not mixed into the 50-session v3
 table above.
 
+The direct v2/v3 before-after run is also preserved separately:
+
+| Historical four-arm snapshot (40 sessions) | Total tokens | Estimated cost |
+|---|---:|---:|
+| Normal | 796,310 | $0.059098 |
+| TokenMe v2 | 809,464 | $0.054077 |
+| TokenMe v3 | 800,679 | $0.051442 |
+| Caveman skill | 875,935 | $0.058093 |
+
+This table explains why an older LinkedIn draft shows Normal as 796,310, while
+the current five-arm headline shows 772,077. Both are provider measurements from
+different fresh runs; use 772,077 for the latest v3 comparison and 796,310 only
+when discussing the direct v2/v3 historical snapshot.
+
 In this task pack, TokenMe v3 used 2.11% fewer total tokens than Normal and
 6.62% fewer output tokens. Its price-sheet estimate was 11.38% lower than
 Normal, 9.70% lower than Caveman, 2.69% lower than Ponytail, and 43.41% lower
