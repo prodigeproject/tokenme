@@ -58,21 +58,6 @@ inserted into the request path; the Caveman, Ponytail, and RTK arms are
 instruction/treatment comparisons. Model, provider cache state, hooks, and
 task mix affect the result. See the report for provenance and limitations.
 
-### Why the before/after report has different numbers
-
-There are now three intentionally preserved snapshots:
-
-| Snapshot | Sessions | Arms | Purpose |
-|---|---:|---|---|
-| `BEFORE_AFTER_REPORT.md` | 40 | Normal, TokenMe v2, TokenMe v3, Caveman | Direct v2-to-v3 transition on one four-arm run |
-| `LATEST_5_ARM_REPORT.md` | 50 | Normal, TokenMe v3, Caveman, Ponytail, RTK | Earlier five-arm comparison |
-| `LATEST_6_ARM_REPORT.md` | 60 | Normal, TokenMe v2, TokenMe v3, Caveman, Ponytail, RTK | Current same-case v2/v3 head-to-head |
-
-They use the same ten-case task pack and the same accounting formula, but they
-are different provider runs with different cache/trajectory state. Use the
-six-arm report for current v2/v3 claims; the earlier reports remain useful for
-historical trend and methodology comparison.
-
 ## Accounting contract
 
 For a Codex reasoning model:
@@ -198,8 +183,7 @@ python benchmark/audit_10_case/run_before_after.py `
 Read the methodology and limitations in
 [`benchmark/audit_10_case/LATEST_6_ARM_REPORT.md`](benchmark/audit_10_case/LATEST_6_ARM_REPORT.md),
 with the earlier [`five-arm report`](benchmark/audit_10_case/LATEST_5_ARM_REPORT.md)
-and historical [`before/after report`](benchmark/audit_10_case/BEFORE_AFTER_REPORT.md)
-available for comparison.
+available for methodology comparison.
 
 ## Related research
 
