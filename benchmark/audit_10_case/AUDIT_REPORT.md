@@ -1,5 +1,10 @@
 # Audit: TokenMe vs Caveman on Codex 5.6 Luna
 
+> **Archived run.** This report describes the earlier router-v3, three-arm
+> audit. The newest 40-session before/after benchmark is in
+> [`BEFORE_AFTER_REPORT.md`](BEFORE_AFTER_REPORT.md); use that report for
+> current public numbers.
+
 Tanggal run lokal: 15 Agustus 2026. Repo yang diaudit: `C:\Users\Pc\Downloads\tokenme`. Repo Caveman: `C:\Users\Pc\Downloads\caveman-main`.
 
 ## Kesimpulan singkat

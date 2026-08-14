@@ -2,7 +2,7 @@
 import os, sys, tempfile, unittest, pathlib
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from tokenme import estimate, quality, tracker, layer4, provider, router, prompt
+from tokenme import estimate, quality, tracker, layer4, provider, router, prompt, context
 from hooks import hook_record, hook_response
 
 
@@ -316,6 +316,35 @@ class TestProviderUsage(unittest.TestCase):
         self.assertEqual(usage["turns"], 2)
         self.assertEqual(usage["malformed_lines"], 1)
 
+    def test_usage_ledger_marks_missing_components_unknown(self):
+        usage = provider.parse_codex_jsonl(
+            '{"type":"turn.completed","usage":{"input_tokens":10,"output_tokens":2}}'
+        )
+        self.assertEqual(usage["ledger"]["basis"], "partial")
+        self.assertIn("reasoning_output_tokens", usage["ledger"]["unknown"])
+        self.assertEqual(usage["total_tokens"], 12)
+
+    def test_count_text_is_explicitly_inferred_without_adapter(self):
+        provider.clear_tokenizer_adapters()
+        result = provider.count_text("hello", provider="openai", model="gpt-5.6-luna")
+        self.assertFalse(result.known)
+        self.assertEqual(result.scope, "visible_text")
+
+    def test_registered_tokenizer_adapter_is_provider_native(self):
+        class Adapter:
+            provider = "test-provider"
+
+            def count(self, text, model=None):
+                return provider.TokenCount(7, "provider:test", "high", "request", self.provider, model, True)
+
+        provider.register_tokenizer_adapter(Adapter())
+        try:
+            result = provider.count_text("anything", provider="test-provider", model="x")
+            self.assertTrue(result.known)
+            self.assertEqual(result.value, 7)
+        finally:
+            provider.clear_tokenizer_adapters()
+
 
 class TestAdaptiveRouter(unittest.TestCase):
     def test_compiled_code_policy_is_small_and_keeps_invariants(self):
@@ -340,10 +369,11 @@ class TestAdaptiveRouter(unittest.TestCase):
         self.assertEqual(result["tool_adapter"], "native-output")
 
     def test_explicit_test_task_selects_code_and_tools(self):
-        result = router.route_text("Implement and test the auth function in this repository.")
+        result = router.route_text(
+            "Implement the auth function and inspect the focused pytest output.")
         self.assertIn(2, result["layers"])
         self.assertIn(3, result["layers"])
-        self.assertEqual(result["tool_adapter"], "native-output")
+        self.assertEqual(result["tool_adapter"], "rtk-eligible")
 
     def test_read_only_api_report_does_not_load_code_or_tools(self):
         result = router.route_text(
@@ -408,6 +438,83 @@ class TestAdaptiveRouter(unittest.TestCase):
         result = router.route_text("Inspect verbose pytest output and diff.", feedback)
         self.assertIn(3, result["layers"])
         self.assertEqual(result["feedback_action"], "observe_until_3_samples")
+
+    def test_net_benefit_is_unknown_without_host_observation(self):
+        result = router.adaptive_route("Explain the API contract in prose.")
+        self.assertEqual(result["adaptive_action"], "observe")
+        self.assertIsNone(result["net_benefit"]["net_tokens"])
+
+    def test_unknown_economics_do_not_inject_tool_delta(self):
+        result = router.adaptive_route("Implement parser and inspect verbose pytest output.")
+        self.assertEqual(result["adaptive_action"], "observe")
+        self.assertEqual(result["layers"], [2])
+        self.assertEqual(result["fallback"], "observe-without-optional-deltas")
+
+    def test_net_benefit_skips_optional_layers_when_negative(self):
+        result = router.adaptive_route(
+            "Inspect verbose pytest output and diff.",
+            expected_saving_tokens=1,
+            policy_overhead_tokens=100,
+        )
+        self.assertEqual(result["adaptive_action"], "skip")
+        self.assertNotIn(3, result["layers"])
+        self.assertEqual(result["fallback"], "net-benefit-skip-optional-deltas")
+
+    def test_net_benefit_keeps_code_contract_for_implementation(self):
+        result = router.adaptive_route(
+            "Implement the parser and inspect verbose pytest output.",
+            expected_saving_tokens=1,
+            policy_overhead_tokens=100,
+        )
+        self.assertEqual(result["layers"], [2])
+        self.assertIn(3, result["suppressed_layers"])
+
+    def test_summary_policy_promotes_failed_work(self):
+        route = router.route_text("Rename a local variable in a helper.")
+        policy = prompt.summary_policy(route, state="failed")
+        self.assertEqual(policy["mode"], "expanded")
+        self.assertGreaterEqual(policy["max_sentences"], 5)
+
+
+class TestContextPacking(unittest.TestCase):
+    def test_pins_security_and_error_segments(self):
+        packed = context.pack_segments(
+            [
+                context.ContextSegment("routine", "routine", relevance=1),
+                context.ContextSegment("secret", "security evidence", security=True),
+                context.ContextSegment("error", "traceback", error=True),
+            ],
+            budget_tokens=2,
+            model="gpt-5.6-luna",
+        )
+        self.assertEqual([s.id for s in packed.segments], ["secret", "error"])
+        self.assertEqual([s.id for s in packed.dropped], ["routine"])
+
+    def test_pack_order_is_deterministic_and_lossless(self):
+        segments = [
+            context.ContextSegment("low", "low", relevance=0.1),
+            context.ContextSegment("high", "high", relevance=0.9),
+        ]
+        a = context.pack_segments(segments)
+        b = context.pack_segments(segments)
+        self.assertEqual(a.text, b.text)
+        self.assertEqual(a.text, "high\n\nlow")
+
+    def test_lossy_plugin_requires_explicit_recovery(self):
+        plugin = context.FunctionCompressor(
+            "lossy",
+            lambda segment: context.CompressionResult(
+                text="short", method="lossy", lossless=False, reversible=False,
+                original_sha256=__import__("hashlib").sha256(segment.text.encode()).hexdigest(),
+            ),
+        )
+        packed = context.pack_segments(
+            [context.ContextSegment("x", "a much longer context block")],
+            compressor=plugin,
+            allow_lossy=True,
+        )
+        self.assertEqual(packed.text, "a much longer context block")
+        self.assertFalse(packed.compression[0]["accepted"])
 
 
 if __name__ == "__main__":

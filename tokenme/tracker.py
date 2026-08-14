@@ -222,6 +222,10 @@ def record_provider_usage(
     )
     metadata = {field: usage.get(field, 0) for field in fields}
     metadata["source"] = usage.get("source", "provider")
+    # Keep the evidence labels alongside the observation.  Aggregation still
+    # treats the provider total as a kept observation, never as a saving.
+    if usage.get("ledger") is not None:
+        metadata["ledger"] = usage["ledger"]
     return record(
         kind="provider_usage",
         kept_tokens=int(usage.get("total_tokens", 0) or 0),

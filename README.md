@@ -1,85 +1,127 @@
-# TokenMe
+# TokenMe v3
 
 <p align="center">
   <strong>Measure the token budget. Keep the important parts.</strong><br>
-  <em>Local, four-layer token discipline for coding agents.</em>
+  <em>A portable, open-source token-optimizer layer for coding agents.</em>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/tests-59%20passing-brightgreen" alt="59 tests passing">
+  <img src="https://img.shields.io/badge/tests-72%20passing-brightgreen" alt="72 tests passing">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license">
-  <img src="https://img.shields.io/badge/python-3.8%2B-blue" alt="Python 3.8+"><br>
+  <img src="https://img.shields.io/badge/python-3.8%2B-blue" alt="Python 3.8+">
   <img src="https://img.shields.io/badge/runtime%20dependencies-none-brightgreen" alt="No runtime dependencies">
-  <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey" alt="macOS Linux Windows">
-  <img src="https://img.shields.io/badge/telemetry-none-brightgreen" alt="No telemetry">
 </p>
 
-TokenMe is a small Python CLI and agent skill for reducing waste across an
-agent session without deleting safety checks, exact requirements, useful
-context, or an understandable final summary.
+TokenMe is a small Python CLI and host integration layer for reducing waste in
+agent sessions without deleting safety checks, exact requirements, useful
+context, or an understandable final answer. It is not a gateway: Tokenisme or
+another host can consume TokenMe's route, ledger, packing, and quality signals
+for provider dispatch, pricing, cache settlement, and budgets.
 
-It measures local counterfactuals, records regressions honestly, and can parse
-provider-reported Codex usage when a host exposes the session JSONL. It does not
-pretend that a shortened command output is automatically a cheaper provider
-invoice.
+## Latest live benchmark
 
-## Benchmark snapshot
+**Version naming:** TokenMe v2 is the pre-four-recommendation build; TokenMe v3
+is the current post-recommendation build. The earlier v2 five-case pilot
+recorded 367,739 total tokens versus 422,425 for Normal (-12.95%). It used a
+different model and task population and is retained as historical context.
 
-The latest live pilot used 25 fresh Codex sessions: five identical cases × five
-arms, with `gpt-5.6-sol` at low reasoning effort. Every cell used a new
-workspace and the same task. `total = input_tokens + output_tokens`; cached
-input and reasoning output are reported separately and are not added twice.
-The public implementation is called **TokenMe v2**; `runs_compact_v6` is only
-the internal benchmark-rerun identifier.
+The newest run used 50 fresh Codex `gpt-5.6-luna` sessions at low reasoning
+effort: ten identical cases across Normal, TokenMe v3, the exact local Caveman
+skill, the preserved Ponytail treatment, and the real local RTK binary. All 50
+deterministic fixture checks passed. `total = input_tokens + output_tokens`;
+cache-read and reasoning are components and are never added twice.
 
-| Arm | Total tokens | Δ total vs baseline | Input | Output | Fresh input | Quality |
+| Arm | Total | Input | Cache read | Reasoning | Output | Luna price-sheet estimate* |
 |---|---:|---:|---:|---:|---:|---:|
-| Baseline | 422,425 | — | 416,527 | 5,898 | 52,495 | 5/5 |
-| **TokenMe v2** | **367,739** | **−12.95%** | **362,981** | **4,758** | 62,437 | **5/5** |
-| Caveman | 465,528 | +10.20% | 460,366 | 5,162 | 57,422 | 5/5 |
-| Ponytail | 470,208 | +11.31% | 464,644 | 5,564 | 106,756 | 5/5 |
-| RTK | 453,129 | +7.27% | 447,576 | 5,553 | 49,240 | 4/5 |
+| Normal | 772,077 | 758,909 | 632,576 | 2,133 | 13,168 | $0.053720 |
+| **TokenMe v3** | **755,788** | **743,492** | **643,584** | **1,947** | **12,296** | **$0.047608** |
+| Caveman skill | 836,982 | 825,983 | 683,264 | 1,663 | 10,999 | $0.055408 |
+| Ponytail treatment | 776,642 | 764,742 | 644,096 | 1,870 | 11,900 | $0.051291 |
+| RTK treatment | 1,323,581 | 1,304,413 | 1,109,760 | 3,944 | 19,168 | $0.084127 |
 
-On this pilot, TokenMe v2 used 404 fewer output tokens than Caveman (−7.83%) and
-97,789 fewer total tokens (−21.00%). The final summaries stayed readable by
-using one sentence when sufficient and at most two sentences for security,
-accessibility, migration, or irreversible work.
+For historical context, the earlier **TokenMe v2** pilot measured **367,739
+total tokens** versus **422,425** for Normal (**-12.95%**). That was a separate
+five-case `gpt-5.6-sol` population, so it is not mixed into the 50-session v3
+table above.
 
-This is a paired `n=5` pilot, not a universal ranking. The output delta's
-bootstrap interval crosses zero. The complete table, prompts, final responses,
-quality scores, and raw JSONL are preserved in
-[`runs_compact_v6/`](benchmark/provider_total/runs_compact_v6/).
+In this task pack, TokenMe v3 used 2.11% fewer total tokens than Normal and
+6.62% fewer output tokens. Its price-sheet estimate was 11.38% lower than
+Normal, 9.70% lower than Caveman, 2.69% lower than Ponytail, and 43.41% lower
+than RTK. Caveman and Ponytail produced shorter visible output in this run, so
+this is an end-to-end cost comparison rather than an output-only ranking. The
+paired total-token interval crosses zero; see the full
+[`latest five-arm report`](benchmark/audit_10_case/LATEST_5_ARM_REPORT.md).
 
-### What the table does—and does not—compare
+*Estimate only, not a local Codex invoice:* uncached input x $0.20/MTok +
+cache-read input x $0.02/MTok + output x $1.20/MTok. Raw JSONL and copied
+workspaces are preserved locally under the ignored `runs_latest_all_v3/`
+directory.
 
-The baseline is stock Codex with the same benchmark prompt and no
-token-minimization policy. Caveman, Ponytail, and RTK are their local Windows
-skill/awareness treatments from the audit workspace, not a reproduction of the
-JetBrains Claude Code infrastructure. Model, host, cache state, hooks, and task
-mix all affect the result.
+This is one task pack, not a universal ranking. The Caveman proxy/CCR was not
+inserted into the request path; the Caveman, Ponytail, and RTK arms are
+instruction/treatment comparisons. Model, provider cache state, hooks, and
+task mix affect the result. See the report for provenance and limitations.
 
-The 30-task mechanism follow-up (Bash-heavy, prose-heavy, and over-building
-strata) was launched as 150 LLM sessions, but provider usage limits interrupted
-some cells. Its raw artifacts are preserved in
-[`runs_mechanism_v2/`](benchmark/provider_total/runs_mechanism_v2/); it is
-exploratory and must not be read as a completed 30-pair winner.
+### Why the before/after report has different numbers
 
-## The four layers
+There are two intentionally preserved snapshots:
 
-| Layer | Waste to control | TokenMe approach |
-|---|---|---|
-| 1. Prose | Filler, repetition, routine narration | Result-first summaries; keep ambiguity and warnings explicit |
-| 2. Code | Unneeded abstractions, dependencies, or generated boilerplate | Smallest readable correct change; preserve validation, security, accessibility, and tests |
-| 3. Tools | Verbose stdout, repeated searches, noisy diffs | Targeted searches, bounded output, focused checks, exact errors/paths/exit codes kept |
-| 4. Context | Large always-loaded instructions and compaction loss | Selective modules, compiled policy, and compact checkpoints |
+| Snapshot | Sessions | Arms | Purpose |
+|---|---:|---|---|
+| `BEFORE_AFTER_REPORT.md` | 40 | Normal, TokenMe v2, TokenMe v3, Caveman | Direct v2-to-v3 transition on one four-arm run |
+| `LATEST_5_ARM_REPORT.md` | 50 | Normal, TokenMe v3, Caveman, Ponytail, RTK | Current five-arm comparison and public headline |
 
-The adaptive router loads only the policy delta suggested by the task. It has a
-brief summary mode for ordinary work and an expanded mode when security,
-accessibility, migration, or irreversible operations need explicit language.
+They use the same ten-case task pack and the same accounting formula, but they
+are different provider runs with different cache/trajectory state. The v2 arm
+is present only in the historical 40-cell snapshot because it runs source code
+from the pre-recommendation commit. Do not mix totals across the two tables;
+use the five-arm report for current v3 claims and the before/after report for
+the direct v2/v3 transition.
+
+## Accounting contract
+
+For a Codex reasoning model:
+
+```text
+total_tokens = input_tokens + output_tokens
+reasoning_output_tokens is a subset of output_tokens
+visible_output_tokens = output_tokens - reasoning_output_tokens
+
+cost = uncached_input x input_rate
+     + cached_input x cached_rate
+     + output_tokens x output_rate
+```
+
+Reasoning is billed at the output rate and is shown separately for diagnosis;
+adding it again would double-count. TokenMe labels provider JSONL as raw,
+local tokenizer counts as inferred, and unavailable fields as unknown.
+
+## Four optimizer primitives
+
+1. **Adaptive route + net-benefit simulation.** `adaptive_route()` keeps the
+   safety core and applies optional policy deltas only when host feedback shows
+   a positive net benefit after policy, retry, recovery, extra-turn, and latency
+   overhead. Unknown savings remain `observe`.
+2. **Tokenizer adapters + evidence ledger.** `TokenCount`, registered provider
+   adapters, and `parse_codex_jsonl_ledger()` make provider-native, inferred,
+   and unavailable counts explicit. `chars/4` is never billing truth.
+3. **Adaptive output summary + quality gate.** `summary_policy()` asks for a
+   brief result when sufficient and preserves numbers, paths, errors, warnings,
+   and unresolved actions for high-stakes or failed work. `summary_quality_gate()`
+   is a heuristic host hook, not a semantic proof.
+4. **Lossless context packer + optional compressor.** `pack_segments()` pins
+   security/error context, ranks relevance and recency deterministically, and
+   drops whole segments only within a declared budget. Compressor plugins fail
+   closed when output is not smaller, round-trip/recovery evidence is absent,
+   or lossy mode was not explicitly enabled.
+
+The portable layer owns contracts and deterministic local decisions. A gateway
+should own credentials, exact provider count endpoints, price catalogs, cache
+settlement, durable CCR/recovery, retries, quotas, and reasoning enforcement.
 
 ## Install
 
-TokenMe uses the Python standard library at runtime.
+TokenMe uses only the Python standard library at runtime.
 
 ```bash
 git clone https://github.com/prodigeproject/tokenme
@@ -88,94 +130,80 @@ python -m tokenme selfcheck
 pip install .
 ```
 
-Optional named tokenizer support:
+Optional named-tokenizer support:
 
 ```bash
 pip install "tokenme[exact]"
 ```
 
-On Windows, use `bin\tokenme.ps1` or `bin\tokenme.cmd`, or run
-`python -m tokenme ...` directly.
-
 ## CLI examples
 
 ```bash
-# Estimate a file (heuristic unless an optional tokenizer is installed)
+# Estimate visible text (heuristic unless an optional tokenizer is installed)
 tokenme count file.txt
+
+# Inspect a route and its evidence-based adaptive decision
+tokenme route --text "inspect verbose pytest output" --adaptive --json
+
+# Parse provider-reported Codex JSONL, including unknown fields
+tokenme provider-usage run.jsonl --json
 
 # Record a measured counterfactual
 tokenme compare --raw full.txt --kept focused.txt --layer 3 --label "git diff"
 
-# Inspect the adaptive route for a task
-tokenme route --text "implement and test auth" --json
-
-# Parse provider-reported Codex usage
-tokenme provider-usage run.jsonl --json
-
-# Find risky minimization in a diff
+# Scan a change for removed safeguards
 git diff origin/main | tokenme quality --diff -
-
-# Audit always-loaded context and create a compaction checkpoint
-tokenme audit ~/.claude/CLAUDE.md
-tokenme checkpoint --goal "Migrate DB schema" --next-step "Run staging checks"
 ```
 
 ## Agent skill
 
-Copy `skills/tokenme/` into the agent's skill/rules directory:
-
-```bash
-# Claude Code
-cp -r skills/tokenme ~/.claude/skills/
-
-# Any agent with a skills or rules directory
-cp -r skills/tokenme <your-agent-skills-folder>/
-```
-
-The skill is intentionally short. Prose, code, tools, and context references
-are loaded selectively instead of injecting a long manual on every turn.
+Copy `skills/tokenme/` into the agent's skill/rules directory. The skill is
+intentionally short; hosts can call `tokenme.router`, `tokenme.provider`, and
+`tokenme.context` directly when they need richer integration.
 
 ## Honest measurement
 
-TokenMe keeps different measurements separate:
+TokenMe keeps provider totals separate from command-output, prose, code, and
+context proxies. A signed `raw - kept` delta shows regressions; an unavailable
+raw counter is recorded as `unknown_raw`, never as zero saving. Provider cache
+hits do not prove that TokenMe caused the hit, and local estimates are never
+presented as a bill.
 
-- `provider_total_tokens`: provider-reported input + output;
-- `fresh_input_tokens`: uncached input + cache-write input;
-- command-output, prose, code, and context proxies;
-- `provider_cost`: only when the applicable provider price is supplied.
+The quality scanner and summary gate are heuristic signals. Hosts should attach
+tests, semantic graders, latency, retries, recovery attempts, and a price table
+when making a production decision.
 
-`saved = raw − kept` is signed, so regressions remain visible. If the raw
-counterfactual is unknown, the event is recorded as `unknown_raw`, not as a
-zero-token saving. Local estimates are never presented as billing truth.
+## Reproduce
 
-`tokenme quality` is a heuristic safety guard, not a formal proof. It looks for
-removed or weakened validation, security, error handling, accessibility, and
-test logic before a compact diff is accepted.
-
-## Reproduce the live pilot
-
-The provider benchmark runner stores one directory per arm and case containing
-the exact prompt, route metadata, `usage.jsonl`, stderr, final response, copied
-workspace, and deterministic quality score.
+The harness stores prompts, route metadata, complete JSONL, stderr, final
+responses, copied workspaces, and deterministic scores per independent cell.
+For the latest five-arm run:
 
 ```powershell
-python benchmark/provider_total/run.py `
+python benchmark/audit_10_case/run_latest_all.py `
   --codex C:\Users\Pc\AppData\Local\Temp\tokenme-codex-cli.exe `
-  --rtk C:\Users\Pc\AppData\Local\Temp\tokenme-rtk-v0420-audit\rtk.exe `
-  --workers 5 --timeout 600
+  --model gpt-5.6-luna --reasoning-effort low --workers 5 `
+  --tasks benchmark/audit_10_case/tasks.py `
+  --result-root benchmark/audit_10_case/runs_latest_all_v3 `
+  --score benchmark/provider_total/mechanism_score.py
 ```
 
-Rebuild a report without provider calls:
+For a focused v2/v3 comparison:
 
 ```powershell
-python benchmark/provider_total/run.py --result-root benchmark/provider_total/runs_compact_v6 --summary-only
+python benchmark/audit_10_case/run_before_after.py `
+  --codex C:\Users\Pc\AppData\Local\Temp\tokenme-codex-cli.exe `
+  --model gpt-5.6-luna --reasoning-effort low --workers 4 `
+  --tasks benchmark/audit_10_case/tasks.py `
+  --result-root benchmark/audit_10_case/runs_before_after_final `
+  --score benchmark/provider_total/mechanism_score.py
 ```
 
-For methodology and limitations, see
-[`BENCHMARK_RESULTS.md`](BENCHMARK_RESULTS.md) and the public benchmark report
-in [`benchmark/provider_total/`](benchmark/provider_total/).
+Read the methodology and limitations in
+[`benchmark/audit_10_case/LATEST_5_ARM_REPORT.md`](benchmark/audit_10_case/LATEST_5_ARM_REPORT.md)
+and the historical [`before/after report`](benchmark/audit_10_case/BEFORE_AFTER_REPORT.md).
 
-## Related research and source projects
+## Related research
 
 - [JetBrains: Caveman](https://blog.jetbrains.com/ai/2026/07/speak-to-ai-agents-like-cavemen-tosave-tokens/)
 - [JetBrains: RTK + Claude Code](https://blog.jetbrains.com/ai/2026/07/rtk-claude-code-token-savings/)
@@ -184,25 +212,6 @@ in [`benchmark/provider_total/`](benchmark/provider_total/).
 - [RTK source](https://github.com/rtk-ai/rtk)
 - [Ponytail source](https://github.com/DietrichGebert/ponytail)
 
-## Project layout
-
-```text
-tokenme/
-├── tokenme/                 CLI, router, provider parser, quality guard
-├── skills/tokenme/          compact agent skill and on-demand references
-├── hooks/                   optional local tracking hooks
-├── benchmark/provider_total/ live provider-token benchmark and raw artifacts
-├── tests/                   unit tests
-└── docs/                    measurement notes
-```
-
-## Limitations
-
-TokenMe is behavioral: the agent must follow the policy. Provider billing also
-depends on model pricing, cache tiers, and host telemetry. No percentage from a
-hand-authored fixture or a single small pilot should be generalized to every
-repository.
-
 ## License
 
-MIT. No runtime telemetry, daemon, or external dependency.
+MIT. No daemon, network telemetry, or runtime dependency is required.

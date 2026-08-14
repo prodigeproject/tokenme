@@ -259,3 +259,38 @@ def scan_before_after(before: str, after: str) -> dict:
             for line in after_lines[j1:j2]:
                 diff_lines.append("+" + line)
     return scan_diff("\n".join(diff_lines))
+
+
+def summary_quality_gate(
+    summary: str | None,
+    *,
+    required_markers: list[str] | tuple[str, ...] = (),
+    high_stakes: bool = False,
+    max_chars: int | None = None,
+) -> dict:
+    """Check a generated summary before a compact-output policy settles.
+
+    This is intentionally a gate contract, not a semantic judge.  Hosts may
+    supply richer tests or an evaluator; TokenMe only verifies non-empty text,
+    requested markers, and optional size guidance.  A size warning never
+    truncates content automatically.
+    """
+    text = (summary or "").strip()
+    missing = [m for m in required_markers if m and m not in text]
+    warnings: list[str] = []
+    if not text:
+        warnings.append("empty_summary")
+    if max_chars is not None and len(text) > max(0, int(max_chars)):
+        warnings.append("over_advisory_char_budget")
+    if high_stakes and len(text) < 40:
+        warnings.append("high_stakes_summary_may_lack_evidence")
+    if missing:
+        warnings.append("missing_required_markers")
+    passed = bool(text) and not missing and not (high_stakes and len(text) < 40)
+    return {
+        "passed": passed,
+        "quality_basis": "heuristic_marker_gate",
+        "chars": len(text),
+        "missing_markers": missing,
+        "warnings": warnings,
+    }

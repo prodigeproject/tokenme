@@ -72,6 +72,9 @@ benchmark/provider_total/runs_readonly_attempt/
 # The Luna audit keeps raw JSONL locally for reproducibility; publish the
 # harness and compact report without accidentally staging hundreds of cells.
 benchmark/audit_10_case/runs_luna/
+benchmark/audit_10_case/runs_before_after*/
+benchmark/audit_10_case/runs_latest_all*/
+benchmark/audit_10_case/runs_active*/
 benchmark/audit_10_case/analyzer_verify.out.txt
 
 # Local editorial and research drafts. The public README and product docs stay

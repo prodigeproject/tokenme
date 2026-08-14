@@ -31,8 +31,8 @@ _CODE = re.compile(
     r"security|auth|parse|sql|typescript|javascript|python|react)\b"
 )
 _TOOL_ACTION = re.compile(
-    r"\b(inspect|search|grep|find|diff|log|stdout|stderr|run|execute|build|"
-    r"command|shell|terminal|test|pytest|npm|cargo|git|test output|listing|trace)\b"
+    r"\b(inspect|search|grep|find|diff|log|stdout|stderr|build|"
+    r"command|shell|terminal|pytest|npm|cargo|git|test output|listing|trace)\b"
 )
 _PROSE = re.compile(
     r"\b(explain|summarize|summary|rewrite|document|prose|answer|describe|"
@@ -240,6 +240,139 @@ def route_text(text: str, feedback: dict | None = None) -> dict:
         route["compiled_instruction_chars"] = instruction_chars(route)
     except Exception:
         route["compiled_instruction_chars"] = None
+    return route
+
+
+def simulate_net_benefit(
+    *,
+    expected_saving_tokens: int | None,
+    policy_overhead_tokens: int = 0,
+    extra_turn_tokens: int = 0,
+    retry_tokens: int = 0,
+    recovery_tokens: int = 0,
+    latency_penalty_tokens: int = 0,
+) -> dict:
+    """Simulate whether a route pays for its own overhead.
+
+    The function is deliberately token-unit based: a gateway can translate
+    latency or dollars into a local policy budget, while TokenMe remains
+    provider-neutral.  Unknown expected savings stay ``unknown`` rather than
+    being converted into a fabricated zero saving.
+    """
+    costs = {
+        "policy_overhead_tokens": max(0, int(policy_overhead_tokens)),
+        "extra_turn_tokens": max(0, int(extra_turn_tokens)),
+        "retry_tokens": max(0, int(retry_tokens)),
+        "recovery_tokens": max(0, int(recovery_tokens)),
+        "latency_penalty_tokens": max(0, int(latency_penalty_tokens)),
+    }
+    overhead = sum(costs.values())
+    if expected_saving_tokens is None:
+        return {
+            "basis": "unknown",
+            "expected_saving_tokens": None,
+            "overhead_tokens": overhead,
+            "net_tokens": None,
+            "decision": "observe",
+            **costs,
+        }
+    expected = max(0, int(expected_saving_tokens))
+    net = expected - overhead
+    return {
+        "basis": "host_observation_or_simulation",
+        "expected_saving_tokens": expected,
+        "overhead_tokens": overhead,
+        "net_tokens": net,
+        "decision": "apply" if net > 0 else "skip",
+        **costs,
+    }
+
+
+def adaptive_route(
+    text: str,
+    feedback: dict | None = None,
+    *,
+    expected_saving_tokens: int | None = None,
+    observed: dict | None = None,
+    policy_overhead_tokens: int | None = None,
+) -> dict:
+    """Route with an explicit net-benefit decision.
+
+    ``observed`` may contain host telemetry keys matching
+    :func:`simulate_net_benefit`.  With no observation the route remains
+    usable, but the decision is ``observe``.  If a known negative net benefit
+    is supplied, optional code/tool/context deltas are removed while the core
+    and prose safety policy remain.
+    """
+    route = route_text(text, feedback=feedback)
+    observed = observed or {}
+    expected = observed.get("expected_saving_tokens", expected_saving_tokens)
+    if policy_overhead_tokens is None:
+        # This is a local estimate used for a decision label, not provider
+        # telemetry.  Hosts with exact counts should pass their own value.
+        try:
+            from . import estimate, prompt
+            rendered = prompt.render_instructions(route)
+            policy_overhead_tokens = estimate.count(rendered)[0]
+            route["policy_overhead_basis"] = "inferred"
+        except Exception:
+            policy_overhead_tokens = CORE_BUDGET_TOKENS + route.get(
+                "estimated_module_tokens", 0)
+            route["policy_overhead_basis"] = "label"
+    net = simulate_net_benefit(
+        expected_saving_tokens=expected,
+        policy_overhead_tokens=policy_overhead_tokens,
+        extra_turn_tokens=observed.get("extra_turn_tokens", 0),
+        retry_tokens=observed.get("retry_tokens", 0),
+        recovery_tokens=observed.get("recovery_tokens", 0),
+        latency_penalty_tokens=observed.get("latency_penalty_tokens", 0),
+    )
+    route["net_benefit"] = net
+    route["adaptive_action"] = net["decision"]
+    if net["decision"] == "observe" and any(layer in {3, 4} for layer in route["layers"]):
+        # Unknown economics are not permission to inject a potentially
+        # trajectory-changing tool/context policy.  Keep the code contract
+        # for implementation work, retain prose safety when present, and let
+        # the host activate the optional delta after observing a paired run.
+        route["layers"] = [layer for layer in route["layers"] if layer not in {3, 4}] or [1]
+        route["modules"] = [MODULES[layer] for layer in route["layers"]]
+        route["suppressed_layers"] = sorted(set(route.get("suppressed_layers", [])) | {3, 4})
+        route["confidence"] = {
+            str(layer): route.get("confidence", {}).get(str(layer), 0)
+            for layer in route["layers"]
+        }
+        route["estimated_module_tokens"] = sum(
+            MODULE_BUDGET_TOKENS[name] for name in route["modules"])
+        route["tool_adapter"] = "native-output"
+        route["fallback"] = "observe-without-optional-deltas"
+        route["reason"] = "net benefit unknown; observe without tool/context delta"
+        try:
+            from .prompt import instruction_chars
+            route["compiled_instruction_chars"] = instruction_chars(route)
+        except Exception:
+            pass
+    if net["decision"] == "skip" and any(layer in {3, 4} for layer in route["layers"]):
+        # Drop the expensive tool/context deltas first, but retain the code
+        # contract for implementation work.  If a host explicitly routes only
+        # tools, fall back to the prose safety core.
+        route["layers"] = [layer for layer in route["layers"] if layer not in {3, 4}] or [1]
+        route["modules"] = [MODULES[layer] for layer in route["layers"]]
+        route["suppressed_layers"] = sorted(set(route.get("suppressed_layers", [])) | {3, 4})
+        route["confidence"] = {
+            str(layer): route.get("confidence", {}).get(str(layer), 0)
+            for layer in route["layers"]
+        }
+        route["estimated_module_tokens"] = sum(
+            MODULE_BUDGET_TOKENS[name] for name in route["modules"])
+        route["tool_adapter"] = "native-output"
+        route["fallback"] = "net-benefit-skip-optional-deltas"
+        route["core_only"] = False
+        route["reason"] = "net benefit negative; kept core/prose safety policy"
+        try:
+            from .prompt import instruction_chars
+            route["compiled_instruction_chars"] = instruction_chars(route)
+        except Exception:
+            pass
     return route
 
 

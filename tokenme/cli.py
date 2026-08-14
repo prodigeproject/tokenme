@@ -200,12 +200,25 @@ def cmd_provider_usage(args):
     print(f"  reasoning output:     {usage['reasoning_output_tokens']:,}")
     print(f"fresh input (uncached + write): {usage['fresh_input_tokens']:,}")
     print(f"total (input + output): {usage['total_tokens']:,}")
+    if usage.get("ledger"):
+        ledger = usage["ledger"]
+        print(f"evidence basis:         {ledger['basis']}")
+        if ledger.get("unknown"):
+            print("unknown fields:          " + ", ".join(ledger["unknown"]))
 
 
 def cmd_route(args):
     text = _read(args.file) if args.file else args.text
     feedback = router.load_feedback(args.feedback) if args.feedback else None
-    result = router.route_text(text, feedback=feedback)
+    if args.adaptive or args.expected_saving is not None:
+        result = router.adaptive_route(
+            text,
+            feedback=feedback,
+            expected_saving_tokens=args.expected_saving,
+            policy_overhead_tokens=args.policy_overhead,
+        )
+    else:
+        result = router.route_text(text, feedback=feedback)
     if args.json:
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return
@@ -214,6 +227,9 @@ def cmd_route(args):
     print(f"tool adapter: {result['tool_adapter']}")
     print(f"route key: {result['route_key']}")
     print(f"estimated module tokens: {result['estimated_module_tokens']}")
+    if result.get("net_benefit"):
+        print(f"adaptive action: {result['adaptive_action']} "
+              f"(net {result['net_benefit'].get('net_tokens', 'unknown')})")
     if result.get("feedback_action") not in (None, "none"):
         print(f"feedback action: {result['feedback_action']}")
 
@@ -371,6 +387,12 @@ def build_parser():
     source.add_argument("--text")
     source.add_argument("--file")
     c.add_argument("--feedback", help="optional route feedback JSONL")
+    c.add_argument("--adaptive", action="store_true",
+                   help="include net-benefit simulation and adaptive fallback")
+    c.add_argument("--expected-saving", type=int,
+                   help="host-observed saving tokens for the simulation")
+    c.add_argument("--policy-overhead", type=int,
+                   help="host-counted policy overhead tokens")
     c.add_argument("--json", action="store_true")
     c.set_defaults(func=cmd_route)
 

@@ -46,7 +46,10 @@ def build_instructions(arm: str, ticket: str) -> tuple[str, dict]:
         from tokenme import prompt as tokenme_prompt
         from tokenme import router
 
-        route = router.route_text(ticket)
+        # The after arm exercises the production adaptive API.  No saving is
+        # fabricated here: without host feedback the decision remains
+        # ``observe`` and the raw provider ledger is still authoritative.
+        route = router.adaptive_route(ticket)
         text = tokenme_prompt.render_instructions(route, header=True)
         return text, {
             "source": "local-tokenme-compiled",
