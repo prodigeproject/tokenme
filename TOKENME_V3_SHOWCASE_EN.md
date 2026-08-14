@@ -12,14 +12,14 @@ effort: ten identical cases, six arms, and the same deterministic checks.
 Every arm passed 10/10 checks. The raw provider ledger is preserved locally;
 the dollar column is a list-price estimate, not an invoice.
 
-| Arm | Total tokens | Input | Reasoning | Output total | Estimated cost |
-|---|---:|---:|---:|---:|---:|
-| Normal | 761,557 | 748,680 | 1,913 | 12,877 | $0.046809 |
-| **TokenMe v2** | **911,564** | **897,222** | **2,308** | **14,342** | **$0.055926** |
-| **TokenMe v3** | **865,462** | **851,497** | **2,216** | **13,965** | **$0.057342** |
-| Caveman skill | 876,701 | 863,825 | 1,973 | 12,876 | $0.057625 |
-| Ponytail treatment | 845,959 | 833,311 | 2,503 | 12,648 | $0.057470 |
-| RTK treatment | 1,195,620 | 1,178,595 | 3,181 | 17,025 | $0.074916 |
+| Arm | Input | Cache read | Reasoning | Output total | Total tokens | Estimated cost |
+|---|---:|---:|---:|---:|---:|---:|
+| Normal | 748,680 | 657,664 | 1,913 | 12,877 | 761,557 | $0.046809 |
+| **TokenMe v2** | **897,222** | **781,824** | **2,308** | **14,342** | **911,564** | **$0.055926** |
+| **TokenMe v3** | **851,497** | **720,640** | **2,216** | **13,965** | **865,462** | **$0.057342** |
+| Caveman skill | 863,825 | 725,504 | 1,973 | 12,876 | 876,701 | $0.057625 |
+| Ponytail treatment | 833,311 | 690,944 | 2,503 | 12,648 | 845,959 | $0.057470 |
+| RTK treatment | 1,178,595 | 1,006,848 | 3,181 | 17,025 | 1,195,620 | $0.074916 |
 
 In this same-run head-to-head, v3 used 5.06% fewer total tokens and 2.63%
 fewer output tokens than v2, but its estimated cost was 2.53% higher because
