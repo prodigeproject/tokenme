@@ -33,34 +33,30 @@ retained only as historical context.
 The newest run used 50 fresh Codex `gpt-5.6-luna` sessions at low reasoning
 effort: ten identical cases across Normal, TokenMe v3, the exact local Caveman
 skill, the preserved Ponytail treatment, and the real local RTK binary. All 50
-deterministic fixture checks passed. `total = input_tokens + output_tokens`;
-cache-read and reasoning are components and are never added twice.
+deterministic fixture checks passed. The table puts the latest direct TokenMe
+v2 result beside those arms and labels its source run explicitly. `total =
+input_tokens + output_tokens`; cache-read and reasoning are components and are
+never added twice.
 
-| Arm | Total | Input | Cache read | Reasoning | Output | Luna price-sheet estimate* |
-|---|---:|---:|---:|---:|---:|---:|
-| Normal | 772,077 | 758,909 | 632,576 | 2,133 | 13,168 | $0.053720 |
-| **TokenMe v3** | **755,788** | **743,492** | **643,584** | **1,947** | **12,296** | **$0.047608** |
-| Caveman skill | 836,982 | 825,983 | 683,264 | 1,663 | 10,999 | $0.055408 |
-| Ponytail treatment | 776,642 | 764,742 | 644,096 | 1,870 | 11,900 | $0.051291 |
-| RTK treatment | 1,323,581 | 1,304,413 | 1,109,760 | 3,944 | 19,168 | $0.084127 |
+| Arm | Source run | Total | Input | Cache read | Reasoning | Output | Luna price-sheet estimate* |
+|---|---|---:|---:|---:|---:|---:|---:|
+| Normal | latest five-arm, 50 cells | 772,077 | 758,909 | 632,576 | 2,133 | 13,168 | $0.053720 |
+| **TokenMe v2** | **direct v2/v3, 40 cells** | **809,464** | **797,426** | **665,856** | **2,064** | **12,038** | **$0.054077** |
+| **TokenMe v3** | **latest five-arm, 50 cells** | **755,788** | **743,492** | **643,584** | **1,947** | **12,296** | **$0.047608** |
+| Caveman skill | latest five-arm, 50 cells | 836,982 | 825,983 | 683,264 | 1,663 | 10,999 | $0.055408 |
+| Ponytail treatment | latest five-arm, 50 cells | 776,642 | 764,742 | 644,096 | 1,870 | 11,900 | $0.051291 |
+| RTK treatment | latest five-arm, 50 cells | 1,323,581 | 1,304,413 | 1,109,760 | 3,944 | 19,168 | $0.084127 |
+| Normal reference for v2 | direct v2/v3, 40 cells | 796,310 | 782,749 | 631,808 | 2,321 | 13,561 | $0.059098 |
 
 For historical context, the earlier **TokenMe v2** pilot measured **367,739
 total tokens** versus **422,425** for Normal (**-12.95%**). That was a separate
 five-case `gpt-5.6-sol` population, so it is not mixed into the 50-session v3
 table above.
 
-The direct v2/v3 before-after run is also preserved separately:
-
-| Historical four-arm snapshot (40 sessions) | Total tokens | Estimated cost |
-|---|---:|---:|
-| Normal | 796,310 | $0.059098 |
-| TokenMe v2 | 809,464 | $0.054077 |
-| TokenMe v3 | 800,679 | $0.051442 |
-| Caveman skill | 875,935 | $0.058093 |
-
-This table is the latest v2 reference, but it is a separate fresh run from the
-current five-arm headline. Use 809,464 for the latest direct v2 measurement and
-772,077 only as the Normal baseline of the latest v3/Caveman/Ponytail/RTK run.
+The v2 row and its Normal reference are a separate fresh run from the latest
+five-arm headline; compare v2 against its 796,310 reference, and compare v3,
+Caveman, Ponytail, and RTK against the 772,077 latest baseline. The complete
+component ledger is in the linked reports below.
 
 In this task pack, TokenMe v3 used 2.11% fewer total tokens than Normal and
 6.62% fewer output tokens. Its price-sheet estimate was 11.38% lower than
