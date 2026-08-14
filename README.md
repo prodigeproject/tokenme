@@ -21,9 +21,14 @@ for provider dispatch, pricing, cache settlement, and budgets.
 ## Latest live benchmark
 
 **Version naming:** TokenMe v2 is the pre-four-recommendation build; TokenMe v3
-is the current post-recommendation build. The earlier v2 five-case pilot
-recorded 367,739 total tokens versus 422,425 for Normal (-12.95%). It used a
-different model and task population and is retained as historical context.
+is the current post-recommendation build.
+
+**Latest direct v2 reference:** in the 40-session v2/v3 before-after run,
+TokenMe v2 recorded **809,464 total tokens** and an estimated **$0.054077**;
+the same run's Normal baseline was 796,310 and TokenMe v3 was 800,679. This is
+the newest measurement that actually executes the pre-recommendation v2 code.
+The older five-case v2 pilot (367,739 versus 422,425 for Normal, -12.95%) is
+retained only as historical context.
 
 The newest run used 50 fresh Codex `gpt-5.6-luna` sessions at low reasoning
 effort: ten identical cases across Normal, TokenMe v3, the exact local Caveman
@@ -53,10 +58,9 @@ The direct v2/v3 before-after run is also preserved separately:
 | TokenMe v3 | 800,679 | $0.051442 |
 | Caveman skill | 875,935 | $0.058093 |
 
-This table explains why the direct before/after snapshot has Normal at 796,310,
-while the current five-arm headline has 772,077. Both are provider measurements
-from different fresh runs; use 772,077 for the latest v3 comparison and 796,310
-only when discussing the direct v2/v3 benchmark.
+This table is the latest v2 reference, but it is a separate fresh run from the
+current five-arm headline. Use 809,464 for the latest direct v2 measurement and
+772,077 only as the Normal baseline of the latest v3/Caveman/Ponytail/RTK run.
 
 In this task pack, TokenMe v3 used 2.11% fewer total tokens than Normal and
 6.62% fewer output tokens. Its price-sheet estimate was 11.38% lower than

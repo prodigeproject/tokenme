@@ -22,7 +22,9 @@ the dollar column is a list-price estimate, not an invoice.
 
 Historical context: **TokenMe v2** measured **367,739 total tokens** versus
 **422,425** for Normal (-12.95%) in an earlier five-case `gpt-5.6-sol` pilot.
-That population is separate from this latest v3 run.
+That population is separate from this latest v3 run. The latest direct v2
+reference is the 40-session before/after run: v2 **809,464** total tokens,
+Normal **796,310**, and v3 **800,679**.
 
 In this task pack, TokenMe v3 used 2.11% fewer total tokens and 6.62% fewer
 output tokens than Normal. The estimated cost was 11.38% lower than Normal,
