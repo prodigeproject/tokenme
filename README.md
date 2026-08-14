@@ -23,54 +23,36 @@ for provider dispatch, pricing, cache settlement, and budgets.
 **Version naming:** TokenMe v2 is the pre-four-recommendation build; TokenMe v3
 is the current post-recommendation build.
 
-**Latest direct v2 reference:** in the 40-session v2/v3 before-after run,
-TokenMe v2 recorded **809,464 total tokens** and an estimated **$0.054077**;
-the same run's Normal baseline was 796,310 and TokenMe v3 was 800,679. This is
-the newest measurement that actually executes the pre-recommendation v2 code.
-The older five-case v2 pilot (367,739 versus 422,425 for Normal, -12.95%) is
-retained only as historical context.
-
-The newest run used 50 fresh Codex `gpt-5.6-luna` sessions at low reasoning
-effort: ten identical cases across Normal, TokenMe v3, the exact local Caveman
-skill, the preserved Ponytail treatment, and the real local RTK binary. All 50
-deterministic fixture checks passed. The table puts the latest direct TokenMe
-v2 result beside those arms and labels its source run explicitly. `total =
+**Latest head-to-head run:** adding TokenMe v2 to the previous five-arm suite
+requires **60 cells**: ten identical cases across Normal, TokenMe v2, TokenMe
+v3, the exact local Caveman skill, the preserved Ponytail treatment, and the
+real local RTK binary. All 60 deterministic fixture checks passed. `total =
 input_tokens + output_tokens`; cache-read and reasoning are components and are
 never added twice.
 
-| Arm | Source run | Total | Input | Cache read | Reasoning | Output | Luna price-sheet estimate* |
-|---|---|---:|---:|---:|---:|---:|---:|
-| Normal | latest five-arm, 50 cells | 772,077 | 758,909 | 632,576 | 2,133 | 13,168 | $0.053720 |
-| **TokenMe v2** | **direct v2/v3, 40 cells** | **809,464** | **797,426** | **665,856** | **2,064** | **12,038** | **$0.054077** |
-| **TokenMe v3** | **latest five-arm, 50 cells** | **755,788** | **743,492** | **643,584** | **1,947** | **12,296** | **$0.047608** |
-| Caveman skill | latest five-arm, 50 cells | 836,982 | 825,983 | 683,264 | 1,663 | 10,999 | $0.055408 |
-| Ponytail treatment | latest five-arm, 50 cells | 776,642 | 764,742 | 644,096 | 1,870 | 11,900 | $0.051291 |
-| RTK treatment | latest five-arm, 50 cells | 1,323,581 | 1,304,413 | 1,109,760 | 3,944 | 19,168 | $0.084127 |
-| Normal reference for v2 | direct v2/v3, 40 cells | 796,310 | 782,749 | 631,808 | 2,321 | 13,561 | $0.059098 |
+| Arm | Total | Input | Cache read | Reasoning | Output | Luna price-sheet estimate* |
+|---|---:|---:|---:|---:|---:|---:|
+| Normal | 761,557 | 748,680 | 657,664 | 1,913 | 12,877 | $0.046809 |
+| **TokenMe v2** | **911,564** | **897,222** | **781,824** | **2,308** | **14,342** | **$0.055926** |
+| **TokenMe v3** | **865,462** | **851,497** | **720,640** | **2,216** | **13,965** | **$0.057342** |
+| Caveman skill | 876,701 | 863,825 | 725,504 | 1,973 | 12,876 | $0.057625 |
+| Ponytail treatment | 845,959 | 833,311 | 690,944 | 2,503 | 12,648 | $0.057470 |
+| RTK treatment | 1,195,620 | 1,178,595 | 1,006,848 | 3,181 | 17,025 | $0.074916 |
 
-For historical context, the earlier **TokenMe v2** pilot measured **367,739
-total tokens** versus **422,425** for Normal (**-12.95%**). That was a separate
-five-case `gpt-5.6-sol` population, so it is not mixed into the 50-session v3
-table above.
-
-The v2 row and its Normal reference are a separate fresh run from the latest
-five-arm headline; compare v2 against its 796,310 reference, and compare v3,
-Caveman, Ponytail, and RTK against the 772,077 latest baseline. The complete
-component ledger is in the linked reports below.
-
-In this task pack, TokenMe v3 used 2.11% fewer total tokens than Normal and
-6.62% fewer output tokens. Its price-sheet estimate was 11.38% lower than
-Normal, 9.70% lower than Caveman, 2.69% lower than Ponytail, and 43.41% lower
-than RTK. Caveman and Ponytail produced shorter visible output in this run, so
-this is an end-to-end cost comparison rather than an output-only ranking. The
-paired total-token interval crosses zero; see the full
-[`latest five-arm report`](benchmark/audit_10_case/LATEST_5_ARM_REPORT.md).
+In this same-run head-to-head, v3 used 5.06% fewer total tokens and 2.63% fewer
+output tokens than v2, but its price-sheet estimate was 2.53% higher because
+fresh input increased while cache-read input decreased. Versus the same-run
+Normal baseline, v2 was +19.70% total and v3 was +13.64% total. The paired
+total-token interval for v3 versus v2 crosses zero; see the full
+[`latest six-arm report`](benchmark/audit_10_case/LATEST_6_ARM_REPORT.md).
 
 *Estimate only, not a local Codex invoice:* uncached input x $0.20/MTok +
 cache-read input x $0.02/MTok + output x $1.20/MTok. Raw JSONL and copied
-workspaces are preserved locally under the ignored `runs_latest_all_v3/`
+workspaces are preserved locally under the ignored `runs_latest_six_v3/`
 directory.
 
+The older five-case v2 pilot measured 367,739 versus 422,425 for Normal
+(-12.95%) with `gpt-5.6-sol`; it is historical context, not this head-to-head.
 This is one task pack, not a universal ranking. The Caveman proxy/CCR was not
 inserted into the request path; the Caveman, Ponytail, and RTK arms are
 instruction/treatment comparisons. Model, provider cache state, hooks, and
@@ -78,19 +60,18 @@ task mix affect the result. See the report for provenance and limitations.
 
 ### Why the before/after report has different numbers
 
-There are two intentionally preserved snapshots:
+There are now three intentionally preserved snapshots:
 
 | Snapshot | Sessions | Arms | Purpose |
 |---|---:|---|---|
 | `BEFORE_AFTER_REPORT.md` | 40 | Normal, TokenMe v2, TokenMe v3, Caveman | Direct v2-to-v3 transition on one four-arm run |
-| `LATEST_5_ARM_REPORT.md` | 50 | Normal, TokenMe v3, Caveman, Ponytail, RTK | Current five-arm comparison and public headline |
+| `LATEST_5_ARM_REPORT.md` | 50 | Normal, TokenMe v3, Caveman, Ponytail, RTK | Earlier five-arm comparison |
+| `LATEST_6_ARM_REPORT.md` | 60 | Normal, TokenMe v2, TokenMe v3, Caveman, Ponytail, RTK | Current same-case v2/v3 head-to-head |
 
 They use the same ten-case task pack and the same accounting formula, but they
-are different provider runs with different cache/trajectory state. The v2 arm
-is present only in the historical 40-cell snapshot because it runs source code
-from the pre-recommendation commit. Do not mix totals across the two tables;
-use the five-arm report for current v3 claims and the before/after report for
-the direct v2/v3 transition.
+are different provider runs with different cache/trajectory state. Use the
+six-arm report for current v2/v3 claims; the earlier reports remain useful for
+historical trend and methodology comparison.
 
 ## Accounting contract
 
@@ -191,14 +172,15 @@ when making a production decision.
 
 The harness stores prompts, route metadata, complete JSONL, stderr, final
 responses, copied workspaces, and deterministic scores per independent cell.
-For the latest five-arm run:
+For the latest six-arm v2/v3 head-to-head (60 cells):
 
 ```powershell
-python benchmark/audit_10_case/run_latest_all.py `
+python benchmark/audit_10_case/run_latest_six.py `
   --codex C:\Users\Pc\AppData\Local\Temp\tokenme-codex-cli.exe `
-  --model gpt-5.6-luna --reasoning-effort low --workers 5 `
+  --rtk C:\Users\Pc\AppData\Local\Temp\tokenme-rtk-v0420-audit\rtk.exe `
+  --model gpt-5.6-luna --reasoning-effort low --workers 6 `
   --tasks benchmark/audit_10_case/tasks.py `
-  --result-root benchmark/audit_10_case/runs_latest_all_v3 `
+  --result-root benchmark/audit_10_case/runs_latest_six_v3 `
   --score benchmark/provider_total/mechanism_score.py
 ```
 
@@ -214,8 +196,10 @@ python benchmark/audit_10_case/run_before_after.py `
 ```
 
 Read the methodology and limitations in
-[`benchmark/audit_10_case/LATEST_5_ARM_REPORT.md`](benchmark/audit_10_case/LATEST_5_ARM_REPORT.md)
-and the historical [`before/after report`](benchmark/audit_10_case/BEFORE_AFTER_REPORT.md).
+[`benchmark/audit_10_case/LATEST_6_ARM_REPORT.md`](benchmark/audit_10_case/LATEST_6_ARM_REPORT.md),
+with the earlier [`five-arm report`](benchmark/audit_10_case/LATEST_5_ARM_REPORT.md)
+and historical [`before/after report`](benchmark/audit_10_case/BEFORE_AFTER_REPORT.md)
+available for comparison.
 
 ## Related research
 

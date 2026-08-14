@@ -5,32 +5,31 @@ the Tokenisme gateway: TokenMe exposes portable decisions and evidence, while
 the gateway can own provider dispatch, pricing, cache settlement, CCR,
 retries, quotas, and reasoning budgets.
 
-## Latest five-arm result
+## Latest six-arm result
 
-The latest run used 50 fresh Codex `gpt-5.6-luna` sessions at low reasoning
-effort: ten identical cases, five arms, and the same deterministic checks.
+The latest run used 60 fresh Codex `gpt-5.6-luna` sessions at low reasoning
+effort: ten identical cases, six arms, and the same deterministic checks.
 Every arm passed 10/10 checks. The raw provider ledger is preserved locally;
 the dollar column is a list-price estimate, not an invoice.
 
 | Arm | Total tokens | Input | Reasoning | Output total | Estimated cost |
 |---|---:|---:|---:|---:|---:|
-| Normal | 772,077 | 758,909 | 2,133 | 13,168 | $0.053720 |
-| **TokenMe v3** | **755,788** | **743,492** | **1,947** | **12,296** | **$0.047608** |
-| Caveman skill | 836,982 | 825,983 | 1,663 | 10,999 | $0.055408 |
-| Ponytail treatment | 776,642 | 764,742 | 1,870 | 11,900 | $0.051291 |
-| RTK treatment | 1,323,581 | 1,304,413 | 3,944 | 19,168 | $0.084127 |
+| Normal | 761,557 | 748,680 | 1,913 | 12,877 | $0.046809 |
+| **TokenMe v2** | **911,564** | **897,222** | **2,308** | **14,342** | **$0.055926** |
+| **TokenMe v3** | **865,462** | **851,497** | **2,216** | **13,965** | **$0.057342** |
+| Caveman skill | 876,701 | 863,825 | 1,973 | 12,876 | $0.057625 |
+| Ponytail treatment | 845,959 | 833,311 | 2,503 | 12,648 | $0.057470 |
+| RTK treatment | 1,195,620 | 1,178,595 | 3,181 | 17,025 | $0.074916 |
 
-Historical context: **TokenMe v2** measured **367,739 total tokens** versus
-**422,425** for Normal (-12.95%) in an earlier five-case `gpt-5.6-sol` pilot.
-That population is separate from this latest v3 run. The latest direct v2
-reference is the 40-session before/after run: v2 **809,464** total tokens,
-Normal **796,310**, and v3 **800,679**.
+In this same-run head-to-head, v3 used 5.06% fewer total tokens and 2.63%
+fewer output tokens than v2, but its estimated cost was 2.53% higher because
+fresh input increased while cache-read input decreased. The older five-case v2
+pilot measured 367,739 versus 422,425 for Normal (-12.95%) and is not mixed into
+this result.
 
-In this task pack, TokenMe v3 used 2.11% fewer total tokens and 6.62% fewer
-output tokens than Normal. The estimated cost was 11.38% lower than Normal,
-9.70% lower than Caveman, 2.69% lower than Ponytail, and 43.41% lower than
-RTK. These are paired task-pack observations, not universal guarantees; the
-total-token confidence interval crosses zero.
+Versus the same-run Normal baseline, v2 was +19.70% total and v3 was +13.64%
+total. These are paired task-pack observations, not universal guarantees; the
+v3-v2 total-token confidence interval crosses zero.
 
 The accounting contract is:
 
@@ -54,10 +53,6 @@ diagnosis. Adding it again would double-count.
 | Adaptive output summary + quality gate | Expensive output can be shorter while preserving numbers, paths, warnings, errors, and unresolved actions. | A heuristic gate can miss nuance or allow false positives; output savings must be checked against extra turns and semantic quality. |
 | Lossless context packer + optional compressor plugin | Security/error segments are pinned; relevance and recency are deterministic; unsafe or non-smaller transforms fail closed. | Packing can change prefix-cache stability. Lossy compression needs schema knowledge, round-trip tests, and durable recovery outside TokenMe. |
 
-TokenMe v2's older five-case pilot was 367,739 total tokens versus 422,425 for
-Normal (-12.95%), but it used a different model and task population. The v3
-figures above are the current, larger five-arm measurement.
-
 Read the full methodology in
-[`benchmark/audit_10_case/LATEST_5_ARM_REPORT.md`](benchmark/audit_10_case/LATEST_5_ARM_REPORT.md)
+[`benchmark/audit_10_case/LATEST_6_ARM_REPORT.md`](benchmark/audit_10_case/LATEST_6_ARM_REPORT.md)
 and use the project at <https://github.com/prodigeproject/tokenme>.
