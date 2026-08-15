@@ -1,4 +1,4 @@
-# TokenMe v4 optimization audit
+# TokenMe v3 Compact Policy optimization audit
 
 ## Objective
 
@@ -22,11 +22,11 @@ caused by TokenMe.
 ## Method
 
 30 cells: ten identical cases x `baseline`, `tokenme_v3_before`, and
-`tokenme_v4`. The before arm loads TokenMe router/prompt from commit `3a555c7`;
-the v4 arm uses the working tree. Each cell is one independent
+`tokenme_v3_compact`. The before arm loads TokenMe router/prompt from commit
+`3a555c7`; the Compact Policy arm uses the working tree. Each cell is one independent
 `gpt-5.6-luna`, reasoning-effort `low` session. All raw JSONL, prompts,
 stderr, final files, and deterministic quality artifacts remain under the
-ignored `runs_v4_luna_2/` root.
+ignored raw artifact root from the run; the public name is v3 Compact Policy.
 
 The provider accounting contract is:
 
@@ -49,9 +49,9 @@ is displayed separately but is not added twice.
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | Baseline | 784,541 | 771,540 | 631,040 | 81.79% | 140,500 | 1,833 | 13,001 | $0.056322 | 10/10 |
 | TokenMe v3 before | 801,199 | 789,510 | 656,640 | 83.17% | 132,870 | 1,680 | 11,689 | $0.053734 | 10/10 |
-| **TokenMe v4** | **660,517** | **648,958** | **523,008** | **80.59%** | **125,950** | 2,392 | **11,559** | **$0.049521** | **10/10** |
+| **TokenMe v3 Compact Policy** | **660,517** | **648,958** | **523,008** | **80.59%** | **125,950** | 2,392 | **11,559** | **$0.049521** | **10/10** |
 
-### v4 versus the same-run baseline
+### v3 Compact Policy versus the same-run baseline
 
 - total tokens: **-124,024 (-15.81%)**;
 - input tokens: **-122,582 (-15.89%)**;
@@ -60,14 +60,14 @@ is displayed separately but is not added twice.
 - estimated cost: **-$0.006801 (-12.08%)**;
 - quality: **10/10** for both arms.
 
-Reasoning did **not** fall: v4 reported 2,392 versus 1,833 (**+30.5%**).
+Reasoning did **not** fall: the Compact Policy reported 2,392 versus 1,833 (**+30.5%**).
 Because reasoning is already included in output billing, the lower visible/output
 total still produced the lower estimated cost. A lower reasoning budget requires
 provider/gateway enforcement; a prompt-only optimizer cannot guarantee it.
 
 ### Cache interpretation
 
-The absolute cached-input count is lower in v4 (523,008 versus 631,040) because
+The absolute cached-input count is lower in the Compact Policy (523,008 versus 631,040) because
 the entire request is smaller. The cache ratio is close but also slightly lower
 (80.59% versus 81.79%). It would be misleading to market this run as
 "highest cache-read." Absolute cache-read and lowest input are competing objectives when
@@ -84,14 +84,14 @@ characters were:
 |---|---:|---:|---:|
 | Baseline | 30 | 55,762 | 9,849 |
 | TokenMe v3 before | 27 | 81,785 | 18,805 |
-| TokenMe v4 | 20 | 49,378 | 16,521 |
+| TokenMe v3 Compact Policy | 20 | 49,378 | 16,521 |
 
-V4 reduced command count and aggregate command-output characters, but the
+The Compact Policy reduced command count and aggregate command-output characters, but the
 largest single command was still larger than baseline. The earlier ~90k event
 was a trajectory outlier; this policy is advisory and is not a transport-level
 hard ceiling.
 
-Per-case, v4 was lower on six cases (`pony_csv_column`, `pony_strip_version`,
+Per-case, the Compact Policy was lower on six cases (`pony_csv_column`, `pony_strip_version`,
 `prose_api`, `prose_arch`, `prose_release`, `prose_security`), effectively tied
 on `rtk_errors`, and higher on `pony_dedupe`, `rtk_redact`, and `rtk_routes`.
 
@@ -101,7 +101,7 @@ not a universal guarantee.
 
 ## Decision and next step
 
-Keep the v4 compact policies: in this run they achieved the requested lower
+Keep the v3 Compact Policy: in this run it achieved the requested lower
 input, lower output, lower command trajectory, and lower estimated cost while
 preserving deterministic quality. Do not claim lower reasoning or highest
 absolute cache-read yet.

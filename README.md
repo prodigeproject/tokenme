@@ -77,13 +77,13 @@ characters in this sample, but it did not impose a hard ceiling or improve
 aggregate cost. See the [`v2 guard report`](benchmark/audit_10_case/V2_GUARD_REPORT.md)
 for the raw/inferred boundary and the adapter-level fix still required.
 
-The next optimization pass adds compact task-mode policies for read-only prose,
-minimal helper patches, and Bash-heavy inspection. In a fresh 30-cell Luna run,
-TokenMe v4 used 660,517 provider tokens versus 784,541 for the same-run
+The next optimization pass is named **TokenMe v3 Compact Policy**. It adds
+compact task-mode policies for read-only prose, minimal helper patches, and
+Bash-heavy inspection. In a fresh 30-cell Luna run, it used 660,517 provider tokens versus 784,541 for the same-run
 baseline (-15.81%) and the price-sheet estimate fell from $0.056322 to $0.049521
 (-12.08%), with 10/10 deterministic checks. Output fell 11.09%; reasoning did
 not fall and absolute cache-read was lower because the entire request was
-smaller. The complete [v4 optimization report](benchmark/audit_10_case/V4_OPTIMIZATION_REPORT.md)
+smaller. The complete [v3 Compact Policy report](benchmark/audit_10_case/V3_COMPACT_POLICY_REPORT.md)
 separates those metrics and states the remaining provider-adapter work.
 
 ## Accounting contract
@@ -208,14 +208,14 @@ python benchmark/audit_10_case/run_before_after.py `
   --score benchmark/provider_total/mechanism_score.py
 ```
 
-For the v3-before versus compact-policy v4 optimization audit:
+For the v3-before versus v3 Compact Policy optimization audit:
 
 ```powershell
-python benchmark/audit_10_case/run_v4.py `
+python benchmark/audit_10_case/run_v3_compact.py `
   --codex C:\Users\Pc\AppData\Local\Temp\tokenme-codex-cli.exe `
   --model gpt-5.6-luna --reasoning-effort low --workers 3 `
   --tasks benchmark/audit_10_case/tasks.py `
-  --result-root benchmark/audit_10_case/runs_v4_luna_2 `
+  --result-root benchmark/audit_10_case/runs_v3_compact_luna `
   --score benchmark/provider_total/mechanism_score.py
 ```
 
