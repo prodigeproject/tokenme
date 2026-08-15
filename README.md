@@ -39,11 +39,15 @@ never added twice.
 | Ponytail treatment | 845,959 | 833,311 | 690,944 | 2,503 | 12,648 | $0.057470 |
 | RTK treatment | 1,195,620 | 1,178,595 | 1,006,848 | 3,181 | 17,025 | $0.074916 |
 
-In this same-run head-to-head, v3 used 5.06% fewer total tokens and 2.63% fewer
-output tokens than v2, but its price-sheet estimate was 2.53% higher because
-fresh input increased while cache-read input decreased. Versus the same-run
-Normal baseline, v2 was +19.70% total and v3 was +13.64% total. The paired
-total-token interval for v3 versus v2 crosses zero; see the full
+**Readout of this run:** v3 is **not** cheaper than the same-run Normal
+baseline (+22.50% estimated cost). It is only 0.49% cheaper than Caveman in
+the estimate, which is effectively a tie at this sample size. V3 does use
+5.06% fewer total tokens than v2 in this run, but costs 2.53% more because the
+fresh/cache mix changed.
+
+V3 also produced 2.63% fewer output tokens than v2. Versus the same-run Normal
+baseline, v2 was +19.70% total and v3 was +13.64% total. The paired total-token
+interval for v3 versus v2 crosses zero; see the full
 [`latest six-arm report`](benchmark/audit_10_case/LATEST_6_ARM_REPORT.md).
 
 *Estimate only, not a local Codex invoice:* uncached input x $0.20/MTok +
@@ -57,6 +61,12 @@ This is one task pack, not a universal ranking. The Caveman proxy/CCR was not
 inserted into the request path; the Caveman, Ponytail, and RTK arms are
 instruction/treatment comparisons. Model, provider cache state, hooks, and
 task mix affect the result. See the report for provenance and limitations.
+
+The earlier v2 result is reproducible from the raw artifact committed with
+`d947148` (`benchmark/provider_total/runs_compact_v6/RESULTS.json`): five
+simple cases on `gpt-5.6-sol`, not the ten-case Luna mechanism pack above. Its
+result was real for that population, but it is not an apples-to-apples estimate
+of the current six-arm run.
 
 ## Accounting contract
 
