@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/tests-73%20passing-brightgreen" alt="73 tests passing">
+  <img src="https://img.shields.io/badge/tests-76%20passing-brightgreen" alt="76 tests passing">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license">
   <img src="https://img.shields.io/badge/python-3.8%2B-blue" alt="Python 3.8+">
   <img src="https://img.shields.io/badge/runtime%20dependencies-none-brightgreen" alt="No runtime dependencies">
@@ -76,6 +76,15 @@ versus 10/10 for legacy. The guard reduced `rtk_routes` command-output
 characters in this sample, but it did not impose a hard ceiling or improve
 aggregate cost. See the [`v2 guard report`](benchmark/audit_10_case/V2_GUARD_REPORT.md)
 for the raw/inferred boundary and the adapter-level fix still required.
+
+The next optimization pass adds compact task-mode policies for read-only prose,
+minimal helper patches, and Bash-heavy inspection. In a fresh 30-cell Luna run,
+TokenMe v4 used 660,517 provider tokens versus 784,541 for the same-run
+baseline (-15.81%) and the price-sheet estimate fell from $0.056322 to $0.049521
+(-12.08%), with 10/10 deterministic checks. Output fell 11.09%; reasoning did
+not fall and absolute cache-read was lower because the entire request was
+smaller. The complete [v4 optimization report](benchmark/audit_10_case/V4_OPTIMIZATION_REPORT.md)
+separates those metrics and states the remaining provider-adapter work.
 
 ## Accounting contract
 
@@ -196,6 +205,17 @@ python benchmark/audit_10_case/run_before_after.py `
   --model gpt-5.6-luna --reasoning-effort low --workers 4 `
   --tasks benchmark/audit_10_case/tasks.py `
   --result-root benchmark/audit_10_case/runs_before_after_final `
+  --score benchmark/provider_total/mechanism_score.py
+```
+
+For the v3-before versus compact-policy v4 optimization audit:
+
+```powershell
+python benchmark/audit_10_case/run_v4.py `
+  --codex C:\Users\Pc\AppData\Local\Temp\tokenme-codex-cli.exe `
+  --model gpt-5.6-luna --reasoning-effort low --workers 3 `
+  --tasks benchmark/audit_10_case/tasks.py `
+  --result-root benchmark/audit_10_case/runs_v4_luna_2 `
   --score benchmark/provider_total/mechanism_score.py
 ```
 

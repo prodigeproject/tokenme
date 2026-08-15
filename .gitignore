@@ -77,6 +77,7 @@ benchmark/audit_10_case/runs_latest_all*/
 benchmark/audit_10_case/runs_latest_six*/
 benchmark/audit_10_case/runs_active*/
 benchmark/audit_10_case/runs_v2_guard*/
+benchmark/audit_10_case/runs_v4*/
 benchmark/audit_10_case/analyzer_verify.out.txt
 benchmark/audit_10_case/BEFORE_AFTER_REPORT.md
 

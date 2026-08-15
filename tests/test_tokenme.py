@@ -369,6 +369,33 @@ class TestAdaptiveRouter(unittest.TestCase):
                        "-TotalCount", "git diff", "do not rerun"):
             self.assertIn(marker, guard)
 
+    def test_prose_only_route_gets_read_only_trajectory_hint(self):
+        route = router.adaptive_route(
+            "Read api.md. Do not modify the fixture. Write the requested report."
+        )
+        rendered = prompt.render_instructions(route)
+        self.assertIn("Read-only report:", rendered)
+        self.assertNotIn("Bounded inspection:", rendered)
+
+    def test_suppressed_tool_route_gets_bounded_trajectory_hint(self):
+        route = router.adaptive_route(
+            "Implement top_routes in work.py. Use a Bash-style command sequence to "
+            "inspect the workspace before editing, search for TODO, and count files/lines."
+        )
+        self.assertEqual(route["task_mode"], "tool-heavy")
+        rendered = prompt.render_instructions(route)
+        self.assertIn("Bounded tool task:", rendered)
+
+    def test_helper_task_gets_minimal_code_policy(self):
+        route = router.adaptive_route(
+            "Read the existing helper in helpers.py first. Keep the requested API, "
+            "do not add dependencies or unrelated files, and run one focused check."
+        )
+        self.assertEqual(route["task_mode"], "minimal-code")
+        rendered = prompt.render_instructions(route)
+        self.assertIn("Minimal patch:", rendered)
+        self.assertNotIn("layer3", rendered.lower())
+
     def test_code_task_does_not_pay_for_tools_without_signal(self):
         result = router.route_text("Implement safe_upload_path in uploads.py.")
         self.assertEqual(result["layers"], [2])

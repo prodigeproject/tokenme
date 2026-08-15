@@ -55,6 +55,13 @@ _NOISY_TOOL = re.compile(
     r"\b(diff|log|stdout|stderr|test output|cargo test|pytest|npm test|"
     r"listing|grep|trace|verbose|stack trace)\b"
 )
+_TOOL_HEAVY = re.compile(
+    r"\b(bash-style command sequence|inspect the workspace before editing|"
+    r"count files/lines|search for todo)\b"
+)
+_MINIMAL_HELPER = re.compile(
+    r"\b(existing helper|helpers\.py|unrelated files|requested api)\b"
+)
 _HIGH_STAKES = re.compile(
     r"\b(security|auth|token|secret|password|credential|permission|traversal|"
     r"delete|drop|migration|accessib|aria|hmac|crypt|unsafe|irreversible)\b"
@@ -197,7 +204,14 @@ def route_text(text: str, feedback: dict | None = None) -> dict:
         if not prose_only:
             layers.append(3)
     layers.sort()
-    task_mode = "prose-only" if prose_only else "normal"
+    tool_heavy = bool(_TOOL_HEAVY.search(lower)) and not prose_only
+    minimal_code = bool(_MINIMAL_HELPER.search(lower)) and 2 in layers and not prose_only
+    task_mode = (
+        "prose-only" if prose_only else
+        "tool-heavy" if tool_heavy else
+        "minimal-code" if minimal_code else
+        "normal"
+    )
     route_key = _feedback_key(scores, noisy_tool, task_mode, layers)
     modules = [MODULES[layer] for layer in layers]
     route = {

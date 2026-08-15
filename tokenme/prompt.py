@@ -22,8 +22,8 @@ COMPILED_MODULES = {
         "unambiguous sentences. Expand for safety, ambiguity, or requested detail."
     ),
     "layer2-code": (
-        "Code: inspect first; make the smallest readable correct change; reuse helpers/stdlib; "
-        "no needless dependencies/abstractions; run one focused check. Use tools; no narration."
+        "Code: inspect first; make the smallest correct change; reuse helpers/stdlib; "
+        "no needless dependencies; run one focused check; stop on success; no narration."
     ),
     "layer3-tools": (
         "Tools: request the smallest output that answers the question; prefer targeted "
@@ -36,6 +36,26 @@ COMPILED_MODULES = {
         "restore from the checkpoint instead of rereading known context."
     ),
 }
+
+
+READ_ONLY_PROSE = (
+    "Read-only report: preserve safety and exact requirements; read only the named fixture; do not modify files or run shell or "
+    "validation commands. Follow exact headings and requested word count; include every "
+    "stated fact without invented numbers; write and return the final response only."
+)
+
+MINIMAL_CODE = (
+    "Minimal patch: preserve safety, validation, and the public API; read only the named helper and target; make "
+    "one smallest correct edit, add no dependencies or unrelated files, do not invent "
+    "edge cases, run one focused check, and stop on success."
+)
+
+BOUNDED_TOOL_ADVISORY = (
+    "Bounded tool task: preserve exact paths, errors, and requirements; combine the requested tree/search/fixture/diff/count inspection "
+    "into a targeted command, exclude generated files, and cap output; never print a full "
+    "diff or rerun sufficient output. Make one minimal edit, run one focused verification, "
+    "and stop."
+)
 
 SUMMARY_MODES = {
     "brief": (
@@ -67,6 +87,27 @@ def bounded_tool_guard() -> str:
     benchmarked with the fix without silently changing the historical source.
     """
     return BOUNDED_TOOL_GUARD
+
+
+def _trajectory_hint(route: dict) -> str:
+    """Return a small task-mode hint that can change tool behaviour.
+
+    The hint is intentionally separate from the optional layer-3 module.  An
+    adaptive route may suppress that module when economics are unknown, while
+    still needing a read-only or bounded-trajectory instruction to avoid
+    paying for unnecessary commands.  It is advisory; hosts that need a hard
+    output ceiling must enforce it around the tool adapter.
+    """
+    if route.get("task_mode") == "prose-only":
+        return READ_ONLY_PROSE
+    if route.get("task_mode") == "minimal-code":
+        return MINIMAL_CODE
+    if route.get("task_mode") == "tool-heavy":
+        return BOUNDED_TOOL_ADVISORY
+    suppressed = set(route.get("suppressed_layers") or [])
+    if 3 in suppressed:
+        return BOUNDED_TOOL_ADVISORY
+    return ""
 
 
 def summary_policy(
@@ -102,6 +143,12 @@ def summary_policy(
 
 def render_instructions(route: dict, *, header: bool = False) -> str:
     """Render only the selected policy, without the full Markdown references."""
+    compact_mode = route.get("task_mode")
+    if compact_mode in {"prose-only", "minimal-code", "tool-heavy"}:
+        text = _trajectory_hint(route)
+        if header:
+            return "\n## TokenMe compact policy\n" + text + "\n"
+        return "\n" + text + "\n"
     modules = route.get("modules") or []
     parts = [COMPILED_CORE]
     parts.extend(COMPILED_MODULES[name] for name in modules if name in COMPILED_MODULES)
