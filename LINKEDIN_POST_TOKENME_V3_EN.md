@@ -23,14 +23,22 @@ in the cost formula.
 For the same ten cases, the reference treatment run recorded Caveman at
 **+15.12%**, Ponytail at **+11.08%**, and RTK at **+57.00%** versus that run's
 Normal arm. Those reference arms came from a separate provider-session/cache
-batch, so the comparison is transparent context—not a claim of identical cache
-conditions.
+batch, so the comparison is context, not a claim of identical cache conditions.
 
-The practical lesson: smaller instructions can reduce unnecessary work, but
-only paired provider telemetry and quality checks establish whether the saving
-is real. TokenMe routes read-only prose, minimal helper patches, and Bash-heavy
-inspection differently while preserving requested facts, safety requirements,
-and public APIs.
+What we learned from the Compact Policy:
+
+- **Classification is an optimization boundary.** A prose task accidentally
+  routed as code/tool work can trigger extra commands and erase the saving.
+  Explicit task modes and a stop-after-sufficient-check rule matter.
+- **Cache-read is not cache efficiency.** A smaller request can have fewer
+  absolute cache-read tokens while keeping a healthy cache ratio, so both must
+  be reported.
+- **Prompt policy cannot enforce reasoning budgets.** Reasoning is provider
+  output; controlling it needs a provider or gateway adapter, and it must never
+  be double-counted.
+- **Net savings cover the whole trajectory.** Policy length, tool calls, retries,
+  recovery, latency, and quality belong in the measurement - not just final
+  answer length.
 
 TokenMe is an MIT-licensed open-source optimizer from **ProdigeProject**.
 Explore the code and methodology:
