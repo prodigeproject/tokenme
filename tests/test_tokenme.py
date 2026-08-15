@@ -363,6 +363,12 @@ class TestAdaptiveRouter(unittest.TestCase):
         self.assertLess(len(text), 900)
         self.assertEqual(route["instruction_mode"], "micro")
 
+    def test_bounded_tool_guard_names_hardening_controls(self):
+        guard = prompt.bounded_tool_guard()
+        for marker in ("unbounded", "--max-count", "Select-Object -First",
+                       "-TotalCount", "git diff", "do not rerun"):
+            self.assertIn(marker, guard)
+
     def test_code_task_does_not_pay_for_tools_without_signal(self):
         result = router.route_text("Implement safe_upload_path in uploads.py.")
         self.assertEqual(result["layers"], [2])

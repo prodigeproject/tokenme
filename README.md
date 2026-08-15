@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/tests-72%20passing-brightgreen" alt="72 tests passing">
+  <img src="https://img.shields.io/badge/tests-73%20passing-brightgreen" alt="73 tests passing">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license">
   <img src="https://img.shields.io/badge/python-3.8%2B-blue" alt="Python 3.8+">
   <img src="https://img.shields.io/badge/runtime%20dependencies-none-brightgreen" alt="No runtime dependencies">
@@ -67,6 +67,15 @@ The earlier v2 result is reproducible from the raw artifact committed with
 simple cases on `gpt-5.6-sol`, not the ten-case Luna mechanism pack above. Its
 result was real for that population, but it is not an apples-to-apples estimate
 of the current six-arm run.
+
+A focused 30-cell retest compared that exact legacy v2 source with a
+prompt-only bounded-tool guard aimed at the earlier ~90k-character search/diff
+outlier. Legacy v2 measured 832,370 provider tokens and an estimated $0.062963;
+the guard measured 911,562 tokens and $0.065720, with 9/10 deterministic checks
+versus 10/10 for legacy. The guard reduced `rtk_routes` command-output
+characters in this sample, but it did not impose a hard ceiling or improve
+aggregate cost. See the [`v2 guard report`](benchmark/audit_10_case/V2_GUARD_REPORT.md)
+for the raw/inferred boundary and the adapter-level fix still required.
 
 ## Accounting contract
 
@@ -187,6 +196,18 @@ python benchmark/audit_10_case/run_before_after.py `
   --model gpt-5.6-luna --reasoning-effort low --workers 4 `
   --tasks benchmark/audit_10_case/tasks.py `
   --result-root benchmark/audit_10_case/runs_before_after_final `
+  --score benchmark/provider_total/mechanism_score.py
+```
+
+For the legacy-v2 versus bounded-tool-guard retest:
+
+```powershell
+python benchmark/audit_10_case/run_v2_guard.py `
+  --codex C:\Users\Pc\AppData\Local\Temp\tokenme-codex-cli.exe `
+  --rtk C:\Users\Pc\AppData\Local\Temp\tokenme-rtk-v0420-audit\rtk.exe `
+  --model gpt-5.6-luna --reasoning-effort low --workers 3 `
+  --tasks benchmark/audit_10_case/tasks.py `
+  --result-root benchmark/audit_10_case/runs_v2_guard_v1 `
   --score benchmark/provider_total/mechanism_score.py
 ```
 

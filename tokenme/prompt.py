@@ -49,6 +49,26 @@ SUMMARY_MODES = {
 }
 
 
+BOUNDED_TOOL_GUARD = (
+    "Bounded inspection: never emit an unbounded recursive search, log dump, or full diff. "
+    "Exclude generated and large log files. For rg/grep/find, cap matches (for example "
+    "--max-count 50 or Select-Object -First 80); for Get-Content, use -TotalCount 120; "
+    "start git diff with --stat and inspect only the target file or hunk. If output is "
+    "already sufficient, stop; do not rerun a broad command or print the same output."
+)
+
+
+def bounded_tool_guard() -> str:
+    """Return a small, provider-neutral guard against runaway tool output.
+
+    This is an instruction contract rather than a transport-level truncator:
+    hosts that need a hard byte/token ceiling must enforce it around the tool
+    adapter. The guard is kept separately so a legacy TokenMe policy can be
+    benchmarked with the fix without silently changing the historical source.
+    """
+    return BOUNDED_TOOL_GUARD
+
+
 def summary_policy(
     route: dict,
     *,
