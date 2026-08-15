@@ -20,24 +20,34 @@ for provider dispatch, pricing, cache settlement, and budgets.
 
 ## Latest live benchmark
 
-The current public benchmark uses TokenMe's **Compact Policy** profile. It is a
-paired **30-cell** run: ten identical tasks, each executed once with an
-unmodified Normal baseline and once with TokenMe. All 20 deterministic fixture
-checks passed. `total_tokens = input_tokens + output_tokens`; cache-read and
-reasoning are reported as components and are never added twice.
+The public benchmark covers the same ten case IDs across two compatible Luna
+runs. The current **30-cell** run pairs Normal and TokenMe's Compact Policy. A
+previous **60-cell** run used the same tickets for Normal, Caveman, Ponytail,
+and RTK. Every listed arm passed 10/10 deterministic fixture checks. The
+competitor rows are same-case reference data from a different provider-session
+and cache batch, so they are not presented as one strictly paired ranking.
 
-| Arm | Total | Input | Cached input | Cache ratio | Fresh input | Reasoning (subset) | Output | Estimated cost* |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Normal baseline | 784,541 | 771,540 | 631,040 | 81.79% | 140,500 | 1,833 | 13,001 | $0.056322 |
-| **TokenMe** | **660,517** | **648,958** | **523,008** | **80.59%** | **125,950** | 2,392 | **11,559** | **$0.049521** |
+| Arm | Batch | Total | Input | Cached input | Cache ratio | Fresh input | Reasoning (subset) | Output | Estimated cost* |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Normal baseline | Current paired | 784,541 | 771,540 | 631,040 | 81.79% | 140,500 | 1,833 | 13,001 | $0.056322 |
+| **TokenMe** | **Current paired** | **660,517** | **648,958** | **523,008** | **80.59%** | **125,950** | 2,392 | **11,559** | **$0.049521** |
+| Caveman skill | Same-case reference | 876,701 | 863,825 | 725,504 | 83.99% | 138,321 | 1,973 | 12,876 | $0.057625 |
+| Ponytail treatment | Same-case reference | 845,959 | 833,311 | 690,944 | 82.92% | 142,367 | 2,503 | 12,648 | $0.057470 |
+| RTK treatment | Same-case reference | 1,195,620 | 1,178,595 | 1,006,848 | 85.43% | 171,747 | 3,181 | 17,025 | $0.074916 |
 
-Against the same-run baseline, TokenMe used **15.81% fewer total tokens**,
+In the current paired run, TokenMe used **15.81% fewer total tokens**,
 **15.89% fewer input tokens**, **11.09% fewer output tokens**, and had a
-**12.08% lower estimated cost**, while preserving a 10/10 deterministic quality
-score. Reasoning increased by 30.5% in this task pack, so it is shown separately
-instead of being presented as a saving. Absolute cache-read tokens are lower
-because the complete request is smaller; the cache ratio is shown separately
-for that reason.
+**12.08% lower estimated cost** than its Normal baseline. Reasoning increased
+by 30.5%, so it is shown separately rather than presented as a saving. Absolute
+cache-read is lower because the complete request is smaller; cache ratio is
+shown separately.
+
+For the same-case reference batch, Caveman, Ponytail, and RTK were respectively
+**15.12%**, **11.08%**, and **57.00%** above that batch's Normal total of 761,557
+tokens. Those figures are contextual evidence, not a claim that cache state and
+run timing were identical to the current compact-policy pair. The treatment
+arms also do not insert the Caveman proxy/CCR or RTK transport into the provider
+request path.
 
 The compact policy also reduced completed command executions from **30 to 20**
 and aggregate command-output characters from **55,762 to 49,378**. This is a
@@ -47,8 +57,9 @@ Caveman proxy/CCR or an RTK binary into the provider request path.
 
 *Estimate only, not a local Codex invoice:* uncached input x $0.20/MTok +
 cached input x $0.02/MTok + output x $1.20/MTok. Reasoning is a subset of output
-and is not added again. Raw JSONL and copied workspaces are kept locally under
-the ignored benchmark-run directories. See the [compact-policy report](benchmark/audit_10_case/COMPACT_POLICY_REPORT.md)
+and is not added again. Raw JSONL and copied workspaces remain ignored. See the
+[compact-policy report](benchmark/audit_10_case/COMPACT_POLICY_REPORT.md) and
+[same-case reference report](benchmark/audit_10_case/LATEST_6_ARM_REPORT.md)
 for the full methodology, raw/inferred/unknown boundary, and limitations.
 
 ## Accounting contract
