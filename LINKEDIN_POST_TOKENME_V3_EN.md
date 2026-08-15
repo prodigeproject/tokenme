@@ -14,12 +14,12 @@ Result:
 
 On the same ten cases, reference treatments were **+15.12% Caveman**,
 **+11.08% Ponytail**, and **+57.00% RTK** versus their Normal arm. Those arms
-used a separate provider-session/cache batch, so this is context—not a strict
+used a separate provider-session/cache batch, so this is context, not a strict
 single-batch ranking.
 
 What we learned:
 
-- Correct task classification prevents “prose” work from triggering extra tools.
+- Correct task classification prevents prose work from triggering extra tools.
 - Cache-read totals and cache ratio must be reported together.
 - **Reasoning is a quality/latency trade-off signal, not a quality score.** It is
   part of output billing and counted once. Here it rose 30.5% while deterministic
