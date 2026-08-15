@@ -23,7 +23,7 @@ Against the same-run baseline, the Compact Policy used 15.81% fewer total
 tokens, 15.89% fewer input tokens, 11.09% fewer output tokens, and its estimated
 cost was 12.08% lower. Reasoning increased 30.5%, and absolute cache-read was
 lower because the entire request was smaller; neither is claimed as a win.
-The [full compact-policy report](benchmark/audit_10_case/V3_COMPACT_POLICY_REPORT.md)
+The [full compact-policy report](benchmark/audit_10_case/COMPACT_POLICY_REPORT.md)
 contains the paired deltas, command-output evidence, and limitations.
 
 ## Historical six-arm result
